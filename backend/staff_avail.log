@@ -1,0 +1,3021 @@
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=12:30:00, end=None
+Conflict found for staff 3: appt 1005
+Found 0 staff
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=13:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1005 (12:30:00-13:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=2, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=08:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=08:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=08:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=08:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-04-20, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 7 (09:00:00-10:00:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-04-20, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 7 (09:00:00-10:00:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=14, date=2026-04-20, start=08:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=14, date=2026-04-20, start=08:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=15:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=15:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-04-20, start=15:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-04-20, start=15:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=14, date=2026-04-20, start=15:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=14, date=2026-04-20, start=15:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-04-20, start=15:00:00, end=None
+Result: 3 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-04-20, start=15:00:00, end=None
+Result: 3 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=4, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=16, date=2026-04-20, start=16:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=16, date=2026-04-20, start=16:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-04-20, start=16:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-04-20, start=16:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-04-20, start=16:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=7, date=2026-04-20, start=16:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=7, date=2026-04-20, start=16:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=11, date=2026-04-20, start=16:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=11, date=2026-04-20, start=16:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=17:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=17:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=17:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=17:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=13, date=2026-04-20, start=17:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=13, date=2026-04-20, start=17:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-04-20, start=17:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-04-20, start=17:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-04-20, start=17:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-04-20, start=17:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=16, date=2026-04-20, start=17:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=16, date=2026-04-20, start=17:00:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-04-20, start=18:30:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-04-20, start=18:30:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=18:30:00, end=None
+Result: 3 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=18:30:00, end=None
+Result: 3 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=16:30:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=16:30:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=16:30:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=16:30:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=13, date=2026-04-20, start=16:30:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=13, date=2026-04-20, start=16:30:00, end=None
+  [Conflict] Staff 3 busy in Appt 1007 (15:00:00-17:30:00)
+  [Conflict] Staff 10 busy in Appt 1007 (15:00:00-17:30:00)
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-04-20, start=17:30:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-04-20, start=17:30:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=17:30:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-20, start=17:30:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=17:30:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-20, start=17:30:00, end=None
+Result: 1 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-04-20, start=17:30:00, end=None
+Result: 3 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-04-20, start=17:30:00, end=None
+Result: 3 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=4, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=20:00:00, end=None
+Result: 3 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=20:00:00, end=None
+Result: 3 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-21, start=20:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-04-21, start=20:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-04-21, start=20:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-04-21, start=20:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-21, start=20:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-04-21, start=20:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-04-21, start=20:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-04-21, start=20:00:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-04-21, start=20:00:00, end=None
+Result: 9 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-04-21, start=20:00:00, end=None
+Result: 9 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=20:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-04-20, start=20:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=2026-04-20, start=20:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=2026-04-20, start=20:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=None, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=None, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=None, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=None, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=None, date=None, start=None, end=None
