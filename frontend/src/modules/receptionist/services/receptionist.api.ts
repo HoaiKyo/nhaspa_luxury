@@ -29,6 +29,16 @@ export const receptionistApi = {
   // Invoices
   getInvoice: (id: number) => apiClient.get(`/invoices/${id}`),
   getInvoices: (page = 1, pageSize = 10) => apiClient.get(`/invoices?page=${page}&page_size=${pageSize}`),
+  payInvoiceCash: (invoiceId: number) =>
+    apiClient.post(`/payments/pay-invoice/${invoiceId}`, { phuong_thuc: 'CASH' }),
+  createVnpayUrl: (invoiceId: number, returnUrl?: string) =>
+    apiClient.post('/payments/vnpay/create-url', { ma_hoa_don: invoiceId, return_url: returnUrl }),
+  handleVnpayCallback: (params: URLSearchParams | Record<string, string>) => {
+    const query = params instanceof URLSearchParams
+      ? params.toString()
+      : new URLSearchParams(params).toString();
+    return apiClient.get(`/payments/vnpay/callback?${query}`, false);
+  },
 
   // Customers & Lookups
   getCustomers: (search = '', page = 1) => 

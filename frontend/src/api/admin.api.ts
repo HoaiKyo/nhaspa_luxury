@@ -1,9 +1,9 @@
-/**
- * Admin API service — CRUD wrappers for all admin management endpoints.
+﻿/**
+ * Admin API service â€” CRUD wrappers for all admin management endpoints.
  */
 import { apiClient } from './client';
 
-// ─── Users & Roles ───
+// â”€â”€â”€ Users & Roles â”€â”€â”€
 export const usersApi = {
   list: (page = 1, pageSize = 10, search?: string) =>
     apiClient.get(`/users?page=${page}&page_size=${pageSize}${search ? `&search=${search}` : ''}`),
@@ -16,7 +16,7 @@ export const usersApi = {
     apiClient.post(`/users/${userId}/roles`, { vai_tro_ids: [roleId] }),
 };
 
-// ─── Staff ───
+// â”€â”€â”€ Staff â”€â”€â”€
 export const staffApi = {
   list: (page = 1, pageSize = 10, search?: string) =>
     apiClient.get(`/staff?page=${page}&page_size=${pageSize}${search ? `&search=${search}` : ''}`),
@@ -32,13 +32,13 @@ export const staffApi = {
   },
 };
 
-// ─── Shifts ───
+// â”€â”€â”€ Shifts â”€â”€â”€
 export const shiftsApi = {
   list: () => apiClient.get('/shifts'),
   create: (data: any) => apiClient.post('/shifts', data),
 };
 
-// ─── Schedules ───
+// â”€â”€â”€ Schedules â”€â”€â”€
 export const schedulesApi = {
   list: (staffId?: number, fromDate?: string, toDate?: string) => {
     const params = new URLSearchParams();
@@ -52,7 +52,7 @@ export const schedulesApi = {
   delete: (id: number) => apiClient.delete(`/schedules/${id}`),
 };
 
-// ─── Leave ───
+// â”€â”€â”€ Leave â”€â”€â”€
 export const leavesApi = {
   list: (staffId?: number, status?: string) => {
     const params = new URLSearchParams();
@@ -65,7 +65,7 @@ export const leavesApi = {
     apiClient.put(`/leaves/${id}/approve`, data),
 };
 
-// ─── Categories ───
+// â”€â”€â”€ Categories â”€â”€â”€
 export const categoriesApi = {
   list: () => apiClient.get('/categories'),
   create: (data: any) => apiClient.post('/categories', data),
@@ -73,7 +73,7 @@ export const categoriesApi = {
   delete: (id: number) => apiClient.delete(`/categories/${id}`),
 };
 
-// ─── Products ───
+// â”€â”€â”€ Products â”€â”€â”€
 export const productsApi = {
   list: (page = 1, pageSize = 10, search?: string, categoryId?: number, loai?: string) => {
     const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });
@@ -90,12 +90,12 @@ export const productsApi = {
   addPrice: (id: number, data: any) => apiClient.post(`/products/${id}/prices`, data),
 };
 
-// ─── Combos ───
+// â”€â”€â”€ Combos â”€â”€â”€
 export const combosApi = {
   details: (comboId: number) => apiClient.get(`/combos/${comboId}/details`),
 };
 
-// ─── Appointments ───
+// â”€â”€â”€ Appointments â”€â”€â”€
 export const appointmentsApi = {
   list: (page = 1, pageSize = 10, filters?: { status?: string; customer_id?: number; staff_id?: number; from_date?: string; to_date?: string }) => {
     const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });
@@ -113,7 +113,7 @@ export const appointmentsApi = {
   cancel: (id: number) => apiClient.post(`/appointments/${id}/cancel`),
 };
 
-// ─── Invoices ───
+// â”€â”€â”€ Invoices â”€â”€â”€
 export const invoicesApi = {
   list: (page = 1, pageSize = 10, status?: string) => {
     const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });
@@ -139,18 +139,24 @@ export const invoicesApi = {
     apiClient.post(`/invoices/seed-sample?target_count=${targetCount}&force=${force}`),
 };
 
-// ─── Payments ───
+// â”€â”€â”€ Payments â”€â”€â”€
 export const paymentsApi = {
   list: (invoiceId?: number) => {
     if (invoiceId) {
       return apiClient.get(`/payments/invoice/${invoiceId}`);
     }
-    return Promise.resolve({ success: true, message: 'Không có mã hóa đơn', data: [] });
+    return Promise.resolve({ success: true, message: 'Khong co ma hoa don', data: [] });
   },
   create: (data: any) => apiClient.post('/payments', data),
+  payInvoice: (invoiceId: number, paymentMethod: 'CASH' | 'VNPAY' = 'CASH') =>
+    apiClient.post(`/payments/pay-invoice/${invoiceId}`, { phuong_thuc: paymentMethod }),
+  createVnpayUrl: (invoiceId: number, returnUrl?: string) =>
+    apiClient.post('/payments/vnpay/create-url', { ma_hoa_don: invoiceId, return_url: returnUrl }),
+  handleVnpayCallback: (queryString: string) =>
+    apiClient.get(`/payments/vnpay/callback?${queryString}`, false),
 };
 
-// ─── Promotions ───
+// â”€â”€â”€ Promotions â”€â”€â”€
 export const promotionsApi = {
   list: (page = 1, pageSize = 10) =>
     apiClient.get(`/promotions?page=${page}&page_size=${pageSize}`),
@@ -160,7 +166,7 @@ export const promotionsApi = {
   delete: (id: number) => apiClient.delete(`/promotions/${id}`),
 };
 
-// ─── Banners ───
+// â”€â”€â”€ Banners â”€â”€â”€
 export const bannersApi = {
   list: () => apiClient.get('/banners'),
   create: (data: any) => apiClient.post('/banners', data),
@@ -168,7 +174,7 @@ export const bannersApi = {
   delete: (id: number) => apiClient.delete(`/banners/${id}`),
 };
 
-// ─── News ───
+// â”€â”€â”€ News â”€â”€â”€
 export const newsApi = {
   list: (page = 1, pageSize = 10) =>
     apiClient.get(`/news?page=${page}&page_size=${pageSize}`),
@@ -178,26 +184,26 @@ export const newsApi = {
   delete: (id: number) => apiClient.delete(`/news/${id}`),
 };
 
-// ─── Inventory ───
+// â”€â”€â”€ Inventory â”€â”€â”€
 export const inventoryApi = {
   list: (page = 1, pageSize = 10) => apiClient.get(`/inventory?page=${page}&page_size=${pageSize}`),
   update: (id: number, data: any) => apiClient.put(`/inventory/${id}`, data),
 };
 
-// ─── Suppliers ───
+// â”€â”€â”€ Suppliers â”€â”€â”€
 export const suppliersApi = {
   list: (page = 1, pageSize = 10) => apiClient.get(`/suppliers?page=${page}&page_size=${pageSize}`),
   create: (data: any) => apiClient.post('/suppliers', data),
   update: (id: number, data: any) => apiClient.put(`/suppliers/${id}`, data),
 };
 
-// ─── Import Receipts ───
+// â”€â”€â”€ Import Receipts â”€â”€â”€
 export const importsApi = {
   list: (page = 1, pageSize = 10) => apiClient.get(`/import-receipts?page=${page}&page_size=${pageSize}`),
   create: (data: any) => apiClient.post('/import-receipts', data),
 };
 
-// ─── File Uploads ───
+// â”€â”€â”€ File Uploads â”€â”€â”€
 export const uploadApi = {
   banner: async (file: File) => {
     const formData = new FormData();
@@ -240,9 +246,10 @@ export const uploadApi = {
   },
 };
 
-// ─── BOM ───
+// â”€â”€â”€ BOM â”€â”€â”€
 export const bomApi = {
   getByService: (serviceId: number) => apiClient.get(`/bom/service/${serviceId}`),
   create: (serviceId: number, data: any) => apiClient.post(`/bom/service/${serviceId}`, data),
   delete: (bomId: number) => apiClient.delete(`/bom/${bomId}`),
 };
+

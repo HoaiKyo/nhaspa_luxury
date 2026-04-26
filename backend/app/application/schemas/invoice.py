@@ -49,8 +49,9 @@ class InvoiceDetailResponse(BaseModel):
 
 class PaymentCreate(BaseModel):
     ma_hoa_don: int
-    so_tien: Decimal = Field(..., gt=0)
+    so_tien: Optional[Decimal] = Field(default=None, gt=0)
     phuong_thuc: str = Field(default="CASH")
+    trang_thai: str = Field(default="PAID")
     ma_giao_dich: Optional[str] = None
     ghi_chu: Optional[str] = None
 
@@ -60,12 +61,39 @@ class PaymentResponse(BaseModel):
     ma_hoa_don: int
     so_tien: Decimal
     phuong_thuc: str
-    trang_thai: str = "SUCCESS"
+    trang_thai: str = "PAID"
     ma_giao_dich: Optional[str] = None
     ghi_chu: Optional[str] = None
     ngay_thanh_toan: Optional[datetime] = None
 
     model_config = {"from_attributes": True}
+
+
+class InvoicePayRequest(BaseModel):
+    phuong_thuc: str = Field(default="CASH")
+    ghi_chu: Optional[str] = None
+
+
+class VnpayCreateUrlRequest(BaseModel):
+    ma_hoa_don: int
+    return_url: Optional[str] = None
+
+
+class VnpayCreateUrlResponse(BaseModel):
+    ma_hoa_don: int
+    txn_ref: str
+    payment_url: str
+    amount: Decimal
+
+
+class VnpayCallbackResponse(BaseModel):
+    success: bool
+    ma_hoa_don: int
+    txn_ref: str
+    payment_method: str
+    payment_status: str
+    invoice_status: str
+    response_code: Optional[str] = None
 
 
 class InvoiceResponse(BaseModel):
@@ -83,6 +111,8 @@ class InvoiceResponse(BaseModel):
     diem_tich_luy: int = 0
     thanh_tien: Decimal = Decimal("0")
     trang_thai: str = "DRAFT"
+    payment_method: str = "CASH"
+    payment_status: str = "UNPAID"
     trang_thai_hd_dien_tu: str = "NOT_ISSUED"
     ghi_chu: Optional[str] = None
     chi_tiets: List[InvoiceDetailResponse] = []

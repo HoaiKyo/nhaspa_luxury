@@ -1,5 +1,5 @@
 """
-Nhà Spa Management System - Configuration
+NhĂ  Spa Management System - Configuration
 Loads settings from .env file using Pydantic Settings.
 """
 from pydantic_settings import BaseSettings
@@ -27,9 +27,16 @@ class Settings(BaseSettings):
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173"
 
     # App
-    APP_NAME: str = "Nhà Spa Management System"
+    APP_NAME: str = "NhĂ  Spa Management System"
     APP_VERSION: str = "1.0.0"
     APP_DEBUG: bool = True
+
+    # VNPAY (test)
+    VNPAY_TMN_CODE: str = "Z2DJP1I1"
+    VNPAY_HASH_SECRET: str = "E8G33TSDTLR581YJ8BAW52691Y26R0R5"
+    VNPAY_PAYMENT_URL: str = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+    VNPAY_RETURN_URL: str = "http://localhost:3000/receptionist/hoa-don"
+    VNPAY_EXPIRE_MINUTES: int = 30
 
     @property
     def cors_origins_list(self) -> List[str]:
@@ -51,3 +58,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+

@@ -19,10 +19,11 @@ import {
   X,
 } from 'lucide-react';
 
-import { invoicesApi, productsApi } from '../../api/admin.api';
+import { invoicesApi, paymentsApi, productsApi } from '../../api/admin.api';
 
 type InvoiceStatus = 'PAID' | 'UNPAID' | 'REFUNDED';
 type PaymentMethod = 'CASH' | 'BANK' | 'CARD';
+type CheckoutPaymentMethod = 'CASH' | 'VNPAY';
 type DataSource = 'api' | 'sample';
 
 interface InvoiceItem {
@@ -179,9 +180,12 @@ const normalizeStatus = (status: string | undefined): InvoiceStatus => {
 const normalizePaymentMethod = (method: string | undefined): PaymentMethod => {
   const normalized = String(method || '').toUpperCase();
   if (normalized.includes('CARD') || normalized.includes('THE')) return 'CARD';
-  if (normalized.includes('BANK') || normalized.includes('TRANSFER') || normalized.includes('QR')) return 'BANK';
+  if (normalized.includes('BANK') || normalized.includes('TRANSFER') || normalized.includes('QR') || normalized.includes('VNPAY')) return 'BANK';
   return 'CASH';
 };
+
+const toCheckoutPaymentMethod = (method: PaymentMethod): CheckoutPaymentMethod =>
+  method === 'CASH' ? 'CASH' : 'VNPAY';
 
 const buildInvoiceCode = (invoiceId: number, createdAt: Date) => `#SPA-${createdAt.getFullYear()}-${String(invoiceId).padStart(4, '0')}`;
 
@@ -323,7 +327,7 @@ const mapApiInvoice = (raw: any, index: number): InvoiceRecord => {
 
   const successfulPayment = Array.isArray(raw?.thanh_toans)
     ? [...raw.thanh_toans].reverse().find((payment: any) =>
-        String(payment?.trang_thai || 'SUCCESS').toUpperCase() === 'SUCCESS',
+        ['SUCCESS', 'PAID'].includes(String(payment?.trang_thai || 'SUCCESS').toUpperCase()),
       )
     : undefined;
 
@@ -342,13 +346,14 @@ const mapApiInvoice = (raw: any, index: number): InvoiceRecord => {
     serviceSummary: itemsFromApi[0]?.name || 'Liệu trình Spa',
     staffName: raw?.ho_ten_nhan_vien || (raw?.ma_nhan_vien ? `Nhân viên #${raw.ma_nhan_vien}` : 'Chưa gán'),
     createdAt: createdAtDate.toISOString(),
-    paymentMethod: normalizePaymentMethod(successfulPayment?.phuong_thuc),
+    paymentMethod: normalizePaymentMethod(raw?.payment_method || successfulPayment?.phuong_thuc),
     status: normalizeStatus(raw?.trang_thai),
     subtotal,
     discount,
     vat,
     total,
-    notes: raw?.ghi_chu || 'Không có ghi chú thêm.',
+    notes: String(raw?.ghi_chu || 'Không có ghi chú thêm.')
+      .replace(/H[oó]a\\s*đ[oơ]n\\s*t\\?\\s*l\\?ch\\s*h\\?n/gi, 'Hóa đơn từ lịch hẹn'),
     items: itemsFromApi,
   };
 };
@@ -385,6 +390,7 @@ export default function InvoicesManager() {
   const [methodFilter, setMethodFilter] = useState<'ALL' | PaymentMethod>('ALL');
 
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<CheckoutPaymentMethod>('CASH');
   const [markingPaid, setMarkingPaid] = useState(false);
   const [savingEdit, setSavingEdit] = useState(false);
   const [editDraft, setEditDraft] = useState<EditableInvoiceDraft | null>(null);
@@ -417,6 +423,44 @@ export default function InvoicesManager() {
   useEffect(() => {
     loadInvoices();
     void loadProducts();
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.get('vnp_TxnRef')) return;
+
+    const handleVnpayCallback = async () => {
+      try {
+        const res = await paymentsApi.handleVnpayCallback(params.toString());
+        if (!res.success || !res.data) {
+          throw new Error(res.message || 'Xử lý callback VNPAY thất bại');
+        }
+
+        const invoiceId = Number(res.data.ma_hoa_don || 0);
+        window.history.replaceState({}, document.title, window.location.pathname);
+        await loadInvoices();
+
+        if (invoiceId > 0) {
+          const detailRes = await invoicesApi.get(invoiceId);
+          if (detailRes.success && detailRes.data) {
+            const updated = mapApiInvoice(detailRes.data, 0);
+            setInvoices((prev) => {
+              const exists = prev.some((item) => item.id === updated.id);
+              return exists
+                ? prev.map((item) => (item.id === updated.id ? updated : item))
+                : [updated, ...prev];
+            });
+            setSelectedInvoice(updated);
+            setSelectedPaymentMethod(toCheckoutPaymentMethod(updated.paymentMethod));
+            setEditDraft(updated.status === 'UNPAID' ? toEditableDraft(updated) : null);
+          }
+        }
+      } catch (err: any) {
+        setError(err?.message || 'Không thể xử lý callback VNPAY');
+      }
+    };
+
+    void handleVnpayCallback();
   }, []);
 
   const loadProducts = async () => {
@@ -637,6 +681,7 @@ export default function InvoicesManager() {
 
   const openInvoiceDetail = async (invoice: InvoiceRecord) => {
     setSelectedInvoice(invoice);
+    setSelectedPaymentMethod(toCheckoutPaymentMethod(invoice.paymentMethod));
     setEditDraft(invoice.status === 'UNPAID' ? toEditableDraft(invoice) : null);
 
     if (!invoice.apiInvoiceId) return;
@@ -648,6 +693,7 @@ export default function InvoicesManager() {
       const updatedInvoice = mapApiInvoice(res.data, 0);
       setInvoices((prev) => prev.map((item) => (item.id === invoice.id ? updatedInvoice : item)));
       setSelectedInvoice(updatedInvoice);
+      setSelectedPaymentMethod(toCheckoutPaymentMethod(updatedInvoice.paymentMethod));
       setEditDraft(updatedInvoice.status === 'UNPAID' ? toEditableDraft(updatedInvoice) : null);
     } catch {
       // Keep optimistic row data in panel if detail API fails.
@@ -655,29 +701,34 @@ export default function InvoicesManager() {
   };
 
   const handleMarkAsPaid = async () => {
-    if (!selectedInvoice || selectedInvoice.status === 'PAID') return;
+    if (!selectedInvoice || selectedInvoice.status === 'PAID' || !selectedInvoice.apiInvoiceId) return;
 
     setMarkingPaid(true);
     try {
-      if (selectedInvoice.apiInvoiceId) {
-        const res = await invoicesApi.update(selectedInvoice.apiInvoiceId, { trang_thai: 'PAID' });
-        if (!res.success) {
-          throw new Error(res.message || 'Không thể cập nhật trạng thái thanh toán');
+      if (selectedPaymentMethod === 'VNPAY') {
+        const callbackUrl = `${window.location.origin}${window.location.pathname}`;
+        const res = await paymentsApi.createVnpayUrl(selectedInvoice.apiInvoiceId, callbackUrl);
+        if (!res.success || !res.data?.payment_url) {
+          throw new Error(res.message || 'Không tạo được liên kết thanh toán VNPAY');
         }
+        window.location.href = String(res.data.payment_url);
+        return;
       }
 
-      setInvoices((prev) =>
-        prev.map((invoice) =>
-          invoice.id === selectedInvoice.id
-            ? {
-                ...invoice,
-                status: 'PAID',
-              }
-            : invoice,
-        ),
-      );
+      const payRes = await paymentsApi.payInvoice(selectedInvoice.apiInvoiceId, 'CASH');
+      if (!payRes.success) {
+        throw new Error(payRes.message || 'Không thể thanh toán hóa đơn');
+      }
 
-      setSelectedInvoice((prev) => (prev ? { ...prev, status: 'PAID' } : prev));
+      const detailRes = await invoicesApi.get(selectedInvoice.apiInvoiceId);
+      if (!detailRes.success || !detailRes.data) {
+        throw new Error(detailRes.message || 'Không tải lại được hóa đơn sau thanh toán');
+      }
+
+      const updatedInvoice = mapApiInvoice(detailRes.data, 0);
+      setInvoices((prev) => prev.map((item) => (item.id === selectedInvoice.id ? updatedInvoice : item)));
+      setSelectedInvoice(updatedInvoice);
+      setSelectedPaymentMethod(toCheckoutPaymentMethod(updatedInvoice.paymentMethod));
       setEditDraft(null);
     } catch (err: any) {
       setError(err?.message || 'Không cập nhật được trạng thái hóa đơn.');
@@ -934,6 +985,18 @@ export default function InvoicesManager() {
     selectedInvoice.apiInvoiceId &&
     editDraft,
   );
+  const canShowPaymentControls = Boolean(
+    selectedInvoice &&
+    selectedInvoice.apiInvoiceId &&
+    dataSource === 'api',
+  );
+  const canProcessPayment = Boolean(
+    canShowPaymentControls &&
+    selectedInvoice &&
+    selectedInvoice.status === 'UNPAID',
+  );
+  const paymentActionLabel = selectedPaymentMethod === 'VNPAY' ? 'Thanh toán VNPAY' : 'Đánh dấu đã TT';
+  const paymentButtonBusyLabel = selectedPaymentMethod === 'VNPAY' ? 'Đang chuyển VNPAY...' : 'Đang cập nhật...';
 
   const selectedItemsForView = canEditSelectedInvoice && editDraft
     ? editDraft.items.map((item) => ({
@@ -1651,10 +1714,25 @@ export default function InvoicesManager() {
               </section>
 
               <section className="admin-invoice-section grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <p>
-                  <span className="admin-invoice-muted">Phương thức thanh toán:</span>{' '}
-                  {PAYMENT_META[selectedInvoice.paymentMethod].label}
-                </p>
+                {canShowPaymentControls ? (
+                  <div>
+                    <label className="admin-invoice-muted block mb-1">Phương thức thanh toán</label>
+                    <select
+                      className="admin-select w-full"
+                      value={selectedPaymentMethod}
+                      disabled={selectedInvoice.status === 'PAID' || markingPaid}
+                      onChange={(e) => setSelectedPaymentMethod(e.target.value as CheckoutPaymentMethod)}
+                    >
+                      <option value="CASH">Tiền mặt</option>
+                      <option value="VNPAY">VNPAY</option>
+                    </select>
+                  </div>
+                ) : (
+                  <p>
+                    <span className="admin-invoice-muted">Phương thức thanh toán:</span>{' '}
+                    {PAYMENT_META[selectedInvoice.paymentMethod].label}
+                  </p>
+                )}
                 <p>
                   <span className="admin-invoice-muted">Trạng thái:</span> {STATUS_META[selectedInvoice.status].label}
                 </p>
@@ -1735,9 +1813,9 @@ export default function InvoicesManager() {
               <button
                 className="admin-btn admin-btn-primary"
                 onClick={handleMarkAsPaid}
-                disabled={selectedInvoice.status === 'PAID' || markingPaid}
+                disabled={!canProcessPayment || markingPaid}
               >
-                {markingPaid ? 'Đang cập nhật...' : 'Đánh dấu đã TT'}
+                {markingPaid ? paymentButtonBusyLabel : paymentActionLabel}
               </button>
             </div>
           </aside>
@@ -1746,3 +1824,4 @@ export default function InvoicesManager() {
     </div>
   );
 }
+
