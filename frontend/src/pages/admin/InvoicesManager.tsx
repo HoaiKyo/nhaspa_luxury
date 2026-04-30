@@ -45,6 +45,8 @@ interface InvoiceRecord {
   customerPhone: string;
   customerAddress: string;
   customerAvatar: string;
+  customerPoints: number;
+  customerMembership: string;
   serviceSummary: string;
   staffName: string;
   createdAt: string;
@@ -271,6 +273,8 @@ const buildSampleInvoices = (): InvoiceRecord[] => {
       customerPhone: customer.phone,
       customerAddress: customer.address,
       customerAvatar: initialsOf(customer.name),
+      customerPoints: (index * 37 + 120) % 500,
+      customerMembership: index % 3 === 0 ? 'Vàng' : index % 2 === 0 ? 'Bạc' : 'Thành viên mới',
       serviceSummary: items[0]?.name || 'Liệu trình spa',
       staffName,
       createdAt: createdAt.toISOString(),
@@ -343,6 +347,8 @@ const mapApiInvoice = (raw: any, index: number): InvoiceRecord => {
     customerPhone: raw?.so_dien_thoai_khach || `09${String(raw?.ma_khach_hang || index + 10000000).padStart(8, '0').slice(-8)}`,
     customerAddress: raw?.dia_chi_khach || 'TP. Hồ Chí Minh',
     customerAvatar: initialsOf(customerName),
+    customerPoints: toNumber(raw?.diem_tich_luy_khach || 0),
+    customerMembership: String(raw?.hang_thanh_vien || 'Thành viên mới'),
     serviceSummary: itemsFromApi[0]?.name || 'Liệu trình Spa',
     staffName: raw?.ho_ten_nhan_vien || (raw?.ma_nhan_vien ? `Nhân viên #${raw.ma_nhan_vien}` : 'Chưa gán'),
     createdAt: createdAtDate.toISOString(),
@@ -374,6 +380,29 @@ const promotionLabel = (promo: PromotionOption) => {
     : formatMoney(promo.gia_tri_giam);
   return `${promo.ten_khuyen_mai} (${value})`;
 };
+
+/** Calculate discount amount from a promotion against a subtotal (mirrors backend logic). */
+const calculatePromotionDiscount = (
+  promoId: number | undefined,
+  subtotal: number,
+  promotions: PromotionOption[],
+): number => {
+  if (!promoId || subtotal <= 0) return 0;
+  const promo = promotions.find((p) => p.ma_khuyen_mai === promoId);
+  if (!promo) return 0;
+  if (promo.don_toi_thieu != null && subtotal < promo.don_toi_thieu) return 0;
+
+  let discount = 0;
+  if (String(promo.loai_giam || '').toUpperCase() === 'PERCENT') {
+    discount = subtotal * (promo.gia_tri_giam / 100);
+    if (promo.giam_toi_da != null) discount = Math.min(discount, promo.giam_toi_da);
+  } else {
+    discount = promo.gia_tri_giam;
+  }
+  return Math.min(Math.round(discount), subtotal);
+};
+
+const POINT_VALUE = 1000; // 1 điểm = 1.000đ
 
 export default function InvoicesManager() {
   const [invoices, setInvoices] = useState<InvoiceRecord[]>([]);
@@ -419,6 +448,29 @@ export default function InvoicesManager() {
     () => (editDraft ? subtotalFromItems(editDraft.items) : 0),
     [editDraft],
   );
+
+  // ── Realtime totals for edit mode ──
+  const editDiscountForView = useMemo(() => {
+    if (!editDraft || !selectedInvoice) return selectedInvoice?.discount || 0;
+    return calculatePromotionDiscount(editDraft.ma_khuyen_mai, editSubtotal, promotionOptions);
+  }, [editDraft, editSubtotal, promotionOptions, selectedInvoice]);
+
+  const editPointValueForView = useMemo(() => {
+    if (!editDraft) return 0;
+    return editDraft.diem_su_dung * POINT_VALUE;
+  }, [editDraft]);
+
+  const editVatForView = useMemo(() => {
+    if (!editDraft || !selectedInvoice) return selectedInvoice?.vat || 0;
+    const taxable = Math.max(0, editSubtotal - editDiscountForView - editPointValueForView);
+    return Math.round(taxable * VAT_RATE);
+  }, [editDraft, editSubtotal, editDiscountForView, editPointValueForView, selectedInvoice]);
+
+  const editTotalForView = useMemo(() => {
+    if (!editDraft || !selectedInvoice) return selectedInvoice?.total || 0;
+    const taxable = Math.max(0, editSubtotal - editDiscountForView - editPointValueForView);
+    return Math.max(0, taxable + editVatForView);
+  }, [editDraft, editSubtotal, editDiscountForView, editPointValueForView, editVatForView, selectedInvoice]);
 
   useEffect(() => {
     loadInvoices();
@@ -1553,8 +1605,13 @@ export default function InvoicesManager() {
                   <p>
                     <span className="admin-invoice-muted">Số điện thoại:</span> {selectedInvoice.customerPhone}
                   </p>
-                  <p className="md:col-span-2">
+                  <p>
                     <span className="admin-invoice-muted">Địa chỉ:</span> {selectedInvoice.customerAddress}
+                  </p>
+                  <p>
+                    <span className="admin-invoice-muted">Điểm thành viên:</span>{' '}
+                    <strong style={{ color: 'var(--admin-accent)' }}>{selectedInvoice.customerPoints.toLocaleString('vi-VN')}</strong>{' '}
+                    <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>({selectedInvoice.customerMembership})</span>
                   </p>
                 </div>
               </section>
@@ -1695,20 +1752,34 @@ export default function InvoicesManager() {
                   <strong>{formatMoney(selectedSubtotalForView)}</strong>
                 </div>
                 <div className="admin-invoice-summary-row">
-                  <span>Discount</span>
-                  <strong>- {formatMoney(selectedInvoice.discount)}</strong>
+                  <span>Giảm giá (KM)</span>
+                  <strong style={canEditSelectedInvoice ? { color: '#f59e0b', transition: 'color 0.2s' } : undefined}>
+                    - {formatMoney(canEditSelectedInvoice ? editDiscountForView : selectedInvoice.discount)}
+                  </strong>
                 </div>
+                {((canEditSelectedInvoice && editDraft && editDraft.diem_su_dung > 0) || (!canEditSelectedInvoice && selectedInvoice.pointsUsed && selectedInvoice.pointsUsed > 0)) && (
+                  <div className="admin-invoice-summary-row">
+                    <span>Giảm giá (Điểm)</span>
+                    <strong>
+                      - {formatMoney(canEditSelectedInvoice ? editPointValueForView : toNumber(selectedInvoice.pointsUsed || 0) * POINT_VALUE)}
+                    </strong>
+                  </div>
+                )}
                 <div className="admin-invoice-summary-row">
                   <span>VAT (8%)</span>
-                  <strong>{formatMoney(selectedInvoice.vat)}</strong>
+                  <strong style={canEditSelectedInvoice ? { transition: 'color 0.2s' } : undefined}>
+                    {formatMoney(canEditSelectedInvoice ? editVatForView : selectedInvoice.vat)}
+                  </strong>
                 </div>
                 <div className="admin-invoice-summary-row is-total">
                   <span>Tổng cộng</span>
-                  <strong>{formatMoney(selectedInvoice.total)}</strong>
+                  <strong style={canEditSelectedInvoice ? { color: 'var(--admin-accent)', transition: 'color 0.2s' } : undefined}>
+                    {formatMoney(canEditSelectedInvoice ? editTotalForView : selectedInvoice.total)}
+                  </strong>
                 </div>
                 {canEditSelectedInvoice && (
                   <p className="text-xs mt-2" style={{ color: 'var(--admin-text-muted)' }}>
-                    Tổng tiền/thuế sau cùng sẽ được backend tính lại khi lưu.
+                    Số tiền hiển thị tính tạm — backend sẽ xác nhận chính xác khi Lưu.
                   </p>
                 )}
               </section>

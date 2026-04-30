@@ -1,4 +1,4 @@
-﻿"""Invoice & Payment API endpoints."""
+"""Invoice & Payment API endpoints."""
 from decimal import Decimal
 from typing import Optional
 
@@ -130,6 +130,8 @@ def _serialize_invoice(inv) -> dict:
     d['ho_ten_khach'] = getattr(user, 'ho_ten', 'Khách vãng lai') if user else 'Khách vãng lai'
     d['so_dien_thoai_khach'] = getattr(user, 'so_dien_thoai', '—') if user else '—'
     d['dia_chi_khach'] = getattr(user, 'dia_chi', '—') if user else '—'
+    d['diem_tich_luy_khach'] = int(getattr(user, 'diem_tich_luy', 0) or 0) if user else 0
+    d['hang_thanh_vien'] = str(getattr(user, 'hang_thanh_vien', 'Thành viên mới') or 'Thành viên mới') if user else 'Thành viên mới'
 
     staff = getattr(inv, 'nhan_vien', None)
     staff_user = getattr(staff, 'nguoi_dung', None) if staff else None
