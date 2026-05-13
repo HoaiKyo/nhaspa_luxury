@@ -213,9 +213,14 @@ export default function Home() {
                     <div>
                       {service.bang_gias && service.bang_gias.length > 0 ? (
                         <div className="text-secondary font-medium">
-                          {service.bang_gias.length > 1 
-                            ? `${service.bang_gias[0].gia.toLocaleString()}₫ - ${service.bang_gias[service.bang_gias.length - 1].gia.toLocaleString()}₫`
-                            : `${service.bang_gias[0].gia.toLocaleString()}₫`}
+                          {(() => {
+                            const validGias = service.bang_gias.filter((p: any) => !p.thoi_luong?.includes('90 phút'));
+                            if (validGias.length === 0) return 'Liên hệ';
+                            if (validGias.length > 1) {
+                              return `${validGias[0].gia.toLocaleString()}₫ - ${validGias[validGias.length - 1].gia.toLocaleString()}₫`;
+                            }
+                            return `${validGias[0].gia.toLocaleString()}₫`;
+                          })()}
                         </div>
                       ) : (
                         <div className="text-secondary font-medium">Liên hệ</div>

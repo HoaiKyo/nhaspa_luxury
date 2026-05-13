@@ -3025,3 +3025,12 @@ Parameters: service=None, date=None, start=None, end=None
 
 --- Checking available staff ---
 Parameters: service=None, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None
+
+--- Checking available staff ---
+Parameters: service=1, date=None, start=None, end=None

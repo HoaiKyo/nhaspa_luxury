@@ -91,7 +91,7 @@ def seed():
             {"ten_san_pham": "Massage Body", "slug": "massage-body", "loai": "SERVICE",
              "hinh_anh": "https://nhaspa.com.vn/wp-content/uploads/2025/08/2.jpg",
              "thoi_luong": 60, "ma_danh_muc": massage_cat.ma_danh_muc if massage_cat else 1,
-             "prices": [{"gia": 400000, "thoi_luong": "60 phút"}, {"gia": 550000, "thoi_luong": "90 phút"}]},
+             "prices": [{"gia": 400000, "thoi_luong": "60 phút"}]},
             {"ten_san_pham": "Sạch sâu cấp ẩm", "slug": "sach-sau-cap-am", "loai": "SERVICE",
              "hinh_anh": "https://nhaspa.com.vn/wp-content/uploads/2025/08/3.jpg",
              "thoi_luong": 60, "ma_danh_muc": skincare_cat.ma_danh_muc if skincare_cat else 4,
@@ -102,12 +102,12 @@ def seed():
              "prices": [{"gia": 450000, "thoi_luong": "60 phút"}]},
             {"ten_san_pham": "COMBO 3 – Chăm Sóc Da Chuyên Sâu", "slug": "combo-3", "loai": "PACKAGE",
              "hinh_anh": "https://nhaspa.com.vn/wp-content/uploads/2025/08/4.jpg",
-             "thoi_luong": 90, "ma_danh_muc": combo_cat.ma_danh_muc if combo_cat else 2,
-             "prices": [{"gia": 950000, "gia_goc": 1000000, "thoi_luong": "90 phút"}]},
+             "thoi_luong": 60, "ma_danh_muc": combo_cat.ma_danh_muc if combo_cat else 2,
+             "prices": [{"gia": 950000, "gia_goc": 1000000, "thoi_luong": "60 phút"}]},
             {"ten_san_pham": "Massage cổ vai gáy", "slug": "massage-co-vai-gay", "loai": "SERVICE",
              "hinh_anh": "https://nhaspa.com.vn/wp-content/uploads/2025/08/2-1.jpg",
              "thoi_luong": 60, "ma_danh_muc": massage_cat.ma_danh_muc if massage_cat else 1,
-             "prices": [{"gia": 200000, "thoi_luong": "60 phút"}, {"gia": 400000, "thoi_luong": "90 phút"}]},
+             "prices": [{"gia": 200000, "thoi_luong": "60 phút"}]},
         ]
 
         for p_data in products:

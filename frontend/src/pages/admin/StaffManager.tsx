@@ -1272,7 +1272,7 @@ export default function StaffManager() {
       return {
         slot,
         hasShift: Boolean(shiftSet && shiftSet.size > 0),
-        shiftNames: shiftSet ? Array.from(shiftSet.values()) : [],
+        shiftNames: shiftSet ? (Array.from(shiftSet.values()) as string[]) : [],
         appointments,
       };
     });

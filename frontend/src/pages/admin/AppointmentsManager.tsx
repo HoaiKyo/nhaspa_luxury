@@ -26,12 +26,20 @@ type StatusFilter = 'ALL' | AppointmentBucket;
 interface AppointmentDetail {
   ma_chi_tiet: number;
   ma_san_pham: number;
+  ma_khach_di_kem?: number | null;
   ten_san_pham?: string | null;
   ma_nhan_vien?: number | null;
   ho_ten_nhan_vien?: string | null;
   gio_bat_dau?: string | null;
   gio_ket_thuc?: string | null;
   gia?: number | string | null;
+  ghi_chu?: string | null;
+}
+
+interface AppointmentCompanion {
+  ma_khach_di_kem: number;
+  ho_ten?: string | null;
+  so_dien_thoai?: string | null;
   ghi_chu?: string | null;
 }
 
@@ -46,6 +54,7 @@ interface AppointmentRecord {
   trang_thai: string;
   ghi_chu?: string | null;
   ngay_tao?: string | null;
+  khach_di_kems?: AppointmentCompanion[];
   chi_tiets?: AppointmentDetail[];
 }
 

@@ -86,7 +86,13 @@ export default function BookingModal() {
       publicApi.getCategories().then(res => res.success && setCategories(res.data || []));
       publicApi.getAllProducts().then(res => {
         if (res.success && res.data) {
-          setServices(res.data.filter((s: any) => s.loai !== 'PRODUCT'));
+          const filtered = res.data
+            .filter((s: any) => s.loai !== 'PRODUCT')
+            .map((s: any) => ({
+              ...s,
+              bang_gias: s.bang_gias?.filter((p: any) => !p.thoi_luong?.includes('90 phút')) || []
+            }));
+          setServices(filtered);
         }
       });
 

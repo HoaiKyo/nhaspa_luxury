@@ -82,7 +82,20 @@ class ApiClient {
         }
       }
 
-      const data = await response.json();
+      const text = await response.text();
+      let data: any;
+      if (!text) {
+        if (!response.ok) {
+          throw new Error(`Lỗi HTTP ${response.status} từ ${path} (Không có dữ liệu trả về)`);
+        }
+        data = { success: true, message: 'Thành công (Empty response)' };
+      } else {
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          throw new Error(`Lỗi dữ liệu từ ${path}: JSON không hợp lệ`);
+        }
+      }
       return data as ApiResponse<T>;
     } catch (error: any) {
       const isNetworkError = String(error?.message || '').toLowerCase().includes('failed to fetch');
@@ -165,7 +178,20 @@ class ApiClient {
         }
       }
 
-      const data = await response.json();
+      const text = await response.text();
+      let data: any;
+      if (!text) {
+        if (!response.ok) {
+          throw new Error(`Lỗi HTTP ${response.status} từ ${path} (Không có dữ liệu trả về)`);
+        }
+        data = { success: true, message: 'Thành công (Empty response)' };
+      } else {
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          throw new Error(`Lỗi dữ liệu từ ${path}: JSON không hợp lệ`);
+        }
+      }
       return data as ApiResponse<T>;
     } catch (error: any) {
       const isNetworkError = String(error?.message || '').toLowerCase().includes('failed to fetch');

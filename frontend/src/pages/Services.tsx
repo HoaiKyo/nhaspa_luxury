@@ -5,8 +5,10 @@ import { publicApi } from '../api/public.api';
 
 const getMinPrice = (service: any) => {
   if (service.bang_gias && service.bang_gias.length > 0) {
-    const prices = service.bang_gias.map((p: any) => p.gia);
-    return Math.min(...prices);
+    const validPrices = service.bang_gias
+      .filter((p: any) => !p.thoi_luong?.includes('90 phút'))
+      .map((p: any) => p.gia);
+    if (validPrices.length > 0) return Math.min(...validPrices);
   }
   return 0;
 };
@@ -210,9 +212,14 @@ export default function Services() {
                         <div>
                           {service.bang_gias && service.bang_gias.length > 0 ? (
                             <div className="text-secondary font-medium">
-                              {service.bang_gias.length > 1 
-                                ? `${service.bang_gias[0].gia.toLocaleString()}₫ - ${service.bang_gias[service.bang_gias.length - 1].gia.toLocaleString()}₫`
-                                : `${service.bang_gias[0].gia.toLocaleString()}₫`}
+                              {(() => {
+                                const validGias = service.bang_gias.filter((p: any) => !p.thoi_luong?.includes('90 phút'));
+                                if (validGias.length === 0) return 'Liên hệ';
+                                if (validGias.length > 1) {
+                                  return `${validGias[0].gia.toLocaleString()}₫ - ${validGias[validGias.length - 1].gia.toLocaleString()}₫`;
+                                }
+                                return `${validGias[0].gia.toLocaleString()}₫`;
+                              })()}
                             </div>
                           ) : (
                             <div className="text-secondary font-medium">Liên hệ</div>

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { X, Mail, Lock, User as UserIcon, Phone } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { authApi } from '../api/auth.api';
 
 export default function AuthModal() {
   const { isModalOpen, modalView, closeModal, openModal, login, register, forgotPassword } = useAuth();
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -37,11 +34,6 @@ export default function AuthModal() {
         const res = await login(email, password);
         if (!res.success) {
           alert(res.message);
-        } else if ((res as any).profile) {
-          const roles = (res as any).profile.vai_tros || [];
-          if (roles.includes('ADMIN') || roles.includes('STAFF')) {
-            navigate('/admin');
-          }
         }
       } else if (modalView === 'register') {
         if (password !== confirmPassword) {
@@ -57,11 +49,6 @@ export default function AuthModal() {
         const res = await register({ ho_ten: name, email, mat_khau: password, so_dien_thoai: phone });
         if (!res.success) {
           alert(res.message);
-        } else if ((res as any).profile) {
-          const roles = (res as any).profile.vai_tros || [];
-          if (roles.includes('ADMIN') || roles.includes('STAFF')) {
-            navigate('/admin');
-          }
         }
       } else if (modalView === 'forgot-password') {
         if (password !== confirmPassword) {

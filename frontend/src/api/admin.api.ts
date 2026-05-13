@@ -3,7 +3,6 @@
  */
 import { apiClient } from './client';
 
-// â”€â”€â”€ Users & Roles â”€â”€â”€
 export const usersApi = {
   list: (page = 1, pageSize = 10, search?: string) =>
     apiClient.get(`/users?page=${page}&page_size=${pageSize}${search ? `&search=${search}` : ''}`),
@@ -16,7 +15,6 @@ export const usersApi = {
     apiClient.post(`/users/${userId}/roles`, { vai_tro_ids: [roleId] }),
 };
 
-// â”€â”€â”€ Staff â”€â”€â”€
 export const staffApi = {
   list: (page = 1, pageSize = 10, search?: string) =>
     apiClient.get(`/staff?page=${page}&page_size=${pageSize}${search ? `&search=${search}` : ''}`),
@@ -32,13 +30,11 @@ export const staffApi = {
   },
 };
 
-// â”€â”€â”€ Shifts â”€â”€â”€
 export const shiftsApi = {
   list: () => apiClient.get('/shifts'),
   create: (data: any) => apiClient.post('/shifts', data),
 };
 
-// â”€â”€â”€ Schedules â”€â”€â”€
 export const schedulesApi = {
   list: (staffId?: number, fromDate?: string, toDate?: string) => {
     const params = new URLSearchParams();
@@ -65,7 +61,7 @@ export const leavesApi = {
     apiClient.put(`/leaves/${id}/approve`, data),
 };
 
-// â”€â”€â”€ Categories â”€â”€â”€
+
 export const categoriesApi = {
   list: () => apiClient.get('/categories'),
   create: (data: any) => apiClient.post('/categories', data),
@@ -73,7 +69,7 @@ export const categoriesApi = {
   delete: (id: number) => apiClient.delete(`/categories/${id}`),
 };
 
-// â”€â”€â”€ Products â”€â”€â”€
+
 export const productsApi = {
   list: (page = 1, pageSize = 10, search?: string, categoryId?: number, loai?: string) => {
     const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });
@@ -90,12 +86,10 @@ export const productsApi = {
   addPrice: (id: number, data: any) => apiClient.post(`/products/${id}/prices`, data),
 };
 
-// â”€â”€â”€ Combos â”€â”€â”€
 export const combosApi = {
   details: (comboId: number) => apiClient.get(`/combos/${comboId}/details`),
 };
 
-// â”€â”€â”€ Appointments â”€â”€â”€
 export const appointmentsApi = {
   list: (page = 1, pageSize = 10, filters?: { status?: string; customer_id?: number; staff_id?: number; from_date?: string; to_date?: string }) => {
     const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });

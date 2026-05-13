@@ -35,6 +35,7 @@ import InventoryManager from './pages/admin/InventoryManager';
 import ScheduleView from './pages/admin/ScheduleView';
 import LeaveManager from './pages/admin/LeaveManager';
 import MembershipVipManager from './pages/admin/MembershipVipManager';
+import StaffPerformance from './pages/admin/StaffPerformance';
 
 // Receptionist CMS
 import ReceptionistLayout from './modules/receptionist/components/ReceptionistLayout';
@@ -90,6 +91,7 @@ export default function App() {
               <Route path="kho" element={<InventoryManager />} />
               <Route path="lich-lam-viec" element={<ScheduleView />} />
               <Route path="nghi-phep" element={<LeaveManager />} />
+              <Route path="hieu-suat-nhan-vien" element={<StaffPerformance />} />
             </Route>
 
             {/* Receptionist routes */}

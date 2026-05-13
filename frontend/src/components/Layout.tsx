@@ -134,7 +134,7 @@ export default function Layout() {
                   </div>
                 </div>
               ) : (
-                <button onClick={() => openModal('login')} className="hover:text-accent transition-colors flex items-center gap-1">
+                <button id="login-button" onClick={() => openModal('login')} className="hover:text-accent transition-colors flex items-center gap-1">
                   <User size={20} />
                 </button>
               )}
@@ -201,7 +201,7 @@ export default function Layout() {
                   </div>
                 ) : (
                   <div className="py-2 border-b border-gray-50 flex gap-3">
-                    <button onClick={() => { setMobileMenuOpen(false); openModal('login'); }} className="flex-1 bg-primary/10 text-primary py-2.5 rounded-md font-medium text-sm">Đăng nhập</button>
+                    <button id="mobile-login-button" onClick={() => { setMobileMenuOpen(false); openModal('login'); }} className="flex-1 bg-primary/10 text-primary py-2.5 rounded-md font-medium text-sm">Đăng nhập</button>
                     <button onClick={() => { setMobileMenuOpen(false); openModal('register'); }} className="flex-1 bg-primary text-white py-2.5 rounded-md font-medium text-sm">Đăng ký</button>
                   </div>
                 )}

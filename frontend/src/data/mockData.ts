@@ -23,8 +23,7 @@ export const services: Service[] = [
     slug: "massage-body", 
     image: "http://localhost:8000/uploads/2025/08/2.jpg",
     pricing: [
-      { duration: "60 phút", price: "400.000₫" },
-      { duration: "90 phút", price: "550.000₫" }
+      { duration: "60 phút", price: "400.000₫" }
     ]
   },
   { 
@@ -54,7 +53,7 @@ export const services: Service[] = [
     slug: "combo-3", 
     image: "http://localhost:8000/uploads/2025/08/4.jpg",
     pricing: [
-      { duration: "90 phút", price: "950.000₫", originalPrice: "1.000.000₫" }
+      { duration: "60 phút", price: "950.000₫", originalPrice: "1.000.000₫" }
     ]
   },
   { 
@@ -64,8 +63,7 @@ export const services: Service[] = [
     slug: "massage-co-vai-gay", 
     image: "http://localhost:8000/uploads/2025/08/2-1.jpg",
     pricing: [
-      { duration: "60 phút", price: "200.000₫" },
-      { duration: "90 phút", price: "400.000₫" }
+      { duration: "60 phút", price: "200.000₫" }
     ]
   },
 ];

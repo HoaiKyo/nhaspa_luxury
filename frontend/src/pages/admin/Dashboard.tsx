@@ -67,24 +67,6 @@ type TopService = {
   bookings: number;
 };
 
-type StaffPerformance = {
-  id: number | string;
-  name: string;
-  role: string;
-  sessions: number;
-  rating: number;
-};
-
-type StaffPerformanceFilter = 'DAY' | 'WEEK' | 'MONTH';
-
-type SystemAlert = {
-  id: string;
-  type: 'inventory' | 'leave';
-  severity: 'critical' | 'warning' | 'info';
-  title: string;
-  detail: string;
-};
-
 type DashboardSummary = {
   weeklyRevenue: number;
   weeklyRevenueChange: number;
@@ -101,8 +83,6 @@ type DashboardSummary = {
   avgWaitMinutes: number;
   recentAppointments: RecentAppointment[];
   topServices: TopService[];
-  staffPerformanceByPeriod: Record<StaffPerformanceFilter, StaffPerformance[]>;
-  alerts: SystemAlert[];
 };
 
 const EMPTY_SUMMARY: DashboardSummary = {
@@ -126,12 +106,6 @@ const EMPTY_SUMMARY: DashboardSummary = {
   avgWaitMinutes: 0,
   recentAppointments: [],
   topServices: [],
-  staffPerformanceByPeriod: {
-    DAY: [],
-    WEEK: [],
-    MONTH: [],
-  },
-  alerts: [],
 };
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || '/api/v1').trim();
@@ -288,16 +262,12 @@ const buildSummary = ({
   invoices,
   users,
   staffMembers,
-  inventoryItems,
-  approvedLeaves,
   products,
 }: {
   appointments: any[];
   invoices: any[];
   users: any[];
   staffMembers: any[];
-  inventoryItems: any[];
-  approvedLeaves: any[];
   products: any[];
 }): DashboardSummary => {
   const now = new Date();
@@ -544,125 +514,6 @@ const buildSummary = ({
     .sort((a, b) => b.bookings - a.bookings)
     .slice(0, 5);
 
-  const collectStaffPerformance = (from: Date, to: Date): StaffPerformance[] => {
-    const stats = new Map<
-      number,
-      { id: number; name: string; role: string; sessions: number; completed: number; ratings: number[] }
-    >();
-
-    appointments
-      .filter((appt) => isBetween(toDateSafe(appt.ngay_hen), from, to))
-      .filter((appt) => normalizeAppointmentStatus(appt.trang_thai) !== 'CANCELLED')
-      .forEach((appt) => {
-        if (!Array.isArray(appt.chi_tiets)) return;
-        const normalizedStatus = normalizeAppointmentStatus(appt.trang_thai);
-
-        appt.chi_tiets.forEach((detail: any) => {
-          if (!detail.ma_nhan_vien) return;
-
-          const current = stats.get(detail.ma_nhan_vien) || {
-            id: detail.ma_nhan_vien,
-            name: resolveStaffName(detail.ma_nhan_vien, detail.ho_ten_nhan_vien),
-            role: staffMap.get(String(detail.ma_nhan_vien))?.chuc_vu || 'Kỹ thuật viên',
-            sessions: 0,
-            completed: 0,
-            ratings: [],
-          };
-
-          current.sessions += 1;
-          if (normalizedStatus === 'COMPLETED') current.completed += 1;
-
-          const detailRating = toNumber(detail.diem_danh_gia);
-          if (detailRating > 0) current.ratings.push(detailRating);
-
-          stats.set(detail.ma_nhan_vien, current);
-        });
-      });
-
-    let rows: StaffPerformance[] = [...stats.values()]
-      .map((staff) => {
-        const ratingFromReview = staff.ratings.length > 0 ? average(staff.ratings) : 0;
-        const ratingFromCompletion = staff.sessions > 0 ? (staff.completed / staff.sessions) * 5 : 0;
-        const rating = ratingFromReview > 0 ? ratingFromReview : ratingFromCompletion;
-
-        return {
-          id: staff.id,
-          name: staff.name,
-          role: staff.role,
-          sessions: staff.sessions,
-          rating: Number(rating.toFixed(1)),
-        };
-      })
-      .sort((a, b) => b.sessions - a.sessions);
-
-    if (rows.length === 0) {
-      rows = (staffMembers || []).map((staff: any) => ({
-        id: staff.ma_nhan_vien,
-        name: resolveStaffName(staff.ma_nhan_vien, staff.ho_ten),
-        role: staff.chuc_vu || 'Kỹ thuật viên',
-        sessions: 0,
-        rating: 0,
-      }));
-    }
-
-    return rows;
-  };
-
-  const staffPerformanceByPeriod: Record<StaffPerformanceFilter, StaffPerformance[]> = {
-    DAY: collectStaffPerformance(todayStart, todayEnd),
-    WEEK: collectStaffPerformance(weekStart, weekEnd),
-    MONTH: collectStaffPerformance(monthStart, monthEnd),
-  };
-
-  const inventoryAlerts: SystemAlert[] = (inventoryItems || [])
-    .filter((item: any) => {
-      const min = toNumber(item.so_luong_toi_thieu);
-      const qty = toNumber(item.so_luong);
-      return min > 0 && qty <= min;
-    })
-    .sort((a: any, b: any) => toNumber(a.so_luong) - toNumber(b.so_luong))
-    .slice(0, 6)
-    .map((item: any) => {
-      const qty = toNumber(item.so_luong);
-      const min = toNumber(item.so_luong_toi_thieu);
-      return {
-        id: `inv-${item.ma_ton_kho}`,
-        type: 'inventory',
-        severity: qty <= 0 ? 'critical' : 'warning',
-        title: item.ten_san_pham || `Vật tư #${item.ma_san_pham}`,
-        detail: `Tồn kho ${formatNumber(qty)} ${item.don_vi || 'đơn vị'} (ngưỡng tối thiểu ${formatNumber(min)}).`,
-      };
-    });
-
-  const leaveAlerts: SystemAlert[] = (approvedLeaves || [])
-    .filter((leave: any) => {
-      const end = toDateSafe(leave.ngay_ket_thuc);
-      return end ? end >= todayStart : false;
-    })
-    .sort((a: any, b: any) => {
-      const aStart = toDateSafe(a.ngay_bat_dau)?.getTime() || 0;
-      const bStart = toDateSafe(b.ngay_bat_dau)?.getTime() || 0;
-      return aStart - bStart;
-    })
-    .slice(0, 6)
-    .map((leave: any) => ({
-      id: `leave-${leave.ma_nghi_phep}`,
-      type: 'leave',
-      severity: 'info' as const,
-      title: resolveStaffName(leave.ma_nhan_vien),
-      detail: `Nghỉ phép đã duyệt: ${formatDate(leave.ngay_bat_dau)} - ${formatDate(leave.ngay_ket_thuc)}.`,
-    }));
-
-  const severityRank: Record<SystemAlert['severity'], number> = {
-    critical: 0,
-    warning: 1,
-    info: 2,
-  };
-
-  const alerts = [...inventoryAlerts, ...leaveAlerts].sort(
-    (a, b) => severityRank[a.severity] - severityRank[b.severity],
-  );
-
   return {
     weeklyRevenue,
     weeklyRevenueChange,
@@ -683,8 +534,6 @@ const buildSummary = ({
     avgWaitMinutes,
     recentAppointments,
     topServices,
-    staffPerformanceByPeriod,
-    alerts,
   };
 };
 
@@ -708,7 +557,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [summary, setSummary] = useState<DashboardSummary>(EMPTY_SUMMARY);
-  const [staffPeriodFilter, setStaffPeriodFilter] = useState<StaffPerformanceFilter>('MONTH');
 
   useEffect(() => {
     let mounted = true;
@@ -718,18 +566,13 @@ export default function Dashboard() {
       setError('');
 
       try {
-        const [appointments, invoices, users, staffMembers, inventoryItems, products, approvedLeaves] =
+        const [appointments, invoices, users, staffMembers, products] =
           await Promise.all([
             fetchAllPages((page, pageSize) => appointmentsApi.list(page, pageSize), 120),
             fetchAllPages((page, pageSize) => invoicesApi.list(page, pageSize), 120),
             fetchAllPages((page, pageSize) => usersApi.list(page, pageSize), 120),
             fetchAllPages((page, pageSize) => staffApi.list(page, pageSize), 120),
-            fetchAllPages((page, pageSize) => inventoryApi.list(page, pageSize), 120),
             fetchAllPages((page, pageSize) => productsApi.list(page, pageSize), 120),
-            (async () => {
-              const res = await leavesApi.list(undefined, 'APPROVED');
-              return res?.success && Array.isArray(res.data) ? res.data : [];
-            })(),
           ]);
 
         if (!mounted) return;
@@ -740,8 +583,6 @@ export default function Dashboard() {
             invoices,
             users,
             staffMembers,
-            inventoryItems,
-            approvedLeaves,
             products,
           }),
         );
@@ -795,7 +636,6 @@ export default function Dashboard() {
   }, [summary.statusSeries, totalStatus]);
 
   const topServiceMax = Math.max(...summary.topServices.map((item) => item.bookings), 1);
-  const staffPerformanceRows = summary.staffPerformanceByPeriod[staffPeriodFilter] || [];
 
   if (loading) {
     return (
@@ -1136,124 +976,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <div className="rounded-xl p-5" style={PANEL_STYLE}>
-          <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
-            <h2 className="text-lg font-semibold" style={{ color: HEADING_TEXT }}>
-              Hiệu suất nhân viên
-            </h2>
-            <div className="inline-flex items-center gap-1.5">
-              {([
-                { key: 'DAY', label: 'Ngày' },
-                { key: 'WEEK', label: 'Tuần' },
-                { key: 'MONTH', label: 'Tháng' },
-              ] as Array<{ key: StaffPerformanceFilter; label: string }>).map((option) => (
-                <button
-                  key={option.key}
-                  type="button"
-                  onClick={() => setStaffPeriodFilter(option.key)}
-                  className="px-2.5 py-1 rounded-md border text-xs font-medium"
-                  style={
-                    staffPeriodFilter === option.key
-                      ? {
-                          background: 'var(--admin-sidebar-link-active-bg)',
-                          borderColor: 'rgba(16, 185, 129, 0.35)',
-                          color: ACCENT,
-                        }
-                      : {
-                          background: 'var(--admin-table-row-hover)',
-                          borderColor: 'var(--admin-border)',
-                          color: MUTED_TEXT,
-                        }
-                  }
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {staffPerformanceRows.length === 0 ? (
-            <div className="py-14 text-center text-sm" style={{ color: MUTED_TEXT }}>
-              Không có dữ liệu hiệu suất.
-            </div>
-          ) : (
-            <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
-              {staffPerformanceRows.map((staff) => (
-                <div
-                  key={staff.id}
-                  className="rounded-lg p-3 flex items-center justify-between"
-                  style={{ background: 'var(--admin-table-row-hover)', border: '1px solid var(--admin-border)' }}
-                >
-                  <div>
-                    <p className="text-sm font-medium" style={{ color: HEADING_TEXT }}>
-                      {staff.name}
-                    </p>
-                    <p className="text-xs" style={{ color: MUTED_TEXT }}>
-                      {staff.role}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm" style={{ color: MAIN_TEXT }}>
-                      {formatNumber(staff.sessions)} lượt
-                    </p>
-
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="rounded-xl p-5" style={PANEL_STYLE}>
-          <h2 className="text-lg font-semibold mb-4" style={{ color: HEADING_TEXT }}>
-            Cảnh báo hệ thống
-          </h2>
-
-          {summary.alerts.length === 0 ? (
-            <div className="py-14 text-center text-sm" style={{ color: MUTED_TEXT }}>
-              Không có cảnh báo tồn kho hoặc nghỉ phép.
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {summary.alerts.slice(0, 8).map((alert) => {
-                const accent =
-                  alert.severity === 'critical'
-                    ? '#ef4444'
-                    : alert.severity === 'warning'
-                      ? '#f59e0b'
-                      : '#60a5fa';
-                return (
-                  <div
-                    key={alert.id}
-                    className="rounded-lg p-3"
-                    style={{
-                      background: 'var(--admin-table-row-hover)',
-                      border: `1px solid ${accent}55`,
-                    }}
-                  >
-                    <div className="flex items-start gap-2.5">
-                      {alert.type === 'inventory' ? (
-                        <AlertTriangle size={16} color={accent} />
-                      ) : (
-                        <CalendarDays size={16} color={accent} />
-                      )}
-                      <div>
-                        <p className="text-sm font-medium" style={{ color: HEADING_TEXT }}>
-                          {alert.title}
-                        </p>
-                        <p className="text-xs mt-0.5" style={{ color: MUTED_TEXT }}>
-                          {alert.detail}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
+      {/* Removed Staff Performance and System Alerts sections */}
     </div>
   );
 }

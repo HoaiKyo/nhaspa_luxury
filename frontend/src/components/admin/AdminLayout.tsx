@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
   LayoutDashboard, Package, FolderTree, Users, CalendarDays, FileText,
   Percent, Image, Newspaper, Warehouse, UserCog, Clock, CalendarOff,
-  Menu, LogOut, ChevronLeft, Bell, Sun, Moon
+  Menu, LogOut, ChevronLeft, Bell, Sun, Moon, TrendingUp
 } from 'lucide-react';
 import '../../admin.css';
 
@@ -35,6 +35,7 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
       { to: '/admin/nhan-vien', icon: <UserCog size={18} />, label: 'Nhân viên', roles: ['ADMIN'] },
       { to: '/admin/lich-lam-viec', icon: <Clock size={18} />, label: 'Lịch làm việc', roles: ['ADMIN', 'STAFF'] },
       { to: '/admin/nghi-phep', icon: <CalendarOff size={18} />, label: 'Nghỉ phép', roles: ['ADMIN', 'STAFF'] },
+      { to: '/admin/hieu-suat-nhan-vien', icon: <TrendingUp size={18} />, label: 'Hiệu suất nhân viên', roles: ['ADMIN'] },
     ],
   },
   {
