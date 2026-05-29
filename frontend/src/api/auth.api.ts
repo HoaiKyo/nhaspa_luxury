@@ -29,8 +29,6 @@ export interface UserProfile {
   gioi_tinh?: string;
   dia_chi?: string;
   anh_dai_dien?: string;
-  diem_tich_luy: number;
-  hang_thanh_vien: string;
   vai_tros: string[];
 }
 

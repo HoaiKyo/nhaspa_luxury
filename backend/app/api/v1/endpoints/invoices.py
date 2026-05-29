@@ -14,7 +14,6 @@ from app.application.schemas.invoice import (
     InvoiceUpdate,
     PaymentCreate,
     PaymentResponse,
-    PointHistoryResponse,
     VnpayCallbackResponse,
     VnpayCreateUrlRequest,
     VnpayCreateUrlResponse,
@@ -112,10 +111,9 @@ def _serialize_invoice(inv) -> dict:
             'tong_tien': _to_decimal(inv.tong_tien),
             'giam_gia': _to_decimal(inv.giam_gia),
             'thue': _to_decimal(inv.thue),
-            'diem_su_dung': int(getattr(inv, 'diem_su_dung', 0) or 0),
-            'gia_tri_diem': _to_decimal(inv.gia_tri_diem),
-            'diem_tich_luy': int(getattr(inv, 'diem_tich_luy', 0) or 0),
-            'thanh_tien': _to_decimal(inv.thanh_tien),
+            'so_tien_khach_tra': getattr(inv, 'so_tien_khach_tra', Decimal("0")),
+            'so_tien_tra_lai': getattr(inv, 'so_tien_tra_lai', Decimal("0")),
+                        'thanh_tien': _to_decimal(inv.thanh_tien),
             'trang_thai': str(getattr(inv, 'trang_thai', 'DRAFT') or 'DRAFT'),
             'trang_thai_hd_dien_tu': str(getattr(inv, 'trang_thai_hd_dien_tu', 'NOT_ISSUED') or 'NOT_ISSUED'),
             'ghi_chu': getattr(inv, 'ghi_chu', None),
@@ -130,9 +128,7 @@ def _serialize_invoice(inv) -> dict:
     d['ho_ten_khach'] = getattr(user, 'ho_ten', 'Khách vãng lai') if user else 'Khách vãng lai'
     d['so_dien_thoai_khach'] = getattr(user, 'so_dien_thoai', '—') if user else '—'
     d['dia_chi_khach'] = getattr(user, 'dia_chi', '—') if user else '—'
-    d['diem_tich_luy_khach'] = int(getattr(user, 'diem_tich_luy', 0) or 0) if user else 0
-    d['hang_thanh_vien'] = str(getattr(user, 'hang_thanh_vien', 'Thành viên mới') or 'Thành viên mới') if user else 'Thành viên mới'
-
+        
     staff = getattr(inv, 'nhan_vien', None)
     staff_user = getattr(staff, 'nguoi_dung', None) if staff else None
     d['ho_ten_nhan_vien'] = getattr(staff_user, 'ho_ten', 'Chưa gán') if staff_user else 'Chưa gán'
@@ -196,20 +192,6 @@ def list_active_promotions(
         message='Lấy danh sách khuyến mãi khả dụng thành công',
     )
 
-
-@invoice_router.get('/point-history')
-def list_point_history(
-    page: int = 1,
-    page_size: int = 20,
-    customer_id: Optional[int] = None,
-    invoice_id: Optional[int] = None,
-    db: Session = Depends(get_db),
-    _=Depends(require_staff),
-):
-    svc = InvoiceService(db)
-    rows, total = svc.get_point_history(page=page, page_size=page_size, customer_id=customer_id, invoice_id=invoice_id)
-    data = [PointHistoryResponse.model_validate(row).model_dump() for row in rows]
-    return paginated_response(data, total, page, page_size)
 
 
 @invoice_router.get('/{inv_id}')

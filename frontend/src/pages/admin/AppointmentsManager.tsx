@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useState, useRef, type CSSProperties } from 'react';
 import {
   CalendarDays,
   Check,
@@ -9,7 +9,9 @@ import {
   Plus,
   Search,
   X,
+  Eye,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 import { appointmentsApi, productsApi, staffApi } from '../../api/admin.api';
 import {
@@ -331,7 +333,7 @@ const emptyForm = (defaultDate: string, defaultServiceId = 0, defaultTime = ''):
   customerName: '',
   customerPhone: '',
   companions: [],
-  assignments: defaultServiceId ? [createEmptyAssignment(defaultServiceId)] : [],
+  assignments: [createEmptyAssignment(defaultServiceId)],
   date: defaultDate,
   time: defaultTime,
   note: '',
@@ -339,6 +341,7 @@ const emptyForm = (defaultDate: string, defaultServiceId = 0, defaultTime = ''):
 });
 
 export default function AppointmentsManager() {
+  const navigate = useNavigate();
   const todayISO = toISODate(new Date());
   const dateBounds = useMemo(() => getBookingDateBounds(), []);
 
@@ -364,6 +367,7 @@ export default function AppointmentsManager() {
   const initialSlots = useMemo(() => generateBookingSlots(dateBounds.minDate), [dateBounds.minDate]);
   const [form, setForm] = useState<AppointmentForm>(() => emptyForm(dateBounds.minDate, 0, initialSlots[0] || ''));
   const [staffByService, setStaffByService] = useState<Record<number, StaffOptionItem[]>>({});
+  const loadingStaffServicesRef = useRef<number[]>([]);
   const [loadingStaffServices, setLoadingStaffServices] = useState<number[]>([]);
 
   const availableTimeSlots = useMemo(() => generateBookingSlots(form.date), [form.date]);
@@ -386,14 +390,15 @@ export default function AppointmentsManager() {
   const staffNameOf = (staff: StaffOptionItem): string =>
     String(staff.ho_ten || '').trim() || `NV #${staff.ma_nhan_vien}`;
 
-  const fetchStaffOptionsForService = async (serviceId: number, date?: string, time?: string): Promise<void> => {
+  const fetchStaffOptionsForService = async (serviceId: number, date?: string, time?: string, excludeId?: number): Promise<void> => {
     if (!serviceId) return;
-    if (loadingStaffServices.includes(serviceId)) return;
+    if (loadingStaffServicesRef.current.includes(serviceId)) return;
 
     console.log(`[Diagnostic] Fetching staff for service ${serviceId} at ${date} ${time}`);
-    setLoadingStaffServices((prev) => [...prev, serviceId]);
+    loadingStaffServicesRef.current = [...loadingStaffServicesRef.current, serviceId];
+    setLoadingStaffServices([...loadingStaffServicesRef.current]);
     try {
-      const res = await staffApi.availableForService(serviceId, date, time);
+      const res = await staffApi.availableForService(serviceId, date, time, excludeId);
       console.log(`[Diagnostic] API response for service ${serviceId}:`, res.data);
       if (!res.success || !Array.isArray(res.data)) {
         throw new Error(res.message || 'Không thể tải danh sách nhân viên theo dịch vụ');
@@ -433,7 +438,8 @@ export default function AppointmentsManager() {
     } catch (err: any) {
       alert(err?.message || 'Không thể tải danh sách nhân viên cho dịch vụ đã chọn');
     } finally {
-      setLoadingStaffServices((prev) => prev.filter((item) => item !== serviceId));
+      loadingStaffServicesRef.current = loadingStaffServicesRef.current.filter((item) => item !== serviceId);
+      setLoadingStaffServices([...loadingStaffServicesRef.current]);
     }
   };
 
@@ -571,9 +577,9 @@ export default function AppointmentsManager() {
       ),
     ) as number[];
     serviceIds.forEach((serviceId) => {
-      void fetchStaffOptionsForService(serviceId, form.date, toTimeApi(form.time));
+      void fetchStaffOptionsForService(serviceId, form.date, toTimeApi(form.time), editingItem?.ma_lich_hen);
     });
-  }, [isPanelOpen, assignmentServiceIdsKey, form.date, form.time]);
+  }, [isPanelOpen, assignmentServiceIdsKey, form.date, form.time, editingItem?.ma_lich_hen]);
 
   // Remove the redundant clear cache effect to prevent flickering and loops
   /*
@@ -657,7 +663,15 @@ export default function AppointmentsManager() {
 
         return matchesPeriod && matchesDate && matchesStatus && matchesSearch;
       })
-      .sort((a, b) => toDateTimeValue(b.ngay_hen, b.gio_bat_dau) - toDateTimeValue(a.ngay_hen, a.gio_bat_dau));
+      .sort((a, b) => {
+        const aPending = normalizeStatus(a.trang_thai) === 'PENDING' ? 1 : 0;
+        const bPending = normalizeStatus(b.trang_thai) === 'PENDING' ? 1 : 0;
+        if (aPending !== bPending) {
+          return bPending - aPending; // PENDING lên đầu
+        }
+        // Nếu cùng trạng thái, xếp theo ID mới nhất (mới tạo)
+        return b.ma_lich_hen - a.ma_lich_hen;
+      });
   }, [appointments, periodFilter, statusFilter, searchQuery, selectedDate, todayISO]);
 
   const totalPages = Math.max(1, Math.ceil(filteredAppointments.length / PAGE_SIZE));
@@ -688,7 +702,7 @@ export default function AppointmentsManager() {
     setForm(emptyForm(defaultDate, defaultServiceId, slots[0] || ''));
     setIsPanelOpen(true);
     if (defaultServiceId) {
-      void fetchStaffOptionsForService(defaultServiceId);
+      void fetchStaffOptionsForService(defaultServiceId, defaultDate, toTimeApi(slots[0] || ''), editingItem?.ma_lich_hen);
     }
   };
 
@@ -735,7 +749,7 @@ export default function AppointmentsManager() {
 
     const serviceIds = Array.from(new Set((item.chi_tiets || []).map((detail) => Number(detail.ma_san_pham)).filter(Boolean)));
     serviceIds.forEach((serviceId) => {
-      void fetchStaffOptionsForService(serviceId);
+      void fetchStaffOptionsForService(serviceId, form.date, toTimeApi(form.time), editingItem?.ma_lich_hen);
     });
   };
 
@@ -786,7 +800,7 @@ export default function AppointmentsManager() {
       ...prev,
       assignments: [...prev.assignments, createEmptyAssignment(defaultServiceId)],
     }));
-    void fetchStaffOptionsForService(defaultServiceId);
+    void fetchStaffOptionsForService(defaultServiceId, form.date, toTimeApi(form.time), editingItem?.ma_lich_hen);
   };
 
   const updateAssignment = (id: string, updater: (current: AssignmentItem) => AssignmentItem) => {
@@ -1210,14 +1224,22 @@ export default function AppointmentsManager() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-          <div className="rounded-xl p-4" style={surfaceStyle()}>
+          <div 
+            className="rounded-xl p-4 cursor-pointer hover:brightness-125 transition-all" 
+            style={surfaceStyle()}
+            onClick={() => { setPeriodFilter('TODAY'); setStatusFilter('ALL'); }}
+          >
             <p className="text-xs uppercase tracking-wider" style={{ color: COLORS.textMuted }}>
               Tổng hôm nay
             </p>
             <p className="text-2xl font-semibold mt-1">{quickStats.total}</p>
           </div>
 
-          <div className="rounded-xl p-4" style={surfaceStyle()}>
+          <div 
+            className="rounded-xl p-4 cursor-pointer hover:brightness-125 transition-all" 
+            style={surfaceStyle()}
+            onClick={() => setStatusFilter('COMPLETED')}
+          >
             <p className="text-xs uppercase tracking-wider" style={{ color: COLORS.accent }}>
               Hoàn thành
             </p>
@@ -1226,7 +1248,11 @@ export default function AppointmentsManager() {
             </p>
           </div>
 
-          <div className="rounded-xl p-4" style={surfaceStyle()}>
+          <div 
+            className="rounded-xl p-4 cursor-pointer hover:brightness-125 transition-all" 
+            style={surfaceStyle()}
+            onClick={() => setStatusFilter('PENDING')}
+          >
             <p className="text-xs uppercase tracking-wider" style={{ color: COLORS.warning }}>
               Đang chờ
             </p>
@@ -1235,7 +1261,11 @@ export default function AppointmentsManager() {
             </p>
           </div>
 
-          <div className="rounded-xl p-4" style={surfaceStyle()}>
+          <div 
+            className="rounded-xl p-4 cursor-pointer hover:brightness-125 transition-all" 
+            style={surfaceStyle()}
+            onClick={() => setStatusFilter('CANCELLED')}
+          >
             <p className="text-xs uppercase tracking-wider" style={{ color: COLORS.danger }}>
               Đã hủy
             </p>
@@ -1332,30 +1362,12 @@ export default function AppointmentsManager() {
                       <td className="py-3.5 px-3.5">
                         <div className="flex justify-end items-center gap-1.5">
                           <button
-                            onClick={() => openEditPanel(item)}
+                            onClick={() => navigate(String(item.ma_lich_hen))}
                             className="w-8 h-8 rounded-md border inline-flex items-center justify-center"
-                            style={{ borderColor: COLORS.border, color: COLORS.textMuted }}
-                            title="Xem / sửa"
+                            style={{ borderColor: 'rgba(99, 102, 241, 0.35)', color: 'var(--admin-accent)' }}
+                            title="Xem chi tiết"
                           >
-                            <Pencil size={14} />
-                          </button>
-                          <button
-                            onClick={() => confirmAppointment(item)}
-                            disabled={normalizedStatus === 'COMPLETED' || normalizedStatus === 'CANCELLED'}
-                            className="w-8 h-8 rounded-md border inline-flex items-center justify-center disabled:opacity-40"
-                            style={{ borderColor: 'rgba(59, 130, 246, 0.35)', color: COLORS.info }}
-                            title="Xác nhận"
-                          >
-                            <Check size={15} />
-                          </button>
-                          <button
-                            onClick={() => cancelAppointment(item.ma_lich_hen)}
-                            disabled={normalizedStatus === 'COMPLETED' || normalizedStatus === 'CANCELLED'}
-                            className="w-8 h-8 rounded-md border inline-flex items-center justify-center disabled:opacity-40"
-                            style={{ borderColor: 'rgba(239, 68, 68, 0.35)', color: COLORS.danger }}
-                            title="Hủy"
-                          >
-                            <X size={15} />
+                            <Eye size={14} />
                           </button>
                         </div>
                       </td>
@@ -1554,7 +1566,7 @@ export default function AppointmentsManager() {
                                     staffId: null,
                                   }));
                                   if (nextServiceId) {
-                                    void fetchStaffOptionsForService(nextServiceId);
+                                    void fetchStaffOptionsForService(nextServiceId, form.date, toTimeApi(form.time), editingItem?.ma_lich_hen);
                                   }
                                 }}
                                 className="w-full px-3 py-2 rounded-lg border text-sm"

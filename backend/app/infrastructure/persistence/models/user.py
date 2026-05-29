@@ -28,8 +28,7 @@ class NguoiDung(Base):
     ngay_sinh = Column(DateTime, nullable=True)
     dia_chi = Column(Unicode(255), nullable=True)
     anh_dai_dien = Column(String(500), nullable=True)
-    diem_tich_luy = Column(Integer, default=0)
-    hang_thanh_vien = Column(Unicode(50), default="Thành viên mới")
+ 
     trang_thai = Column(Boolean, default=True)  # True = active
     ngay_tao = Column(DateTime, default=datetime.utcnow)
     ngay_cap_nhat = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -39,8 +38,7 @@ class NguoiDung(Base):
     nhan_vien = relationship("NhanVien", back_populates="nguoi_dung", uselist=False)
     lich_hens = relationship("LichHen", back_populates="nguoi_dung")
     hoa_dons = relationship("HoaDon", back_populates="nguoi_dung", foreign_keys="HoaDon.ma_khach_hang")
-    lich_su_diems = relationship("LichSuDiem", back_populates="nguoi_dung")
-
+ 
 
 class VaiTro(Base):
     """Bảng vai trò (Roles)"""

@@ -21,9 +21,13 @@ import {
   X,
 } from 'lucide-react';
 
+import '../../specialization.css';
+
 import {
   appointmentsApi,
+  categoriesApi,
   leavesApi,
+  productsApi,
   schedulesApi,
   shiftsApi,
   staffApi,
@@ -32,7 +36,7 @@ import {
 import { apiClient } from '../../api/client';
 import { useAuth } from '../../contexts/AuthContext';
 
-type ViewMode = 'GRID' | 'LIST' | 'SCHEDULE';
+type ViewMode = 'LIST' | 'SCHEDULE';
 type ShiftSlot = 'MORNING' | 'EVENING';
 type DetailTab = 'PROFILE' | 'SCHEDULE';
 
@@ -113,22 +117,9 @@ interface ScheduleCellDetail {
   }>;
 }
 
-const STAFF_META_STORAGE_KEY = 'spa_staff_meta_v1';
+const STAFF_META_STORAGE_KEY = 'spa_staff_meta_v2'; // Updated to v2 to clear old garbage data
 const SHIFT_SLOT_ORDER: ShiftSlot[] = ['MORNING', 'EVENING'];
-const SPECIALIZATION_LIBRARY = [
-  'Massage trị liệu',
-  'Chăm sóc da chuyên sâu',
-  'Gội đầu dưỡng sinh',
-  'Aromatherapy',
-  'RF nâng cơ',
-  'Detox body',
-  'Nặn mụn y khoa',
-  'Massage đá nóng',
-  'Chăm sóc tóc phục hồi',
-  'Liệu trình anti-aging',
-  'Trị nám - sáng da',
-  'Tư vấn liệu trình VIP',
-];
+// Removed SPECIALIZATION_LIBRARY as we use real data now
 
 const SLOT_META: Record<ShiftSlot, { label: string; short: string; range: [number, number]; className: string }> = {
   MORNING: { label: 'Ca sáng', short: 'Sáng', range: [8 * 60, 16 * 60], className: 'morning' },
@@ -355,10 +346,7 @@ const buildDefaultMeta = (staffId: number, title: string): StaffExtraMeta => {
     normalized.includes('chuyên') ? 13000000 :
     10000000;
 
-  const specializations = Array.from({ length: 3 }, (_, idx) => {
-    const pick = (staffId * 3 + idx * 5) % SPECIALIZATION_LIBRARY.length;
-    return SPECIALIZATION_LIBRARY[pick];
-  });
+  const specializations: string[] = [];
 
   const shiftSeed = staffId % 3;
   const defaultShifts: ShiftSlot[] =
@@ -383,7 +371,7 @@ const createEmptyForm = (): StaffFormState => ({
   phone: '',
   email: '',
   cccd: '',
-  specializations: ['Massage trị liệu', 'Chăm sóc da chuyên sâu'],
+  specializations: [],
   startDate: '',
   salaryBase: 10000000,
   staffCode: '',
@@ -563,12 +551,14 @@ export default function StaffManager() {
   const [schedulesRows, setSchedulesRows] = useState<any[]>([]);
   const [appointmentsRows, setAppointmentsRows] = useState<any[]>([]);
   const [leavesRows, setLeavesRows] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [allServices, setAllServices] = useState<any[]>([]);
 
   const [staffRoleId, setStaffRoleId] = useState<number | null>(null);
 
   const [metaMap, setMetaMap] = useState<Record<number, StaffExtraMeta>>(() => loadMetaStorage());
 
-  const [viewMode, setViewMode] = useState<ViewMode>('GRID');
+  const [viewMode, setViewMode] = useState<ViewMode>('LIST');
   const [searchTerm, setSearchTerm] = useState('');
 
   const [weekAnchor, setWeekAnchor] = useState<Date>(() => startOfWeekMonday(new Date()));
@@ -609,12 +599,14 @@ export default function StaffManager() {
       const scheduleFrom = formatDateYMD(addDays(new Date(), -210));
       const scheduleTo = formatDateYMD(addDays(new Date(), 120));
 
-      const [staffData, appointmentData, scheduleRes, shiftRes, leaveRes] = await Promise.all([
+      const [staffData, appointmentData, scheduleRes, shiftRes, leaveRes, categoriesRes, servicesRes] = await Promise.all([
         fetchAllPages((page, pageSize) => staffApi.list(page, pageSize)),
         fetchAllPages((page, pageSize) => appointmentsApi.list(page, pageSize)),
         schedulesApi.list(undefined, scheduleFrom, scheduleTo),
         shiftsApi.list(),
         leavesApi.list(undefined, 'APPROVED'),
+        categoriesApi.list(),
+        fetchAllPages((page, pageSize) => productsApi.list(page, pageSize, undefined, undefined, 'SERVICE'))
       ]);
 
       let usersData: any[] = [];
@@ -648,6 +640,8 @@ export default function StaffManager() {
         setSchedulesRows(scheduleRes?.success ? scheduleRes.data || [] : []);
         setAppointmentsRows(appointmentData);
         setLeavesRows(leaveRes?.success ? leaveRes.data || [] : []);
+        setCategories(categoriesRes?.success ? categoriesRes.data || [] : []);
+        setAllServices(servicesRes);
         setUsingSample(false);
       }
     } catch (err: any) {
@@ -671,24 +665,48 @@ export default function StaffManager() {
   }, []);
 
   useEffect(() => {
-    if (staffRows.length === 0) return;
-
     setMetaMap((prev) => {
       const next: Record<number, StaffExtraMeta> = { ...prev };
       let changed = false;
 
+      const validServiceNames = new Set(allServices.map(s => s.ten_san_pham));
+
       staffRows.forEach((staff) => {
         const staffId = toNumber(staff.ma_nhan_vien);
         if (!staffId) return;
+        
+        const apiSpecs = Array.isArray(staff.specializations) ? staff.specializations : [];
+
         if (!next[staffId]) {
           next[staffId] = buildDefaultMeta(staffId, staff.chuc_vu || '');
+          if (apiSpecs.length > 0) next[staffId].specializations = apiSpecs;
           changed = true;
+        } else {
+          // Merge or prioritize API specs if they exist and differ from local
+          const currentSpecs = next[staffId].specializations;
+          
+          if (apiSpecs.length > 0) {
+            // Check if different
+            const isDifferent = apiSpecs.length !== currentSpecs.length || apiSpecs.some(s => !currentSpecs.includes(s));
+            if (isDifferent) {
+              next[staffId].specializations = apiSpecs;
+              changed = true;
+            }
+          }
+
+          if (allServices.length > 0) {
+            const filteredSpecs = next[staffId].specializations.filter(s => validServiceNames.has(s));
+            if (filteredSpecs.length !== next[staffId].specializations.length) {
+              next[staffId].specializations = filteredSpecs;
+              changed = true;
+            }
+          }
         }
       });
 
       return changed ? next : prev;
     });
-  }, [staffRows]);
+  }, [staffRows, allServices]);
 
   const shiftsMap = useMemo(() => {
     const map = new Map<number, any>();
@@ -1186,12 +1204,17 @@ export default function StaffManager() {
           throw new Error(userRes.message || 'Không thể cập nhật thông tin người dùng nhân viên');
         }
 
+        const specIds = staffForm.specializations
+          .map(name => allServices.find(s => s.ten_san_pham === name)?.ma_san_pham)
+          .filter(Boolean) as number[];
+
         const staffPayload: any = {
           ma_nhan_vien_code: staffForm.staffCode.trim() || undefined,
           chuc_vu: staffForm.title.trim() || undefined,
           phong_ban: staffForm.department.trim() || undefined,
           ngay_vao_lam: staffForm.startDate || null,
           trang_thai: staffForm.active,
+          danh_sach_ma_dich_vu: specIds,
         };
 
         const staffRes = await staffApi.update(staffForm.staffId, staffPayload);
@@ -1233,12 +1256,17 @@ export default function StaffManager() {
           await usersApi.update(newUserId, { anh_dai_dien: uploadedAvatarPath });
         }
 
+        const specIds = staffForm.specializations
+          .map(name => allServices.find(s => s.ten_san_pham === name)?.ma_san_pham)
+          .filter(Boolean) as number[];
+
         const createStaffPayload = {
           ma_nguoi_dung: newUserId,
           ma_nhan_vien_code: staffForm.staffCode.trim() || undefined,
           chuc_vu: staffForm.title.trim() || undefined,
           phong_ban: staffForm.department.trim() || undefined,
           ngay_vao_lam: staffForm.startDate || null,
+          danh_sach_ma_dich_vu: specIds,
         };
 
         const createStaffRes = await staffApi.create(createStaffPayload);
@@ -1307,58 +1335,25 @@ export default function StaffManager() {
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <h1 className="admin-staffpro-heading">Spa Staff Management</h1>
-          <p className="admin-staffpro-subtitle">
-            Điều phối nhân sự và hiệu suất theo tiêu chuẩn dịch vụ cao cấp • {usingSample ? 'Dữ liệu mẫu' : 'Dữ liệu API'}
-          </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
           <button className="admin-btn admin-btn-secondary" onClick={() => loadData(true)} disabled={refreshing}>
             <RefreshCcw size={15} /> {refreshing ? 'Đang làm mới...' : 'Làm mới'}
           </button>
-          <button className="admin-btn admin-staffpro-btn-gold" onClick={openCreateModal} disabled={!isAdmin && !usingSample}>
-            <Plus size={15} /> Thêm nhân viên
-          </button>
+          {isAdmin && (
+            <button className="admin-btn admin-staffpro-btn-gold" onClick={openCreateModal} disabled={!isAdmin && !usingSample}>
+              <Plus size={15} /> Thêm nhân viên
+            </button>
+          )}
         </div>
       </div>
 
       {error && <p className="admin-staffpro-alert">{error}</p>}
 
-      <section className="admin-staffpro-kpi-grid">
-        <article className="admin-staffpro-kpi-card">
-          <div className="icon"><UserRound size={18} /></div>
-          <p className="label">Tổng nhân viên</p>
-          <p className="value">{formatNumber(kpis.total)}</p>
-          <p className="note">{formatNumber(kpis.workingToday)} đang làm việc hôm nay</p>
-        </article>
-
-        <article className="admin-staffpro-kpi-card success">
-          <div className="icon"><BadgeCheck size={18} /></div>
-          <p className="label">Đang làm ca hôm nay</p>
-          <p className="value">{formatNumber(kpis.onShiftNow)}</p>
-          <p className="note">Trạng thái realtime theo lịch ca</p>
-        </article>
-
-        <article className="admin-staffpro-kpi-card warning">
-          <div className="icon"><CalendarClock size={18} /></div>
-          <p className="label">Nghỉ phép</p>
-          <p className="value">{formatNumber(kpis.onLeave)}</p>
-          <p className="note">Đơn đã duyệt, đang hiệu lực</p>
-        </article>
-
-        <article className="admin-staffpro-kpi-card performance">
-          <div className="icon"><Clock3 size={18} /></div>
-          <p className="label">Ca trung bình</p>
-          <p className="value">{kpis.avgShiftsPerWeek.toFixed(1)} / tuần</p>
-          <p className="note">{kpis.avgShiftsPerWeek.toFixed(1)} ca / tuần</p>
-        </article>
-      </section>
 
       <section className="admin-card admin-staffpro-toolbar">
         <div className="admin-staffpro-view-toggle">
-          <button className={viewMode === 'GRID' ? 'active' : ''} onClick={() => setViewMode('GRID')}>
-            <LayoutGrid size={14} /> Grid
-          </button>
           <button className={viewMode === 'LIST' ? 'active' : ''} onClick={() => setViewMode('LIST')}>
             <List size={14} /> List
           </button>
@@ -1377,62 +1372,6 @@ export default function StaffManager() {
           />
         </div>
       </section>
-
-      {viewMode === 'GRID' && (
-        <section className="admin-staffpro-grid-view">
-          {filteredStaff.length === 0 ? (
-            <div className="admin-card admin-empty">
-              <p>Không có nhân viên phù hợp bộ lọc.</p>
-            </div>
-          ) : (
-            <div className="admin-staffpro-card-grid">
-              {filteredStaff.map((staff) => (
-                <article key={staff.id} className="admin-staffpro-card">
-                  <div className="avatar-wrap">
-                    {staff.avatarUrl ? (
-                      <img src={staff.avatarUrl} alt={staff.name} className="avatar-img" />
-                    ) : (
-                      <div className="avatar-fallback">{staff.initials}</div>
-                    )}
-                    <span className={`online-dot ${staff.onShiftNow ? 'online' : ''}`} />
-                  </div>
-
-                  <h3>{staff.name}</h3>
-                  <p className="title">{staff.title}</p>
-
-                  <div className="admin-staffpro-card-stats">
-                    <span>
-                      <Clock3 size={13} /> {formatNumber(staff.shiftsWeek)} ca tuần này
-                    </span>
-                    <span>
-                      <CalendarDays size={13} /> {formatNumber(staff.appointmentsWeek)} lịch tuần này
-                    </span>
-                  </div>
-
-                  <div className="admin-staffpro-tags">
-                    {staff.specializations.map((tag) => (
-                      <span key={`${staff.id}-${tag}`}>{tag}</span>
-                    ))}
-                  </div>
-
-                  <div className="admin-staffpro-card-footer">
-                    <button className="admin-btn admin-btn-secondary admin-btn-sm" onClick={() => setViewMode('SCHEDULE')}>
-                      <CalendarDays size={14} /> Xem lịch
-                    </button>
-                    <button
-                      className="admin-btn admin-staffpro-btn-gold admin-btn-sm"
-                      onClick={() => openEditModal(staff)}
-                      disabled={!isAdmin && !usingSample}
-                    >
-                      <PenSquare size={14} /> Chỉnh sửa
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
-      )}
 
       {viewMode === 'LIST' && (
         <section className="admin-card admin-staffpro-list-card">
@@ -1483,13 +1422,15 @@ export default function StaffManager() {
                           <button className="admin-btn admin-btn-secondary admin-btn-sm" onClick={() => openDetailModal(staff.id)}>
                             <Eye size={14} /> Chi tiết
                           </button>
-                          <button
-                            className="admin-btn admin-staffpro-btn-gold admin-btn-sm"
-                            onClick={() => openEditModal(staff)}
-                            disabled={!isAdmin && !usingSample}
-                          >
-                            <PenSquare size={14} /> Sửa
-                          </button>
+                          {isAdmin && (
+                            <button
+                              className="admin-btn admin-staffpro-btn-gold admin-btn-sm"
+                              onClick={() => openEditModal(staff)}
+                              disabled={!isAdmin && !usingSample}
+                            >
+                              <PenSquare size={14} /> Sửa
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -1797,122 +1738,142 @@ export default function StaffManager() {
             <div className="admin-modal-body admin-staffpro-form-body">
               {formError && <p className="admin-staffpro-alert">{formError}</p>}
 
-              <div className="admin-staffpro-form-layout">
-                <div className="avatar-upload">
-                  <div className="preview">
-                    {staffForm.avatarPreview ? (
-                      <img src={staffForm.avatarPreview} alt="Preview" />
-                    ) : (
-                      <span>{initialsOf(staffForm.fullName || 'NV')}</span>
-                    )}
-                  </div>
-                  <label className="admin-btn admin-btn-secondary admin-btn-sm upload-btn">
-                    <Upload size={14} /> Upload ảnh
-                    <input type="file" accept="image/*" className="hidden" onChange={onAvatarChange} />
-                  </label>
-                </div>
-
-                <div className="form-grid">
-                  <div>
-                    <label className="admin-label">Họ tên *</label>
-                    <input className="admin-input" value={staffForm.fullName} onChange={(event) => setStaffForm((prev) => ({ ...prev, fullName: event.target.value }))} />
-                  </div>
-
-                  <div>
-                    <label className="admin-label">Chức danh *</label>
-                    <select
-                      className="admin-select"
-                      value={staffForm.title}
-                      onChange={(event) => setStaffForm((prev) => ({ ...prev, title: event.target.value }))}
-                    >
-                      {STAFF_TITLE_OPTIONS.map((title) => (
-                        <option key={`title-${title}`} value={title}>
-                          {title}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="admin-label">Phone</label>
-                    <input className="admin-input" value={staffForm.phone} onChange={(event) => setStaffForm((prev) => ({ ...prev, phone: event.target.value }))} />
-                  </div>
-
-                  <div>
-                    <label className="admin-label">Email {staffForm.staffId ? '(chỉ xem)' : '*'}</label>
-                    <input
-                      className="admin-input"
-                      value={staffForm.email}
-                      disabled={Boolean(staffForm.staffId)}
-                      onChange={(event) => setStaffForm((prev) => ({ ...prev, email: event.target.value }))}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="admin-label">CCCD</label>
-                    <input className="admin-input" value={staffForm.cccd} onChange={(event) => setStaffForm((prev) => ({ ...prev, cccd: event.target.value }))} />
-                  </div>
-
-                  <div>
-                    <label className="admin-label">Ngày bắt đầu</label>
-                    <input type="date" className="admin-input" value={staffForm.startDate} onChange={(event) => setStaffForm((prev) => ({ ...prev, startDate: event.target.value }))} />
-                  </div>
-
-                  <div>
-                    <label className="admin-label">Lương cơ bản</label>
-                    <input
-                      type="number"
-                      min={0}
-                      className="admin-input"
-                      value={staffForm.salaryBase}
-                      onChange={(event) => setStaffForm((prev) => ({ ...prev, salaryBase: Math.max(0, toNumber(event.target.value)) }))}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="admin-label">Mã nhân viên</label>
-                    <input className="admin-input" value={staffForm.staffCode} onChange={(event) => setStaffForm((prev) => ({ ...prev, staffCode: event.target.value }))} />
-                  </div>
-
-                  <div className="full">
-                    <label className="admin-label">Phòng ban</label>
-                    <input className="admin-input" value={staffForm.department} onChange={(event) => setStaffForm((prev) => ({ ...prev, department: event.target.value }))} />
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="admin-label">Chuyên môn (multi-select)</label>
-                <div className="admin-staffpro-select-pills">
-                  {SPECIALIZATION_LIBRARY.map((item) => {
-                    const active = staffForm.specializations.includes(item);
-                    return (
-                      <button
-                        key={item}
-                        type="button"
-                        className={active ? 'active' : ''}
-                        onClick={() => toggleSpecialization(item)}
-                      >
-                        {item}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <label className="admin-label">Ca làm mặc định</label>
-                <div className="admin-staffpro-default-shifts">
-                  {SHIFT_SLOT_ORDER.map((slot) => (
-                    <label key={`default-${slot}`}>
-                      <input
-                        type="checkbox"
-                        checked={staffForm.defaultShifts.includes(slot)}
-                        onChange={() => toggleDefaultShift(slot)}
-                      />
-                      <span>{SLOT_META[slot].label}</span>
+              <div className="admin-staffpro-form-main-grid">
+                {/* Cột trái: Avatar và Thông tin cơ bản */}
+                <div className="admin-staffpro-info-side">
+                  <div className="avatar-upload">
+                    <div className="preview">
+                      {staffForm.avatarPreview ? (
+                        <img src={staffForm.avatarPreview} alt="Preview" />
+                      ) : (
+                        <span>{initialsOf(staffForm.fullName || 'NV')}</span>
+                      )}
+                    </div>
+                    <label className="admin-btn admin-btn-secondary admin-btn-sm upload-btn">
+                      <Upload size={14} /> Upload ảnh
+                      <input type="file" accept="image/*" className="hidden" onChange={onAvatarChange} />
                     </label>
-                  ))}
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="admin-label">Họ tên *</label>
+                      <input className="admin-input" value={staffForm.fullName} onChange={(event) => setStaffForm((prev) => ({ ...prev, fullName: event.target.value }))} />
+                    </div>
+
+                    <div>
+                      <label className="admin-label">Chức danh *</label>
+                      <select
+                        className="admin-select"
+                        value={staffForm.title}
+                        onChange={(event) => setStaffForm((prev) => ({ ...prev, title: event.target.value }))}
+                      >
+                        {STAFF_TITLE_OPTIONS.map((title) => (
+                          <option key={`title-${title}`} value={title}>
+                            {title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="admin-label">Phone</label>
+                      <input className="admin-input" value={staffForm.phone} onChange={(event) => setStaffForm((prev) => ({ ...prev, phone: event.target.value }))} />
+                    </div>
+
+                    <div>
+                      <label className="admin-label">Email {staffForm.staffId ? '(chỉ xem)' : '*'}</label>
+                      <input
+                        className="admin-input"
+                        value={staffForm.email}
+                        disabled={Boolean(staffForm.staffId)}
+                        onChange={(event) => setStaffForm((prev) => ({ ...prev, email: event.target.value }))}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cột phải: Chuyên môn */}
+                <div className="admin-staffpro-specializations-section">
+                  <h4 className="admin-label mb-3">Chuyên môn nhân viên (Chọn dịch vụ)</h4>
+                  <div className="admin-staffpro-category-groups">
+                    {categories.map((cat) => {
+                      const catServices = allServices.filter(s => s.ma_danh_muc === cat.ma_danh_muc);
+                      if (catServices.length === 0) return null;
+                      
+                      return (
+                        <div key={`cat-group-${cat.ma_danh_muc}`} className="admin-staffpro-cat-group">
+                          <h5 className="cat-name">{cat.ten_danh_muc}</h5>
+                          <div className="service-list">
+                            {catServices.map((service) => {
+                              const active = staffForm.specializations.includes(service.ten_san_pham);
+                              return (
+                                <label key={`spec-${service.ma_san_pham}`} className="service-checkbox-item">
+                                  <input
+                                    type="checkbox"
+                                    checked={active}
+                                    onChange={() => toggleSpecialization(service.ten_san_pham)}
+                                  />
+                                  <span>{service.ten_san_pham}</span>
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Dàn hàng ngang phía dưới */}
+              <div className="admin-staffpro-bottom-grid">
+                <div>
+                  <label className="admin-label">CCCD</label>
+                  <input className="admin-input" value={staffForm.cccd} onChange={(event) => setStaffForm((prev) => ({ ...prev, cccd: event.target.value }))} />
+                </div>
+
+                <div>
+                  <label className="admin-label">Ngày bắt đầu</label>
+                  <input type="date" className="admin-input" value={staffForm.startDate} onChange={(event) => setStaffForm((prev) => ({ ...prev, startDate: event.target.value }))} />
+                </div>
+
+                <div>
+                  <label className="admin-label">Lương cơ bản</label>
+                  <input
+                    type="number"
+                    min={0}
+                    className="admin-input"
+                    value={staffForm.salaryBase}
+                    onChange={(event) => setStaffForm((prev) => ({ ...prev, salaryBase: Math.max(0, toNumber(event.target.value)) }))}
+                  />
+                </div>
+
+                <div>
+                  <label className="admin-label">Mã nhân viên</label>
+                  <input className="admin-input" value={staffForm.staffCode} onChange={(event) => setStaffForm((prev) => ({ ...prev, staffCode: event.target.value }))} />
+                </div>
+
+                <div className="full">
+                  <label className="admin-label">Phòng ban</label>
+                  <input className="admin-input" value={staffForm.department} onChange={(event) => setStaffForm((prev) => ({ ...prev, department: event.target.value }))} />
+                </div>
+
+                <div className="full">
+                  <label className="admin-label">Ca làm mặc định</label>
+                  <div className="admin-staffpro-default-shifts flex gap-4 mt-1">
+                    {SHIFT_SLOT_ORDER.map((slot) => (
+                      <label key={`default-${slot}`} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 accent-amber-400"
+                          checked={staffForm.defaultShifts.includes(slot)}
+                          onChange={() => toggleDefaultShift(slot)}
+                        />
+                        <span className="text-sm text-gray-300">{SLOT_META[slot].label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

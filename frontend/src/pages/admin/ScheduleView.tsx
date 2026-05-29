@@ -382,7 +382,7 @@ const buildSampleDataset = (from: Date, to: Date) => {
 
 export default function ScheduleView() {
   const { user } = useAuth();
-  const isAdmin = Boolean(user?.vai_tros?.includes('ADMIN'));
+  const isAdmin = Boolean(user?.vai_tros?.some(role => ['ADMIN', 'RECEPTIONIST'].includes(role)));
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -393,6 +393,7 @@ export default function ScheduleView() {
   const [anchorDate, setAnchorDate] = useState<Date>(() => new Date());
   const [selectedDayKey, setSelectedDayKey] = useState<string>(() => toDateKey(new Date()));
   const [staffFilter, setStaffFilter] = useState<number | 'ALL'>('ALL');
+  const [staffPage, setStaffPage] = useState(1);
 
   const [staffRows, setStaffRows] = useState<any[]>([]);
   const [shiftRows, setShiftRows] = useState<any[]>([]);
@@ -404,6 +405,9 @@ export default function ScheduleView() {
   const [shiftModalItems, setShiftModalItems] = useState<ScheduleItem[]>([]);
   const [shiftError, setShiftError] = useState('');
   const [savingShift, setSavingShift] = useState(false);
+  const [completing, setCompleting] = useState(false);
+  const [staffByService, setStaffByService] = useState<Record<number, any[]>>({});
+
   const [shiftForm, setShiftForm] = useState<ShiftFormState>({
     scheduleId: null,
     staffId: 0,
@@ -521,6 +525,10 @@ export default function ScheduleView() {
     loadData(loading === false);
   }, [rangeStartKey, rangeEndKey]);
 
+  useEffect(() => {
+    setStaffPage(1);
+  }, [staffFilter]);
+
   const staffMembers = useMemo<StaffMember[]>(() => {
     return staffRows
       .map((row) => {
@@ -538,8 +546,7 @@ export default function ScheduleView() {
           active: Boolean(row.trang_thai),
         } as StaffMember;
       })
-      .filter(Boolean)
-      .slice(0, 30) as StaffMember[];
+      .filter(Boolean) as StaffMember[];
   }, [staffRows]);
 
   useEffect(() => {
@@ -753,13 +760,26 @@ export default function ScheduleView() {
     return map;
   }, [appointments]);
 
-  const visibleStaff = useMemo(() => {
-    const base = staffFilter === 'ALL'
+  const filteredStaffList = useMemo(() => {
+    return staffFilter === 'ALL'
       ? staffMembers
       : staffMembers.filter((staff) => staff.id === staffFilter);
-
-    return base.slice(0, 10);
   }, [staffMembers, staffFilter]);
+
+  const totalStaffPages = useMemo(() => {
+    return Math.max(1, Math.ceil(filteredStaffList.length / 10));
+  }, [filteredStaffList]);
+
+  useEffect(() => {
+    if (staffPage > totalStaffPages) {
+      setStaffPage(totalStaffPages);
+    }
+  }, [staffPage, totalStaffPages]);
+
+  const visibleStaff = useMemo(() => {
+    const fromIndex = (staffPage - 1) * 10;
+    return filteredStaffList.slice(fromIndex, fromIndex + 10);
+  }, [filteredStaffList, staffPage]);
 
   const filteredDayAppointments = (dateKey: string): AppointmentItem[] => {
     const rows = appointmentsByDay.get(dateKey) || [];
@@ -798,7 +818,6 @@ export default function ScheduleView() {
   };
 
   const selectedDayDate = useMemo(() => toDateSafe(selectedDayKey) || visibleRange.start, [selectedDayKey, visibleRange.start]);
-
   const selectedDayAppointments = useMemo(() => filteredDayAppointments(selectedDayKey), [selectedDayKey, appointmentsByDay, staffFilter]);
 
   const selectedDayTimeline = useMemo<TimelineItem[]>(() => {
@@ -846,7 +865,7 @@ export default function ScheduleView() {
     dateKeys.forEach((key) => {
       const dayAppointments = filteredDayAppointments(key);
       const scheduleStaff = new Set<number>();
-      visibleStaff.forEach((staff) => {
+      staffMembers.forEach((staff) => {
         const data = getCellData(staff.id, key);
         if (data.schedules.length > 0) {
           scheduleStaff.add(staff.id);
@@ -860,7 +879,7 @@ export default function ScheduleView() {
     });
 
     return map;
-  }, [monthGridDays, selectedDayKey, appointmentsByDay, schedulesByStaffDay, visibleStaff, staffFilter]);
+  }, [monthGridDays, selectedDayKey, appointmentsByDay, schedulesByStaffDay, staffMembers, staffFilter]);
 
   const navLabel = useMemo(() => {
     if (viewMode === 'WEEK') {
@@ -1114,7 +1133,7 @@ export default function ScheduleView() {
       'Ghi chú',
     ]];
 
-    visibleStaff.forEach((staff) => {
+    filteredStaffList.forEach((staff) => {
       exportDays.forEach((day) => {
         const dateKey = toDateKey(day);
         const data = getCellData(staff.id, dateKey);
@@ -1242,7 +1261,7 @@ export default function ScheduleView() {
 
       {error && <p className="admin-worksched-alert">{error}</p>}
 
-      <div className="admin-worksched-main">
+      <div className="admin-worksched-main" style={{ gridTemplateColumns: '1fr' }}>
         <section className="admin-worksched-grid-panel admin-card">
           {viewMode === 'MONTH' ? (
             <>
@@ -1280,7 +1299,7 @@ export default function ScheduleView() {
               <div
                 className="admin-worksched-week-grid"
                 style={{
-                  gridTemplateColumns: `240px repeat(${gridDays.length}, minmax(180px, 1fr))`,
+                  gridTemplateColumns: `160px repeat(${gridDays.length}, minmax(120px, 1fr))`,
                 }}
               >
                 <div className="head-cell staff-head">Nhân viên</div>
@@ -1381,35 +1400,33 @@ export default function ScheduleView() {
               </div>
             </div>
           )}
-        </section>
 
-        <aside className="admin-worksched-sidebar admin-card">
-          <div className="admin-worksched-sidebar-head">
-            <h3>{selectedDayLabel}</h3>
-            <p>{selectedDayAppointments.length} lịch hẹn</p>
-          </div>
-
-          <div className="admin-worksched-timeline">
-            {selectedDayTimeline.map((item, index) => (
-              <div key={`timeline-${item.type}-${item.time}-${index}`} className={`timeline-item ${item.type}`}>
-                <div className="time">{item.time}</div>
-                {item.type === 'appointment' && item.appointment ? (
-                  <div className="content">
-                    <p className="line-1">
-                      {item.appointment.customerName} — {item.appointment.serviceName}
-                    </p>
-                    <p className="line-2">Nhân viên: {item.appointment.staffName}</p>
-                    <span className={`status ${statusLabel(item.appointment.status).toLowerCase().includes('done') ? 'done' : ''}`}>
-                      {statusLabel(item.appointment.status)}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="content empty-slot">Slot trống</div>
-                )}
+          {viewMode !== 'MONTH' && totalStaffPages > 1 && (
+            <div className="flex justify-end mt-4 pt-3 border-t" style={{ borderColor: 'var(--admin-border)' }}>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setStaffPage((prev) => Math.max(1, prev - 1))}
+                  disabled={staffPage === 1}
+                  className="px-3 py-1.5 rounded-md border text-sm disabled:opacity-40 transition-colors"
+                  style={{ borderColor: 'var(--admin-border)', color: 'var(--admin-text-muted)', background: 'var(--admin-input-bg)' }}
+                >
+                  Trước
+                </button>
+                <span className="px-3 py-1.5 text-sm rounded-md" style={{ background: 'rgba(201, 169, 110, 0.15)', color: 'var(--worksched-gold-soft)', fontWeight: 600 }}>
+                  {staffPage} / {totalStaffPages}
+                </span>
+                <button
+                  onClick={() => setStaffPage((prev) => Math.min(totalStaffPages, prev + 1))}
+                  disabled={staffPage === totalStaffPages}
+                  className="px-3 py-1.5 rounded-md border text-sm disabled:opacity-40 transition-colors"
+                  style={{ borderColor: 'var(--admin-border)', color: 'var(--admin-text-muted)', background: 'var(--admin-input-bg)' }}
+                >
+                  Sau
+                </button>
               </div>
-            ))}
-          </div>
-        </aside>
+            </div>
+          )}
+        </section>
       </div>
 
       {showShiftModal && (
@@ -1443,7 +1460,7 @@ export default function ScheduleView() {
               <div>
                 <label className="admin-label">Chọn nhân viên</label>
                 <div className="admin-worksched-staff-pick">
-                  {staffMembers.slice(0, 12).map((staff) => (
+                  {staffMembers.map((staff) => (
                     <button
                       key={`staff-pick-${staff.id}`}
                       type="button"

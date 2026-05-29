@@ -45,8 +45,6 @@ interface InvoiceRecord {
   customerPhone: string;
   customerAddress: string;
   customerAvatar: string;
-  customerPoints: number;
-  customerMembership: string;
   serviceSummary: string;
   staffName: string;
   createdAt: string;
@@ -77,7 +75,6 @@ interface PromotionOption {
 
 interface EditableInvoiceDraft {
   ma_khuyen_mai?: number;
-  diem_su_dung: number;
   ghi_chu: string;
   items: InvoiceItem[];
 }
@@ -273,9 +270,7 @@ const buildSampleInvoices = (): InvoiceRecord[] => {
       customerPhone: customer.phone,
       customerAddress: customer.address,
       customerAvatar: initialsOf(customer.name),
-      customerPoints: (index * 37 + 120) % 500,
-      customerMembership: index % 3 === 0 ? 'Vàng' : index % 2 === 0 ? 'Bạc' : 'Thành viên mới',
-      serviceSummary: items[0]?.name || 'Liệu trình spa',
+          serviceSummary: items[0]?.name || 'Liệu trình spa',
       staffName,
       createdAt: createdAt.toISOString(),
       paymentMethod: method,
@@ -347,8 +342,6 @@ const mapApiInvoice = (raw: any, index: number): InvoiceRecord => {
     customerPhone: raw?.so_dien_thoai_khach || `09${String(raw?.ma_khach_hang || index + 10000000).padStart(8, '0').slice(-8)}`,
     customerAddress: raw?.dia_chi_khach || 'TP. Hồ Chí Minh',
     customerAvatar: initialsOf(customerName),
-    customerPoints: toNumber(raw?.diem_tich_luy_khach || 0),
-    customerMembership: String(raw?.hang_thanh_vien || 'Thành viên mới'),
     serviceSummary: itemsFromApi[0]?.name || 'Liệu trình Spa',
     staffName: raw?.ho_ten_nhan_vien || (raw?.ma_nhan_vien ? `Nhân viên #${raw.ma_nhan_vien}` : 'Chưa gán'),
     createdAt: createdAtDate.toISOString(),
@@ -420,6 +413,7 @@ export default function InvoicesManager() {
 
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<CheckoutPaymentMethod>('CASH');
+  const [customerGivenAmount, setCustomerGivenAmount] = useState<number | ''>('');
   const [markingPaid, setMarkingPaid] = useState(false);
   const [savingEdit, setSavingEdit] = useState(false);
   const [editDraft, setEditDraft] = useState<EditableInvoiceDraft | null>(null);
@@ -429,13 +423,11 @@ export default function InvoicesManager() {
   const [createDraft, setCreateDraft] = useState<{
     ma_khach_hang: number;
     ma_khuyen_mai?: number;
-    diem_su_dung: number;
     ghi_chu: string;
     items: Array<{ id: string; productId?: number; quantity: number; unitPrice: number }>;
   }>({
     ma_khach_hang: 0,
     ma_khuyen_mai: undefined,
-    diem_su_dung: 0,
     ghi_chu: '',
     items: [{ id: 'new-1', productId: undefined, quantity: 1, unitPrice: 0 }],
   });
@@ -456,9 +448,8 @@ export default function InvoicesManager() {
   }, [editDraft, editSubtotal, promotionOptions, selectedInvoice]);
 
   const editPointValueForView = useMemo(() => {
-    if (!editDraft) return 0;
-    return editDraft.diem_su_dung * POINT_VALUE;
-  }, [editDraft]);
+    return 0;
+  }, []);
 
   const editVatForView = useMemo(() => {
     if (!editDraft || !selectedInvoice) return selectedInvoice?.vat || 0;
@@ -711,7 +702,6 @@ export default function InvoicesManager() {
 
   const toEditableDraft = (invoice: InvoiceRecord): EditableInvoiceDraft => ({
     ma_khuyen_mai: invoice.promotionId,
-    diem_su_dung: Math.max(0, Math.floor(toNumber(invoice.pointsUsed || 0))),
     ghi_chu: invoice.notes || '',
     items: invoice.items.map((item) => ({
       ...item,
@@ -725,7 +715,6 @@ export default function InvoicesManager() {
     setCreateDraft({
       ma_khach_hang: 0,
       ma_khuyen_mai: undefined,
-      diem_su_dung: 0,
       ghi_chu: '',
       items: [{ id: `new-${Date.now()}`, productId: undefined, quantity: 1, unitPrice: 0 }],
     });
@@ -734,6 +723,7 @@ export default function InvoicesManager() {
   const openInvoiceDetail = async (invoice: InvoiceRecord) => {
     setSelectedInvoice(invoice);
     setSelectedPaymentMethod(toCheckoutPaymentMethod(invoice.paymentMethod));
+    setCustomerGivenAmount('');
     setEditDraft(invoice.status === 'UNPAID' ? toEditableDraft(invoice) : null);
 
     if (!invoice.apiInvoiceId) return;
@@ -805,7 +795,7 @@ export default function InvoicesManager() {
     try {
       const payload = {
         ma_khuyen_mai: editDraft.ma_khuyen_mai || undefined,
-        diem_su_dung: Math.max(0, Math.floor(toNumber(editDraft.diem_su_dung))),
+        diem_su_dung: 0,
         ghi_chu: editDraft.ghi_chu || undefined,
         chi_tiets: editDraft.items.map((item) => ({
           ma_san_pham: Number(item.productId),
@@ -855,7 +845,7 @@ export default function InvoicesManager() {
       const payload = {
         ma_khach_hang: Math.floor(toNumber(createDraft.ma_khach_hang)),
         ma_khuyen_mai: createDraft.ma_khuyen_mai || undefined,
-        diem_su_dung: Math.max(0, Math.floor(toNumber(createDraft.diem_su_dung))),
+        diem_su_dung: 0,
         ghi_chu: createDraft.ghi_chu || undefined,
         chi_tiets: createDraft.items.map((item) => ({
           ma_san_pham: Number(item.productId),
@@ -1369,22 +1359,7 @@ export default function InvoicesManager() {
                     placeholder="Nhập mã khách hàng"
                   />
                 </div>
-                <div>
-                  <label className="admin-invoice-muted block mb-1">Điểm sử dụng</label>
-                  <input
-                    type="number"
-                    min={0}
-                    className="admin-input w-full"
-                    value={createDraft.diem_su_dung}
-                    onChange={(e) =>
-                      setCreateDraft((prev) => ({
-                        ...prev,
-                        diem_su_dung: Math.max(0, Math.floor(toNumber(e.target.value))),
-                      }))
-                    }
-                    placeholder="Tối thiểu 100 điểm"
-                  />
-                </div>
+ 
                 <div>
                   <label className="admin-invoice-muted block mb-1">Khuyến mãi</label>
                   <select
@@ -1405,20 +1380,7 @@ export default function InvoicesManager() {
                     ))}
                   </select>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="admin-invoice-muted block mb-1">Ghi chú</label>
-                  <textarea
-                    className="admin-input w-full"
-                    rows={2}
-                    value={createDraft.ghi_chu}
-                    onChange={(e) =>
-                      setCreateDraft((prev) => ({
-                        ...prev,
-                        ghi_chu: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
+ 
               </section>
 
               <section className="admin-invoice-section">
@@ -1608,11 +1570,6 @@ export default function InvoicesManager() {
                   <p>
                     <span className="admin-invoice-muted">Địa chỉ:</span> {selectedInvoice.customerAddress}
                   </p>
-                  <p>
-                    <span className="admin-invoice-muted">Điểm thành viên:</span>{' '}
-                    <strong style={{ color: 'var(--admin-accent)' }}>{selectedInvoice.customerPoints.toLocaleString('vi-VN')}</strong>{' '}
-                    <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>({selectedInvoice.customerMembership})</span>
-                  </p>
                 </div>
               </section>
 
@@ -1757,14 +1714,7 @@ export default function InvoicesManager() {
                     - {formatMoney(canEditSelectedInvoice ? editDiscountForView : selectedInvoice.discount)}
                   </strong>
                 </div>
-                {((canEditSelectedInvoice && editDraft && editDraft.diem_su_dung > 0) || (!canEditSelectedInvoice && selectedInvoice.pointsUsed && selectedInvoice.pointsUsed > 0)) && (
-                  <div className="admin-invoice-summary-row">
-                    <span>Giảm giá (Điểm)</span>
-                    <strong>
-                      - {formatMoney(canEditSelectedInvoice ? editPointValueForView : toNumber(selectedInvoice.pointsUsed || 0) * POINT_VALUE)}
-                    </strong>
-                  </div>
-                )}
+ 
                 <div className="admin-invoice-summary-row">
                   <span>VAT (8%)</span>
                   <strong style={canEditSelectedInvoice ? { transition: 'color 0.2s' } : undefined}>
@@ -1786,18 +1736,44 @@ export default function InvoicesManager() {
 
               <section className="admin-invoice-section grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                 {canShowPaymentControls ? (
-                  <div>
-                    <label className="admin-invoice-muted block mb-1">Phương thức thanh toán</label>
-                    <select
-                      className="admin-select w-full"
-                      value={selectedPaymentMethod}
-                      disabled={selectedInvoice.status === 'PAID' || markingPaid}
-                      onChange={(e) => setSelectedPaymentMethod(e.target.value as CheckoutPaymentMethod)}
-                    >
-                      <option value="CASH">Tiền mặt</option>
-                      <option value="VNPAY">VNPAY</option>
-                    </select>
-                  </div>
+                  <>
+                    <div>
+                      <label className="admin-invoice-muted block mb-1">Phương thức thanh toán</label>
+                      <select
+                        className="admin-select w-full"
+                        value={selectedPaymentMethod}
+                        disabled={selectedInvoice.status === 'PAID' || markingPaid}
+                        onChange={(e) => {
+                          setSelectedPaymentMethod(e.target.value as CheckoutPaymentMethod);
+                          setCustomerGivenAmount('');
+                        }}
+                      >
+                        <option value="CASH">Tiền mặt</option>
+                        <option value="VNPAY">VNPAY</option>
+                      </select>
+                    </div>
+                    {selectedPaymentMethod === 'CASH' && selectedInvoice.status !== 'PAID' && (
+                      <>
+                        <div>
+                          <label className="admin-invoice-muted block mb-1">Số tiền khách đưa</label>
+                          <input
+                            type="number"
+                            min={0}
+                            className="admin-input w-full"
+                            value={customerGivenAmount}
+                            onChange={(e) => setCustomerGivenAmount(e.target.value === '' ? '' : Math.max(0, toNumber(e.target.value)))}
+                            placeholder="Nhập số tiền..."
+                          />
+                        </div>
+                        <div>
+                          <label className="admin-invoice-muted block mb-1">Số tiền trả lại</label>
+                          <div className="admin-input w-full flex items-center font-semibold" style={{ color: 'var(--admin-accent)', height: '38px', backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                            {customerGivenAmount !== '' ? formatMoney(Math.max(0, Number(customerGivenAmount) - (canEditSelectedInvoice ? editTotalForView : selectedInvoice.total))) : '0 ₫'}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </>
                 ) : (
                   <p>
                     <span className="admin-invoice-muted">Phương thức thanh toán:</span>{' '}
@@ -1829,42 +1805,9 @@ export default function InvoicesManager() {
                         ))}
                       </select>
                     </div>
-                    <div>
-                      <label className="admin-invoice-muted block mb-1">Điểm sử dụng</label>
-                      <input
-                        type="number"
-                        min={0}
-                        className="admin-input w-full"
-                        value={editDraft.diem_su_dung}
-                        onChange={(e) =>
-                          setEditDraft({
-                            ...editDraft,
-                            diem_su_dung: Math.max(0, Math.floor(toNumber(e.target.value))),
-                          })
-                        }
-                        placeholder="Tối thiểu 100 điểm"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="admin-invoice-muted block mb-1">Ghi chú</label>
-                      <textarea
-                        className="admin-input w-full"
-                        rows={3}
-                        value={editDraft.ghi_chu}
-                        onChange={(e) =>
-                          setEditDraft({
-                            ...editDraft,
-                            ghi_chu: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
+ 
                   </>
-                ) : (
-                  <p className="md:col-span-2">
-                    <span className="admin-invoice-muted">Ghi chú:</span> {selectedInvoice.notes || 'Không có ghi chú'}
-                  </p>
-                )}
+                ) : null}
               </section>
             </div>
 

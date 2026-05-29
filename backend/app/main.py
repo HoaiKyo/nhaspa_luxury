@@ -23,8 +23,8 @@ from app.infrastructure.persistence.models import product  # noqa
 from app.infrastructure.persistence.models import combo  # noqa
 from app.infrastructure.persistence.models import appointment  # noqa
 from app.infrastructure.persistence.models import invoice  # noqa
-from app.infrastructure.persistence.models import loyalty  # noqa
-from app.infrastructure.persistence.models import inventory  # noqa
+
+
 from app.infrastructure.persistence.models import marketing  # noqa
 
 # Setup logging
@@ -66,7 +66,7 @@ def create_app() -> FastAPI:
         logger.error("unhandled_exception", error=str(exc), path=request.url.path)
         return JSONResponse(
             status_code=500,
-            content=error_response(message="Lỗi hệ thống, vui lòng thử lại sau"),
+            content=error_response(message=f"Lỗi hệ thống: {str(exc)}"),
         )
 
     # Static files (uploaded images)

@@ -11,6 +11,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { combosApi, productsApi, promotionsApi } from '../../api/admin.api';
+import { useAuth } from '../../contexts/AuthContext';
 
 type MarketingTabKey = 'PROMOTIONS' | 'VOUCHERS' | 'COMBOS';
 type PromotionTimelineStatus = 'RUNNING' | 'UPCOMING' | 'ENDED';
@@ -433,6 +434,8 @@ const estimatePromoRevenue = (promotion: PromotionItem) => {
 };
 
 export default function PromotionsManager() {
+  const { user } = useAuth();
+  const isAdmin = user?.vai_tros?.includes('ADMIN') || false;
   const [activeTab, setActiveTab] = useState<MarketingTabKey>('PROMOTIONS');
 
   const [promotions, setPromotions] = useState<PromotionItem[]>([]);
@@ -908,13 +911,13 @@ export default function PromotionsManager() {
         </div>
 
         <div className="admin-promo-header-actions">
-          {activeTab === 'PROMOTIONS' && (
+          {isAdmin && activeTab === 'PROMOTIONS' && (
             <button className="admin-btn admin-promo-btn-gold" onClick={openCreatePromotionModal}>
               <Plus size={16} /> Tạo khuyến mãi
             </button>
           )}
 
-          {activeTab === 'VOUCHERS' && (
+          {isAdmin && activeTab === 'VOUCHERS' && (
             <button className="admin-btn admin-promo-btn-gold" onClick={openCreateVoucherModal}>
               <Plus size={16} /> Tạo voucher
             </button>
@@ -964,108 +967,105 @@ export default function PromotionsManager() {
       </section>
 
       {activeTab === 'PROMOTIONS' && (
-        <section className="admin-promo-card-grid">
-          {loadingPromotions && (
-            <div className="admin-card col-span-full text-center py-10 text-sm admin-muted-text">
-              Đang tải danh sách khuyến mãi...
-            </div>
-          )}
+        <section className="admin-card admin-promo-voucher-wrap">
+          <div className="overflow-x-auto">
+            <table className="admin-table admin-service-list-table">
+              <thead>
+                <tr>
+                  <th>Tên chương trình</th>
+                  <th>Mã code</th>
+                  <th>Loại giảm</th>
+                  <th>Giá trị giảm</th>
+                  <th>Điều kiện tối thiểu</th>
+                  <th>Hạn sử dụng</th>
+                  <th>Đã dùng / Giới hạn</th>
+                  <th>Trạng thái</th>
+                  {isAdmin && <th className="text-right">Hành động</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {loadingPromotions ? (
+                  <tr>
+                    <td colSpan={9} className="text-center py-10 text-sm admin-muted-text">
+                      Đang tải danh sách khuyến mãi...
+                    </td>
+                  </tr>
+                ) : promotions.length === 0 ? (
+                  <tr>
+                    <td colSpan={9} className="text-center py-10">
+                      Chưa có chương trình khuyến mãi nào.
+                    </td>
+                  </tr>
+                ) : (
+                  promotions.map((promotion) => {
+                    const timelineStatus = getPromotionTimelineStatus(promotion);
+                    const statusClass = timelineStatus.toLowerCase();
+                    const usageLimit = promotion.so_luot_su_dung || 0;
 
-          {!loadingPromotions && promotions.length === 0 && (
-            <div className="admin-card col-span-full text-center py-10">
-              Chưa có chương trình khuyến mãi nào.
-            </div>
-          )}
-
-          {!loadingPromotions && promotions.map((promotion) => {
-            const timelineStatus = getPromotionTimelineStatus(promotion);
-            const timelineMeta = getPromotionTimelineMeta(promotion);
-
-            const usageLimit = promotion.so_luot_su_dung || 0;
-            const usageProgress = usageLimit > 0 ? clamp((promotion.da_su_dung / usageLimit) * 100) : clamp(promotion.da_su_dung);
-
-            const conditionText = promotion.don_toi_thieu
-              ? `Đơn tối thiểu ${formatVnd(promotion.don_toi_thieu)}`
-              : 'Áp dụng cho toàn bộ dịch vụ đủ điều kiện';
-
-            const discountText =
-              promotion.loai_giam === 'PERCENT'
-                ? `${promotion.gia_tri_giam}%`
-                : formatVnd(promotion.gia_tri_giam);
-
-            return (
-              <article
-                key={promotion.ma_khuyen_mai}
-                className={`admin-promo-card status-${timelineStatus.toLowerCase()}`}
-              >
-                <span className={`admin-promo-status-badge ${timelineStatus.toLowerCase()}`}>
-                  {getPromotionStatusLabel(timelineStatus)}
-                </span>
-
-                <div className="admin-promo-card-head">
-                  <h3>{promotion.ten_khuyen_mai}</h3>
-                  <p>{promotion.mo_ta || 'Tăng doanh thu khung giờ cao điểm bằng ưu đãi linh hoạt.'}</p>
-                </div>
-
-                <div className="admin-promo-condition">
-                  <strong>Điều kiện áp dụng:</strong> {conditionText}
-                </div>
-
-                <div className="admin-promo-discount-display">{discountText}</div>
-
-                <div className="admin-promo-meta-row">
-                  <div className="title">
-                    <CalendarDays size={14} />
-                    <span>Thời gian</span>
-                  </div>
-                  <div className="range">{formatDate(promotion.ngay_bat_dau)} - {formatDate(promotion.ngay_ket_thuc)}</div>
-                </div>
-                <div className="admin-promo-progress-track">
-                  <span style={{ width: `${timelineMeta.progress}%` }} />
-                </div>
-                <div className="admin-promo-progress-note">{timelineMeta.note}</div>
-
-                <div className="admin-promo-meta-row mt-1">
-                  <div className="title">
-                    <Gift size={14} />
-                    <span>Đã dùng</span>
-                  </div>
-                  <div className="range">
-                    {promotion.da_su_dung}/{usageLimit > 0 ? usageLimit : '∞'} lượt
-                  </div>
-                </div>
-                <div className="admin-promo-progress-track usage">
-                  <span style={{ width: `${usageProgress}%` }} />
-                </div>
-
-                <div className="admin-promo-card-footer">
-                  <button className="admin-promo-link-btn" onClick={() => openEditPromotionModal(promotion)}>
-                    <Pencil size={14} /> Edit
-                  </button>
-                  <button className="admin-promo-link-btn" onClick={() => handleDuplicatePromotion(promotion)}>
-                    <Copy size={14} /> Duplicate
-                  </button>
-                  <button
-                    className={`admin-promo-toggle-btn ${promotion.trang_thai === 'ACTIVE' ? 'active' : ''}`}
-                    onClick={() => handleTogglePromotion(promotion)}
-                  >
-                    <Power size={14} />
-                    {promotion.trang_thai === 'ACTIVE' ? 'Dừng' : 'Kích hoạt'}
-                  </button>
-                </div>
-              </article>
-            );
-          })}
+                    return (
+                      <tr key={promotion.ma_khuyen_mai}>
+                        <td className="name-cell">
+                          <span>{promotion.ten_khuyen_mai}</span>
+                          <small>{promotion.mo_ta || 'Tăng doanh thu bằng ưu đãi linh hoạt.'}</small>
+                        </td>
+                        <td>
+                          <code>{promotion.ma_code || '—'}</code>
+                        </td>
+                        <td>{promotion.loai_giam === 'PERCENT' ? 'Phần trăm (%)' : 'Số tiền cố định'}</td>
+                        <td className="price">
+                          {promotion.loai_giam === 'PERCENT'
+                            ? `${promotion.gia_tri_giam}%`
+                            : formatVnd(promotion.gia_tri_giam)}
+                        </td>
+                        <td>{promotion.don_toi_thieu ? formatVnd(promotion.don_toi_thieu) : 'Không yêu cầu'}</td>
+                        <td>
+                          {formatDate(promotion.ngay_bat_dau)} - {formatDate(promotion.ngay_ket_thuc)}
+                        </td>
+                        <td>
+                          {promotion.da_su_dung} / {usageLimit > 0 ? usageLimit : '∞'}
+                        </td>
+                        <td>
+                          <span className={`admin-promo-voucher-status ${statusClass}`}>
+                            {getPromotionStatusLabel(timelineStatus)}
+                          </span>
+                        </td>
+                        {isAdmin && (
+                          <td className="text-right">
+                            <div className="admin-service-list-actions justify-end gap-2">
+                              <button className="admin-btn-icon" onClick={() => openEditPromotionModal(promotion)} title="Sửa">
+                                <Pencil size={14} />
+                              </button>
+                              <button className="admin-btn-icon" onClick={() => handleDuplicatePromotion(promotion)} title="Nhân bản">
+                                <Copy size={14} />
+                              </button>
+                              <button
+                                className={`admin-service-status-switch small ${promotion.trang_thai === 'ACTIVE' ? 'active' : ''}`}
+                                onClick={() => handleTogglePromotion(promotion)}
+                                title={promotion.trang_thai === 'ACTIVE' ? 'Dừng hoạt động' : 'Kích hoạt'}
+                              >
+                                <span className="dot" />
+                                {promotion.trang_thai === 'ACTIVE' ? 'Đang chạy' : 'Tạm dừng'}
+                              </button>
+                            </div>
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </section>
       )}
 
       {activeTab === 'VOUCHERS' && (
         <section className="admin-card admin-promo-voucher-wrap">
           <div className="overflow-x-auto">
-            <table className="admin-table admin-promo-voucher-table">
+            <table className="admin-table admin-service-list-table">
               <thead>
                 <tr>
-                  <th>Mã</th>
+                  <th>Mã Voucher</th>
                   <th>Loại</th>
                   <th>Giá trị</th>
                   <th>Điều kiện tối thiểu</th>
@@ -1073,7 +1073,7 @@ export default function PromotionsManager() {
                   <th>Lượt dùng / Giới hạn</th>
                   <th>Áp dụng cho</th>
                   <th>Trạng thái</th>
-                  <th className="text-right">Hành động</th>
+                  {isAdmin && <th className="text-right">Hành động</th>}
                 </tr>
               </thead>
               <tbody>
@@ -1095,8 +1095,8 @@ export default function PromotionsManager() {
                           </button>
                         </div>
                       </td>
-                      <td>{voucher.discountType === 'PERCENT' ? 'Phần trăm' : 'Cố định'}</td>
-                      <td>
+                      <td>{voucher.discountType === 'PERCENT' ? 'Phần trăm (%)' : 'Số tiền cố định'}</td>
+                      <td className="price">
                         {voucher.discountType === 'PERCENT'
                           ? `${voucher.value}%`
                           : formatVnd(voucher.value)}
@@ -1106,7 +1106,7 @@ export default function PromotionsManager() {
                         {formatDate(voucher.startsAt)} - {formatDate(voucher.endsAt)}
                       </td>
                       <td>
-                        {voucher.used}/{voucher.limit}
+                        {voucher.used} / {voucher.limit}
                       </td>
                       <td>
                         <div className="admin-promo-voucher-target">
@@ -1119,20 +1119,22 @@ export default function PromotionsManager() {
                           {getVoucherStatusLabel(status)}
                         </span>
                       </td>
-                      <td className="text-right">
-                        <div className="admin-promo-voucher-actions">
-                          <button className="admin-btn-icon" onClick={() => openEditVoucherModal(voucher)} title="Sửa">
-                            <Pencil size={14} />
-                          </button>
-                          <button
-                            className="admin-btn-icon admin-danger-soft"
-                            onClick={() => handleDeleteVoucher(voucher.id)}
-                            title="Xóa"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                      </td>
+                      {isAdmin && (
+                        <td className="text-right">
+                          <div className="admin-service-list-actions justify-end gap-2">
+                            <button className="admin-btn-icon" onClick={() => openEditVoucherModal(voucher)} title="Sửa">
+                              <Pencil size={14} />
+                            </button>
+                            <button
+                              className="admin-btn-icon admin-danger-soft text-rose-400 hover:bg-rose-500/10"
+                              onClick={() => handleDeleteVoucher(voucher.id)}
+                              title="Xóa"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
@@ -1143,48 +1145,68 @@ export default function PromotionsManager() {
       )}
 
       {activeTab === 'COMBOS' && (
-        <section className="admin-promo-combo-grid">
-          {loadingCombos && (
-            <div className="admin-card col-span-full text-center py-10 text-sm admin-muted-text">
-              Đang tải danh sách combo...
-            </div>
-          )}
-
-          {!loadingCombos && combos.map((combo) => (
-            <article key={combo.id} className="admin-promo-combo-card">
-              <h3>{combo.name}</h3>
-
-              <div className="admin-promo-tag-list">
-                {combo.serviceTags.map((tag) => (
-                  <span key={`${combo.id}-${tag}`} className="tag">{tag}</span>
-                ))}
-              </div>
-
-              <div className="admin-promo-combo-pricing">
-                <p className="origin">{formatVnd(combo.originalPrice)}</p>
-                <p className="combo">{formatVnd(combo.comboPrice)}</p>
-              </div>
-
-              <div className="admin-promo-combo-save">
-                Tiết kiệm: <strong>{combo.savedPercent}%</strong> ({formatVnd(combo.savedAmount)})
-              </div>
-
-              <div className="admin-promo-combo-meta">
-                <div>
-                  <span>Thời hạn sử dụng sau mua</span>
-                  <strong>{combo.validityDays} ngày</strong>
-                </div>
-                <div>
-                  <span>Lượt mua / tháng</span>
-                  <strong>{combo.monthlyPurchases}</strong>
-                </div>
-              </div>
-            </article>
-          ))}
-
-          {!loadingCombos && combos.length === 0 && (
-            <div className="admin-card col-span-full text-center py-10">Chưa có gói combo nào.</div>
-          )}
+        <section className="admin-card admin-promo-voucher-wrap">
+          <div className="overflow-x-auto">
+            <table className="admin-table admin-service-list-table">
+              <thead>
+                <tr>
+                  <th>Tên gói Combo</th>
+                  <th>Dịch vụ bao gồm</th>
+                  <th>Giá gốc</th>
+                  <th>Giá Combo</th>
+                  <th>Tiết kiệm</th>
+                  <th>Thời hạn sử dụng</th>
+                  <th>Lượt mua tháng này</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loadingCombos ? (
+                  <tr>
+                    <td colSpan={7} className="text-center py-10 text-sm admin-muted-text">
+                      Đang tải danh sách combo...
+                    </td>
+                  </tr>
+                ) : combos.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="text-center py-10">
+                      Chưa có gói combo nào.
+                    </td>
+                  </tr>
+                ) : (
+                  combos.map((combo) => (
+                    <tr key={combo.id}>
+                      <td className="name-cell">
+                        <span>{combo.name}</span>
+                        <small>Gói combo tiết kiệm đặc biệt</small>
+                      </td>
+                      <td>
+                        <div className="flex flex-wrap gap-1.5 max-w-sm">
+                          {combo.serviceTags.map((tag) => (
+                            <span key={`${combo.id}-${tag}`} className="px-2 py-0.5 rounded text-[11px] font-medium bg-[#1e293b] text-[#cbd5e1] border border-[#334155]">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="text-slate-400 line-through">
+                        {formatVnd(combo.originalPrice)}
+                      </td>
+                      <td className="price text-emerald-400 font-bold">
+                        {formatVnd(combo.comboPrice)}
+                      </td>
+                      <td>
+                        <div className="text-emerald-500 font-medium">
+                          {combo.savedPercent}% ({formatVnd(combo.savedAmount)})
+                        </div>
+                      </td>
+                      <td>{combo.validityDays} ngày sau mua</td>
+                      <td>{combo.monthlyPurchases} lượt</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </section>
       )}
 

@@ -214,7 +214,9 @@ export default function Home() {
                       {service.bang_gias && service.bang_gias.length > 0 ? (
                         <div className="text-secondary font-medium">
                           {(() => {
-                            const validGias = service.bang_gias.filter((p: any) => !p.thoi_luong?.includes('90 phút'));
+                            const validGias = service.bang_gias.filter((p: any) => 
+                              !p.thoi_luong || !p.thoi_luong.includes('90 phút')
+                            );
                             if (validGias.length === 0) return 'Liên hệ';
                             if (validGias.length > 1) {
                               return `${validGias[0].gia.toLocaleString()}₫ - ${validGias[validGias.length - 1].gia.toLocaleString()}₫`;

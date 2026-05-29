@@ -46,12 +46,7 @@ def delete_auto_users():
             db.query(LichHen).filter(LichHen.ma_khach_hang == user_id).delete()
             
 
-            # 5. Points history
-            try:
-                from app.infrastructure.persistence.models.loyalty import LichSuDiem
-                db.query(LichSuDiem).filter(LichSuDiem.ma_khach_hang == user_id).delete()
-            except (ImportError, AttributeError):
-                pass
+
 
             # Finally delete the user
             db.delete(user)

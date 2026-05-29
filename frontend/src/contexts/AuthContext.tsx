@@ -72,8 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (data: { ho_ten: string; email: string; mat_khau: string; so_dien_thoai?: string }) => {
     const res = await authApi.register(data);
     if (res.success) {
-      // Auto-login after register
-      return await login(data.email, data.mat_khau);
+      return { success: true, message: 'Đăng ký thành công' };
     }
     return { success: false, message: res.message || 'Đăng ký thất bại' };
   };

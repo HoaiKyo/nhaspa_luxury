@@ -47,7 +47,10 @@ export default function AuthModal() {
           return;
         }
         const res = await register({ ho_ten: name, email, mat_khau: password, so_dien_thoai: phone });
-        if (!res.success) {
+        if (res.success) {
+          alert('Đăng ký thành công! Vui lòng đăng nhập.');
+          openModal('login');
+        } else {
           alert(res.message);
         }
       } else if (modalView === 'forgot-password') {

@@ -41,6 +41,7 @@ class StaffCreate(BaseModel):
     chuc_vu: Optional[str] = Field(None, max_length=100)
     phong_ban: Optional[str] = Field(None, max_length=100)
     ngay_vao_lam: Optional[date] = None
+    danh_sach_ma_dich_vu: Optional[list[int]] = None
 
 
 class StaffUpdate(BaseModel):
@@ -49,6 +50,7 @@ class StaffUpdate(BaseModel):
     phong_ban: Optional[str] = Field(None, max_length=100)
     ngay_vao_lam: Optional[date] = None
     trang_thai: Optional[bool] = None
+    danh_sach_ma_dich_vu: Optional[list[int]] = None
 
 
 class StaffResponse(BaseModel):
@@ -62,6 +64,7 @@ class StaffResponse(BaseModel):
     ho_ten: Optional[str] = None  # From nguoi_dung
     email: Optional[str] = None
     so_dien_thoai: Optional[str] = None
+    specializations: Optional[list[str]] = None
     ngay_tao: Optional[datetime] = None
 
     model_config = {"from_attributes": True}

@@ -85,7 +85,7 @@ export default function ServiceDetail() {
             <div className="flex flex-col gap-4 mb-6 pb-6 border-b border-gray-100">
               {service.bang_gias && service.bang_gias.length > 0 ? (
                 service.bang_gias
-                  .filter((option: any) => !option.thoi_luong?.includes('90 phút'))
+                  .filter((option: any) => !option.thoi_luong || !option.thoi_luong.includes('90 phút'))
                   .map((option: any, idx: number) => (
                     <div key={idx} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-sm transition-all">
                       <div className="font-medium text-text-dark">{option.thoi_luong || 'Gói tiêu chuẩn'}</div>

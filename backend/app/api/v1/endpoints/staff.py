@@ -6,7 +6,7 @@ from app.core.database import get_db
 from app.core.response import success_response, paginated_response
 from app.application.schemas.staff import *
 from app.application.services.staff_service import StaffService
-from app.api.v1.dependencies import require_manager, require_staff, get_current_user
+from app.api.v1.dependencies import require_manager, require_staff, get_current_user, require_receptionist
 from app.infrastructure.persistence.models.user import NguoiDung
 from app.infrastructure.persistence.models.product import NhanVienDichVu
 
@@ -45,6 +45,7 @@ def get_available_staff(
     service_id: Optional[int] = Query(None, gt=0),
     appt_date: Optional[date] = Query(None),
     start_time: Optional[time] = Query(None),
+    exclude_appointment_id: Optional[int] = Query(None),
     db: Session = Depends(get_db),
     _=Depends(require_staff)
 ):
@@ -52,7 +53,8 @@ def get_available_staff(
     staff_list = svc.get_available_staff_by_time(
         service_id=service_id,
         appt_date=appt_date,
-        start_time=start_time
+        start_time=start_time,
+        exclude_appointment_id=exclude_appointment_id
     )
     
     data = []
@@ -62,6 +64,7 @@ def get_available_staff(
             d["ho_ten"] = s.nguoi_dung.ho_ten
             d["email"] = s.nguoi_dung.email
             d["so_dien_thoai"] = s.nguoi_dung.so_dien_thoai
+        d["specializations"] = [dv.san_pham.ten_san_pham for dv in s.dich_vus if dv.san_pham]
         data.append(d)
     return success_response(data=data)
 
@@ -77,6 +80,7 @@ def list_staff(page: int = 1, page_size: int = 10, search: Optional[str] = None,
             d["ho_ten"] = s.nguoi_dung.ho_ten
             d["email"] = s.nguoi_dung.email
             d["so_dien_thoai"] = s.nguoi_dung.so_dien_thoai
+        d["specializations"] = [dv.san_pham.ten_san_pham for dv in s.dich_vus if dv.san_pham]
         data.append(d)
     return paginated_response(data, total, page, page_size)
 
@@ -89,6 +93,7 @@ def get_staff(staff_id: int, db: Session = Depends(get_db), _=Depends(require_st
     if s.nguoi_dung:
         d["ho_ten"] = s.nguoi_dung.ho_ten
         d["email"] = s.nguoi_dung.email
+    d["specializations"] = [dv.san_pham.ten_san_pham for dv in s.dich_vus if dv.san_pham]
     return success_response(data=d)
 
 
@@ -115,7 +120,7 @@ def list_shifts(db: Session = Depends(get_db)):
 
 
 @shift_router.post("")
-def create_shift(data: ShiftCreate, db: Session = Depends(get_db), _=Depends(require_manager)):
+def create_shift(data: ShiftCreate, db: Session = Depends(get_db), _=Depends(require_receptionist)):
     svc = StaffService(db)
     s = svc.create_shift(data.model_dump())
     return success_response(data=ShiftResponse.model_validate(s).model_dump(), message="Tạo ca làm thành công")
@@ -137,21 +142,21 @@ def list_schedules(staff_id: Optional[int] = None, from_date: Optional[date] = N
 
 
 @schedule_router.post("")
-def create_schedule(data: ScheduleCreate, db: Session = Depends(get_db), _=Depends(require_manager)):
+def create_schedule(data: ScheduleCreate, db: Session = Depends(get_db), _=Depends(require_receptionist)):
     svc = StaffService(db)
     s = svc.create_schedule(data.model_dump())
     return success_response(data=ScheduleResponse.model_validate(s).model_dump(), message="Tạo lịch thành công")
 
 
 @schedule_router.put("/{schedule_id}")
-def update_schedule(schedule_id: int, data: ScheduleUpdate, db: Session = Depends(get_db), _=Depends(require_manager)):
+def update_schedule(schedule_id: int, data: ScheduleUpdate, db: Session = Depends(get_db), _=Depends(require_receptionist)):
     svc = StaffService(db)
     s = svc.update_schedule(schedule_id, data.model_dump(exclude_unset=True))
     return success_response(data=ScheduleResponse.model_validate(s).model_dump(), message="Cập nhật lịch thành công")
 
 
 @schedule_router.delete("/{schedule_id}")
-def delete_schedule(schedule_id: int, db: Session = Depends(get_db), _=Depends(require_manager)):
+def delete_schedule(schedule_id: int, db: Session = Depends(get_db), _=Depends(require_receptionist)):
     svc = StaffService(db)
     svc.delete_schedule(schedule_id)
     return success_response(message="Hủy ca làm thành công")
@@ -189,7 +194,7 @@ def create_leave(data: LeaveCreate, current_user: NguoiDung = Depends(get_curren
 
 
 @leave_router.put("/{leave_id}/approve")
-def approve_leave(leave_id: int, data: LeaveApproval, current_user: NguoiDung = Depends(require_manager), db: Session = Depends(get_db)):
+def approve_leave(leave_id: int, data: LeaveApproval, current_user: NguoiDung = Depends(require_receptionist), db: Session = Depends(get_db)):
     svc = StaffService(db)
     from app.infrastructure.persistence.models.staff import NhanVien
     staff = db.query(NhanVien).filter(NhanVien.ma_nguoi_dung == current_user.ma_nguoi_dung).first()

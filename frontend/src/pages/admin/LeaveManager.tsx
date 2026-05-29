@@ -777,9 +777,6 @@ export default function LeaveManager() {
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <h1 className="admin-leavemgr-heading">Spa Leave Request Management</h1>
-          <p className="admin-leavemgr-subtitle">
-            Theo dõi phê duyệt nghỉ phép theo chuẩn vận hành cao cấp • {usingSample ? 'Dữ liệu mẫu' : 'Dữ liệu API'}
-          </p>
         </div>
 
         <button className="admin-btn admin-btn-secondary" onClick={() => loadData(true)} disabled={refreshing}>
@@ -789,110 +786,10 @@ export default function LeaveManager() {
 
       {error && <p className="admin-leavemgr-alert">{error}</p>}
 
-      <div className="admin-leavemgr-kpi-grid">
-        <div className="admin-leavemgr-kpi-card pending pulse">
-          <div className="icon"><Clock3 size={16} /></div>
-          <p className="label">Đơn chờ duyệt</p>
-          <p className="value">{kpis.pending}</p>
-          <p className="note">Ưu tiên xử lý trong ngày</p>
-        </div>
-
-        <div className="admin-leavemgr-kpi-card approved">
-          <div className="icon"><ShieldCheck size={16} /></div>
-          <p className="label">Đã duyệt tháng này</p>
-          <p className="value">{kpis.approvedThisMonth}</p>
-          <p className="note">Đã hoàn tất phê duyệt</p>
-        </div>
-
-        <div className="admin-leavemgr-kpi-card rejected">
-          <div className="icon"><ShieldX size={16} /></div>
-          <p className="label">Đã từ chối</p>
-          <p className="value">{kpis.rejected}</p>
-          <p className="note">Có ghi chú quyết định</p>
-        </div>
-
-        <div className="admin-leavemgr-kpi-card total">
-          <div className="icon"><Users size={16} /></div>
-          <p className="label">Tổng ngày nghỉ đã dùng / năm</p>
-          <p className="value">{kpis.usedDaysYear}</p>
-          <p className="note">Năm {currentYear}</p>
-        </div>
-      </div>
 
       <div className="admin-leavemgr-main">
         <div className="space-y-4">
-          <div className="admin-card admin-leavemgr-calendar-card">
-            <div className="admin-leavemgr-calendar-head">
-              <h3><CalendarDays size={16} /> Leave Calendar</h3>
-              <div className="nav">
-                <button className="admin-btn admin-btn-secondary admin-btn-sm" onClick={() => setMonthAnchor((prev) => addMonths(prev, -1))}>
-                  <ChevronLeft size={14} /> Tháng trước
-                </button>
-                <span>{monthLabel}</span>
-                <button className="admin-btn admin-btn-secondary admin-btn-sm" onClick={() => setMonthAnchor((prev) => addMonths(prev, 1))}>
-                  Tháng sau <ChevronRight size={14} />
-                </button>
-              </div>
-            </div>
 
-            <div className="admin-leavemgr-calendar-weekdays">
-              {WEEKDAY_LABELS.map((label) => (
-                <div key={`leave-weekday-${label}`} className="weekday">{label}</div>
-              ))}
-            </div>
-
-            <div className="admin-leavemgr-calendar-grid">
-              {monthGridDays.map((day) => {
-                const dayKey = toDateKey(day);
-                const inMonth = day.getMonth() === monthAnchor.getMonth();
-                const dayLeaves = leavesByDay.get(dayKey) || [];
-                const dotStatuses = (['APPROVED', 'PENDING', 'REJECTED'] as LeaveStatus[]).filter((status) =>
-                  dayLeaves.some((item) => item.status === status),
-                );
-                const isToday = dayKey === toDateKey(now);
-
-                return (
-                  <div
-                    key={`leave-calendar-${dayKey}`}
-                    className={`day-cell ${inMonth ? '' : 'muted'} ${isToday ? 'today' : ''}`}
-                    onMouseEnter={() => setHoveredDayKey(dayKey)}
-                    onMouseLeave={() => setHoveredDayKey('')}
-                  >
-                    <p className="date">{day.getDate()}</p>
-                    <div className="dots">
-                      {dotStatuses.map((status) => (
-                        <span key={`${dayKey}-${status}`} className={`dot ${STATUS_META[status].dotClass}`} />
-                      ))}
-                    </div>
-
-                    {hoveredDayKey === dayKey && dayLeaves.length > 0 && (
-                      <div className="tooltip-list">
-                        <p className="title">Nhân viên nghỉ ({dayLeaves.length})</p>
-                        <div className="items">
-                          {dayLeaves.slice(0, 6).map((item) => (
-                            <div key={`tooltip-${dayKey}-${item.id}-${item.staffId}`} className="item">
-                              <span className="avatar">{initialsOf(item.staffName)}</span>
-                              <span className="name">{item.staffName}</span>
-                              <span className={`status ${STATUS_META[item.status].className}`}>{STATUS_META[item.status].label}</span>
-                            </div>
-                          ))}
-                          {dayLeaves.length > 6 && (
-                            <p className="more">+{dayLeaves.length - 6} đơn khác</p>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="admin-leavemgr-legend">
-              <span><i className="dot approved" /> Đã duyệt</span>
-              <span><i className="dot pending" /> Chờ duyệt</span>
-              <span><i className="dot rejected" /> Từ chối</span>
-            </div>
-          </div>
 
           <div className="admin-card admin-leavemgr-table-card">
             <div className="admin-leavemgr-table-head">

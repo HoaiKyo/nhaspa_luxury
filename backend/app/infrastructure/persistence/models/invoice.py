@@ -31,9 +31,8 @@ class HoaDon(Base):
     tong_tien = Column(Numeric(18, 2), default=0)
     giam_gia = Column(Numeric(18, 2), default=0)
     thue = Column(Numeric(18, 2), default=0)
-    diem_su_dung = Column(Integer, default=0)  # Loyalty points used
-    gia_tri_diem = Column(Numeric(18, 2), default=0)  # Point value in VND
-    diem_tich_luy = Column(Integer, default=0)  # Points earned from this invoice
+    so_tien_khach_tra = Column(Numeric(18, 2), default=0)
+    so_tien_tra_lai = Column(Numeric(18, 2), default=0)
     thanh_tien = Column(Numeric(18, 2), default=0)  # Final amount after discount/tax
     trang_thai = Column(String(20), default="DRAFT")
     trang_thai_hd_dien_tu = Column(String(20), default="NOT_ISSUED")
@@ -48,8 +47,7 @@ class HoaDon(Base):
     khuyen_mai = relationship("KhuyenMai")
     chi_tiets = relationship("ChiTietHoaDon", back_populates="hoa_don", cascade="all, delete-orphan")
     thanh_toans = relationship("ThanhToan", back_populates="hoa_don")
-    lich_su_diems = relationship("LichSuDiem", back_populates="hoa_don")
-
+ 
 
 class ChiTietHoaDon(Base):
     """Bảng chi tiết hóa đơn (Invoice Line Items)"""

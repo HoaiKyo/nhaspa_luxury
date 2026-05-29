@@ -16,6 +16,18 @@ from app.infrastructure.persistence.models.staff import NhanVien
 router = APIRouter(prefix="/appointments", tags=["Appointments"])
 
 
+@router.get("/occupancy")
+def get_occupancy(appt_date: date = Query(...), db: Session = Depends(get_db)):
+    svc = AppointmentService(db)
+    return success_response(data=svc.get_occupancy(appt_date))
+
+
+@router.get("/max-capacity")
+def get_max_capacity(db: Session = Depends(get_db)):
+    svc = AppointmentService(db)
+    return success_response(data=svc.get_max_capacity())
+
+
 def _serialize_appointment(appt) -> dict:
     payload = AppointmentResponse.model_validate(appt).model_dump()
     payload["ho_ten_khach"] = appt.nguoi_dung.ho_ten if appt.nguoi_dung else None
@@ -173,6 +185,9 @@ def update_appointment(
 
 @router.post("/{appt_id}/cancel")
 def cancel_appointment(appt_id: int, db: Session = Depends(get_db), current_user: NguoiDung = Depends(get_current_user)):
+    user_roles = [r.ten_vai_tro for r in current_user.vai_tros] if hasattr(current_user, "vai_tros") and current_user.vai_tros else []
+    is_staff = any(role in user_roles for role in ["ADMIN", "RECEPTIONIST"])
+    
     svc = AppointmentService(db)
-    appt = svc.cancel_appointment(appt_id)
+    appt = svc.cancel_appointment(appt_id, is_staff=is_staff)
     return success_response(message="Hủy lịch hẹn thành công")

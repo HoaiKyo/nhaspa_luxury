@@ -35,7 +35,8 @@ export default function AppointmentDetailPage() {
     } catch (error: any) {
       console.error(error);
       alert(error?.message || 'Không tìm thấy lịch hẹn');
-      navigate('/receptionist/lich-hen');
+      const basePath = window.location.pathname.startsWith('/admin') ? '/admin/lich-hen' : '/receptionist/lich-hen';
+      navigate(basePath);
     } finally {
       setLoading(false);
     }
@@ -51,10 +52,15 @@ export default function AppointmentDetailPage() {
       ),
     ) as number[];
     const nextMap: Record<number, StaffRow[]> = {};
+    
     await Promise.all(
       serviceIds.map(async (serviceId) => {
         try {
-          const res = await receptionistApi.getAvailableStaff(serviceId);
+          const detail = details.find((d: any) => Number(d.ma_san_pham) === serviceId);
+          const startTime = detail?.gio_bat_dau || appt.gio_bat_dau;
+          const apptDate = appt.ngay_hen;
+
+          const res = await receptionistApi.getAvailableStaff(serviceId, apptDate, startTime, appt.ma_lich_hen);
           if (res.success && Array.isArray(res.data)) {
             nextMap[serviceId] = (res.data as any[]).map((row) => ({
               ma_nhan_vien: Number(row.ma_nhan_vien),
@@ -96,6 +102,18 @@ export default function AppointmentDetailPage() {
     });
   };
 
+  const handleGuestChange = (detailId: number, guestId: number | null) => {
+    setAppointment((prev: any) => {
+      if (!prev) return prev;
+      const nextDetails = (prev.chi_tiets || []).map((detail: any) =>
+        detail.ma_chi_tiet === detailId
+          ? { ...detail, ma_khach_di_kem: guestId }
+          : detail,
+      );
+      return { ...prev, chi_tiets: nextDetails };
+    });
+  };
+
   const handleSaveStaff = async () => {
     if (!appointment || !Array.isArray(appointment.chi_tiets)) return;
     setSavingStaff(true);
@@ -114,15 +132,16 @@ export default function AppointmentDetailPage() {
         return {
           ma_chi_tiet: Number(detail.ma_chi_tiet),
           ma_nhan_vien: staffId,
+          ma_khach_di_kem: detail.ma_khach_di_kem || null,
         };
       });
 
       const res = await receptionistApi.updateAppointment(Number(id), { chi_tiets: detailPayload });
-      if (!res.success) throw new Error(res.message || 'Cập nhật nhân viên thất bại');
-      alert('Đã cập nhật nhân viên phụ trách');
+      if (!res.success) throw new Error(res.message || 'Cập nhật thất bại');
+      alert('Đã lưu cập nhật dịch vụ');
       loadAppointment(Number(id));
     } catch (error: any) {
-      alert(error?.message || 'Cập nhật nhân viên thất bại');
+      alert(error?.message || 'Cập nhật thất bại');
     } finally {
       setSavingStaff(false);
     }
@@ -160,14 +179,17 @@ export default function AppointmentDetailPage() {
 
   if (!appointment) return null;
 
-  const isCancelable = ['PENDING', 'CONFIRMED'].includes(appointment.trang_thai);
+  const isCancelable = !['COMPLETED', 'CANCELLED'].includes(appointment.trang_thai);
   const canComplete = ['PENDING', 'CONFIRMED', 'IN_PROGRESS'].includes(appointment.trang_thai);
   const canChangeStaff = !['COMPLETED', 'CANCELLED'].includes(appointment.trang_thai);
 
   return (
     <div className="admin-animate-in space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/receptionist/lich-hen')} className="admin-btn-icon">
+        <button onClick={() => {
+          const basePath = window.location.pathname.startsWith('/admin') ? '/admin/lich-hen' : '/receptionist/lich-hen';
+          navigate(basePath);
+        }} className="admin-btn-icon">
           <ArrowLeft size={20} />
         </button>
         <div>
@@ -201,7 +223,9 @@ export default function AppointmentDetailPage() {
           </h3>
           <div className="space-y-2 text-sm">
             <p><span className="font-medium inline-block w-24">Họ tên:</span> {appointment.ho_ten_khach || `KH #${appointment.ma_khach_hang}`}</p>
+            <p><span className="font-medium inline-block w-24">SĐT:</span> <span className="font-bold text-indigo-600">{appointment.so_dien_thoai_khach || '—'}</span></p>
             <p><span className="font-medium inline-block w-24">Mã KH:</span> {appointment.ma_khach_hang}</p>
+            <p><span className="font-medium inline-block w-24">Số khách:</span> <span className="font-bold text-indigo-600">{1 + (appointment.khach_di_kems?.length || 0)} người</span> (Bao gồm {appointment.khach_di_kems?.length || 0} khách đi kèm)</p>
             <p><span className="font-medium inline-block w-24">Ghi chú:</span> {appointment.ghi_chu || 'Không có'}</p>
           </div>
         </div>
@@ -216,7 +240,30 @@ export default function AppointmentDetailPage() {
               {appointment.ngay_hen ? new Date(appointment.ngay_hen).toLocaleDateString('vi-VN') : '—'}
               {appointment.gio_bat_dau ? ` ${String(appointment.gio_bat_dau).slice(0, 5)}` : ''}
             </p>
-            <p><span className="font-medium inline-block w-24">Trạng thái:</span> <span className="font-semibold text-indigo-600">{appointment.trang_thai}</span></p>
+            <div className="flex items-center gap-2">
+              <span className="font-medium inline-block w-24 shrink-0">Trạng thái:</span>
+              <select
+                className="admin-select bg-white py-1.5 h-10 text-sm min-w-[200px]"
+                value={appointment.trang_thai}
+                onChange={async (e) => {
+                  const nextStatus = e.target.value;
+                  if (!window.confirm(`Bạn có chắc muốn chuyển trạng thái sang ${nextStatus}?`)) return;
+                  try {
+                    const res = await receptionistApi.updateAppointment(Number(id), { trang_thai: nextStatus });
+                    if (!res.success) throw new Error(res.message || 'Cập nhật thất bại');
+                    loadAppointment(Number(id));
+                  } catch (err: any) {
+                    alert(err?.message || 'Cập nhật thất bại');
+                  }
+                }}
+              >
+                <option value="PENDING">Chờ xác nhận</option>
+                <option value="CONFIRMED">Đã xác nhận</option>
+                <option value="IN_PROGRESS">Đang thực hiện</option>
+                <option value="COMPLETED">Hoàn thành</option>
+                <option value="CANCELLED" disabled>Đã hủy (Sử dụng nút hủy)</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -232,7 +279,7 @@ export default function AppointmentDetailPage() {
               disabled={savingStaff}
               className="admin-btn admin-btn-secondary"
             >
-              <Save size={15} /> {savingStaff ? 'Đang lưu...' : 'Lưu đổi nhân viên'}
+              <Save size={15} /> {savingStaff ? 'Đang lưu...' : 'Lưu cập nhật'}
             </button>
           )}
         </div>
@@ -250,11 +297,47 @@ export default function AppointmentDetailPage() {
               {appointment.chi_tiets && appointment.chi_tiets.length > 0 ? (
                 appointment.chi_tiets.map((dv: any) => {
                   const serviceStaff = staffByService[Number(dv.ma_san_pham)] || [];
+                  
+                  // Lọc ra tất cả nhân viên ĐÃ ĐƯỢC CHỌN ở các dòng dịch vụ khác trong cùng lịch hẹn này
+                  const staffTakenByOtherServices = new Set(
+                    appointment.chi_tiets
+                      .filter((otherDv: any) => otherDv.ma_chi_tiet !== dv.ma_chi_tiet && Boolean(otherDv.ma_nhan_vien))
+                      .map((otherDv: any) => Number(otherDv.ma_nhan_vien))
+                  );
+                  
+                  const availableServiceStaff = serviceStaff.filter((staff: any) => 
+                     !staffTakenByOtherServices.has(staff.ma_nhan_vien) || staff.ma_nhan_vien === Number(dv.ma_nhan_vien)
+                  );
+
                   return (
                     <tr key={dv.ma_chi_tiet}>
-                      <td className="font-medium">{dv.ten_san_pham || `Sản phẩm #${dv.ma_san_pham}`}</td>
-                      <td>{dv.gia ? Number(dv.gia).toLocaleString('vi-VN') + ' ₫' : '—'}</td>
-                      <td>
+                      <td className="align-top">
+                        <div className="font-medium">{dv.ten_san_pham || `Sản phẩm #${dv.ma_san_pham}`}</div>
+                        <div className="text-sm text-[var(--admin-text-muted)] mt-2 flex flex-col sm:flex-row sm:items-center gap-2">
+                          <span className="text-xs whitespace-nowrap">Dành cho:</span>
+                          {canChangeStaff ? (
+                            <select
+                               className="admin-select text-sm py-1.5 px-2"
+                               style={{ minWidth: '150px' }}
+                               value={dv.ma_khach_di_kem || ''}
+                               onChange={(e) => handleGuestChange(dv.ma_chi_tiet, e.target.value ? Number(e.target.value) : null)}
+                            >
+                               <option value="">Khách chính</option>
+                               {appointment?.khach_di_kems?.map((k: any) => (
+                                 <option key={k.ma_khach_di_kem} value={k.ma_khach_di_kem}>{k.ho_ten || 'Khách đi kèm'}</option>
+                               ))}
+                            </select>
+                          ) : (
+                            <span className="font-semibold text-[var(--admin-text-primary)]">
+                              {dv.ma_khach_di_kem ? (
+                                 appointment?.khach_di_kems?.find((k: any) => k.ma_khach_di_kem === dv.ma_khach_di_kem)?.ho_ten || 'Khách đi kèm'
+                              ) : 'Khách chính'}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="align-top pt-3">{dv.gia ? Number(dv.gia).toLocaleString('vi-VN') + ' ₫' : '—'}</td>
+                      <td className="align-top pt-2.5">
                         {canChangeStaff ? (
                           <select
                             className="admin-select min-w-[220px]"
@@ -262,7 +345,7 @@ export default function AppointmentDetailPage() {
                             onChange={(e) => handleStaffChange(dv.ma_chi_tiet, Number(e.target.value) || null)}
                           >
                             <option value={0}>Chưa xếp</option>
-                            {serviceStaff.map((staff) => (
+                            {availableServiceStaff.map((staff: any) => (
                               <option key={`${dv.ma_chi_tiet}-${staff.ma_nhan_vien}`} value={staff.ma_nhan_vien}>
                                 {staff.ho_ten || `NV #${staff.ma_nhan_vien}`}{staff.chuc_vu ? ` • ${staff.chuc_vu}` : ''}
                               </option>
@@ -272,7 +355,7 @@ export default function AppointmentDetailPage() {
                           <span>{dv.ho_ten_nhan_vien || (dv.ma_nhan_vien ? `NV #${dv.ma_nhan_vien}` : 'Chưa xếp')}</span>
                         )}
                       </td>
-                      <td>{dv.ghi_chu || '...'}</td>
+                      <td className="align-top pt-3">{dv.ghi_chu || '...'}</td>
                     </tr>
                   );
                 })

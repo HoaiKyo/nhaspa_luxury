@@ -1,0 +1,185 @@
+
+/* --- Staff Specializations Improvements --- */
+.admin-modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 99999 !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(8px);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem;
+}
+
+.admin-staffpro-form-modal {
+  width: 95%;
+  max-width: 1100px; /* Wider for 2-column layout */
+  max-height: 85vh;
+  background: #1e293b;
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-staffpro-form-body {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.admin-staffpro-form-main-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr; /* Avatar+Info on left, Specializations on right */
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Left Column Styling */
+.admin-staffpro-info-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 1rem;
+}
+
+.avatar-upload .preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #fbbf24;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f172a;
+}
+
+/* Right Column: Specializations (Scrollable) */
+.admin-staffpro-specializations-section {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  height: 100%;
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.admin-staffpro-category-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Wider groups */
+  gap: 1.5rem;
+}
+
+.admin-staffpro-cat-group {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.admin-staffpro-cat-group:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(251, 191, 36, 0.2);
+}
+
+.admin-staffpro-cat-group .cat-name {
+  font-family: 'Playfair Display', serif; /* Font sang trọng như ảnh 2 */
+  color: #fbbf24;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+}
+
+.admin-staffpro-cat-group .service-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Increased gap */
+}
+
+.service-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.service-checkbox-item:hover {
+  background: rgba(251, 191, 36, 0.05);
+}
+
+.service-checkbox-item input[type="checkbox"] {
+  width: 1.2rem; /* Larger checkbox */
+  height: 1.2rem;
+  accent-color: #fbbf24;
+  cursor: pointer;
+}
+
+.service-checkbox-item span {
+  font-size: 0.95rem; /* Larger font size */
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+/* Bottom Grid: Detailed Info (CCCD, Salary, etc.) */
+.admin-staffpro-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 even columns */
+  gap: 1.25rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-staffpro-bottom-grid .full {
+  grid-column: span 2;
+}
+
+/* Fix for form labels and inputs */
+.admin-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.admin-input, .admin-select {
+  width: 100% !important;
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: #f8fafc !important;
+  padding: 0.6rem 0.75rem !important;
+  border-radius: 0.5rem !important;
+}
+
+.admin-input:focus {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.1) !important;
+}

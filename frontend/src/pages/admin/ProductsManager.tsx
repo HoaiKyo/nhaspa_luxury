@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 
 import { appointmentsApi, categoriesApi, productsApi, staffApi, uploadApi } from '../../api/admin.api';
+import { useAuth } from '../../contexts/AuthContext';
 
 type ViewMode = 'GRID' | 'LIST';
 
@@ -162,6 +163,9 @@ const getDefaultServiceForm = (categoryId = 0): ServiceFormState => ({
 });
 
 export default function ProductsManager() {
+  const { user } = useAuth();
+  const isAdmin = Boolean(user?.vai_tros?.includes('ADMIN'));
+
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
@@ -171,7 +175,7 @@ export default function ProductsManager() {
   const [staffs, setStaffs] = useState<StaffOption[]>([]);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
-  const [viewMode, setViewMode] = useState<ViewMode>('GRID');
+  const [viewMode, setViewMode] = useState<ViewMode>('LIST');
 
   const [draggingCategoryId, setDraggingCategoryId] = useState<number | null>(null);
 
@@ -417,6 +421,7 @@ export default function ProductsManager() {
   };
 
   const handleDropCategory = async (targetCategoryId: number) => {
+    if (!isAdmin) return;
     if (!draggingCategoryId || draggingCategoryId === targetCategoryId) return;
 
     const fromIndex = categories.findIndex((cat) => cat.id === draggingCategoryId);
@@ -705,9 +710,11 @@ export default function ProductsManager() {
               <h2>Danh mục dịch vụ</h2>
               <p>{categories.length} danh mục</p>
             </div>
-            <button className="admin-btn admin-service-btn-gold" onClick={openCreateCategoryModal}>
-              <Plus size={14} /> Thêm danh mục
-            </button>
+            {isAdmin && (
+              <button className="admin-btn admin-service-btn-gold" onClick={openCreateCategoryModal}>
+                <Plus size={14} /> Thêm danh mục
+              </button>
+            )}
           </div>
 
           <div className="admin-service-category-tree">
@@ -725,9 +732,9 @@ export default function ProductsManager() {
                     key={category.id}
                     className={`admin-service-category-item ${isActive ? 'active' : ''}`}
                     onClick={() => setSelectedCategoryId(category.id)}
-                    draggable
-                    onDragStart={() => setDraggingCategoryId(category.id)}
-                    onDragEnd={() => setDraggingCategoryId(null)}
+                    draggable={isAdmin}
+                    onDragStart={() => isAdmin && setDraggingCategoryId(category.id)}
+                    onDragEnd={() => isAdmin && setDraggingCategoryId(null)}
                     onDragOver={(event) => event.preventDefault()}
                     onDrop={(event) => {
                       event.preventDefault();
@@ -735,7 +742,6 @@ export default function ProductsManager() {
                     }}
                   >
                     <span className="drag"><GripVertical size={14} /></span>
-                    <span className="emoji">{category.icon || resolveEmoji(category.name)}</span>
                     <span className="name">{category.name}</span>
                     <span className="badge">{count}</span>
                   </button>
@@ -753,73 +759,16 @@ export default function ProductsManager() {
                 {selectedCategory?.description || 'Quản lý dịch vụ theo danh mục'} • {servicesInCategory.length} dịch vụ
               </p>
             </div>
-            <button className="admin-btn admin-service-btn-gold" onClick={openCreateServiceModal}>
-              <Plus size={16} /> Thêm dịch vụ
-            </button>
-          </div>
-
-          <div className="admin-service-view-toggle">
-            <button
-              className={viewMode === 'GRID' ? 'active' : ''}
-              onClick={() => setViewMode('GRID')}
-            >
-              <LayoutGrid size={15} /> Grid
-            </button>
-            <button
-              className={viewMode === 'LIST' ? 'active' : ''}
-              onClick={() => setViewMode('LIST')}
-            >
-              <List size={15} /> List
-            </button>
+            {isAdmin && (
+              <button className="admin-btn admin-service-btn-gold" onClick={openCreateServiceModal}>
+                <Plus size={16} /> Thêm dịch vụ
+              </button>
+            )}
           </div>
 
           {servicesInCategory.length === 0 ? (
             <div className="admin-card admin-empty">
               <p>Danh mục này chưa có dịch vụ. Hãy thêm dịch vụ mới.</p>
-            </div>
-          ) : viewMode === 'GRID' ? (
-            <div className="admin-service-grid">
-              {pagedServices.map((service) => {
-                const emoji = selectedCategory?.icon || resolveEmoji(service.categoryName);
-                return (
-                  <article className="admin-service-card" key={service.id}>
-                    <div className="admin-service-card-thumb">
-                      {service.image ? (
-                        <img src={service.image} alt={service.name} />
-                      ) : (
-                        <div className="placeholder">{emoji}</div>
-                      )}
-                    </div>
-
-                    <div className="admin-service-card-body">
-                      <h3>{service.name}</h3>
-                      <p className="duration">Thời lượng: {service.duration}'</p>
-                      <p className="description">{service.shortDescription || 'Chưa có mô tả dịch vụ.'}</p>
-                      <p className="price">{formatVnd(service.price)}</p>
-
-                      <button
-                        className={`admin-service-status-switch ${service.active ? 'active' : ''}`}
-                        onClick={() => handleToggleServiceStatus(service)}
-                      >
-                        <span className="dot" />
-                        {service.active ? 'Đang hoạt động' : 'Tạm dừng'}
-                      </button>
-                    </div>
-
-                    <div className="admin-service-card-footer">
-                      <span>Lượt đặt tháng này: <strong>{service.monthlyBookings}</strong></span>
-                      <div className="actions">
-                        <button className="admin-btn-icon" onClick={() => openEditServiceModal(service)} title="Sửa">
-                          <Pencil size={15} />
-                        </button>
-                        <button className="admin-btn-icon danger" onClick={() => handleDeleteService(service)} title="Xóa">
-                          <Trash2 size={15} />
-                        </button>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
             </div>
           ) : (
             <div className="admin-card admin-service-list-wrap">
@@ -849,7 +798,8 @@ export default function ProductsManager() {
                       <td>
                         <button
                           className={`admin-service-status-switch small ${service.active ? 'active' : ''}`}
-                          onClick={() => handleToggleServiceStatus(service)}
+                          onClick={() => isAdmin && handleToggleServiceStatus(service)}
+                          disabled={!isAdmin}
                         >
                           <span className="dot" />
                           {service.active ? 'Hoạt động' : 'Tạm dừng'}
@@ -857,12 +807,16 @@ export default function ProductsManager() {
                       </td>
                       <td>
                         <div className="admin-service-list-actions">
-                          <button className="admin-btn-icon" onClick={() => openEditServiceModal(service)}>
-                            <Pencil size={15} />
-                          </button>
-                          <button className="admin-btn-icon danger" onClick={() => handleDeleteService(service)}>
-                            <Trash2 size={15} />
-                          </button>
+                          {isAdmin && (
+                            <>
+                              <button className="admin-btn-icon" onClick={() => openEditServiceModal(service)}>
+                                <Pencil size={15} />
+                              </button>
+                              <button className="admin-btn-icon danger" onClick={() => handleDeleteService(service)}>
+                                <Trash2 size={15} />
+                              </button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>

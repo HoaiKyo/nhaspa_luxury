@@ -50,7 +50,7 @@ export default function AppointmentListPage() {
           <h1 className="text-xl font-bold" style={{ color: 'var(--admin-text-heading)' }}>Danh sách Lịch hẹn</h1>
           <p className="text-sm mt-0.5" style={{ color: 'var(--admin-text-muted)' }}>{total} lịch hẹn đang có</p>
         </div>
-        <button onClick={() => navigate('/receptionist/lich-hen/tao-moi')} className="admin-btn admin-btn-primary">
+        <button onClick={() => navigate('tao-moi')} className="admin-btn admin-btn-primary">
           <Plus size={16} /> Tạo lịch hẹn
         </button>
       </div>
@@ -100,9 +100,9 @@ export default function AppointmentListPage() {
                     <th>Mã LH</th>
                     <th>Khách hàng</th>
                     <th>Thời gian hẹn</th>
-                    <th>Dịch vụ</th>
+                    <th>Dịch vụ & Khách</th>
                     <th>Trạng thái</th>
-                    <th className="text-right">Thao tác</th>
+                    <th className="text-center">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -111,6 +111,7 @@ export default function AppointmentListPage() {
                       <td className="font-mono text-xs">LH-{appt.ma_lich_hen}</td>
                       <td>
                         <div className="font-medium">{appt.ho_ten_khach || `KH #${appt.ma_khach_hang}`}</div>
+                        <div className="text-xs font-bold text-indigo-600">{appt.so_dien_thoai_khach}</div>
                         <div className="text-xs text-gray-500">Mã KH: {appt.ma_khach_hang}</div>
                       </td>
                       <td>
@@ -120,12 +121,15 @@ export default function AppointmentListPage() {
                         </div>
                       </td>
                       <td className="text-sm">
-                         {Array.isArray(appt.chi_tiets) ? appt.chi_tiets.length : 0} dịch vụ
+                         <div>{Array.isArray(appt.chi_tiets) ? appt.chi_tiets.length : 0} dịch vụ</div>
+                         <div className="text-xs text-gray-500 font-medium">
+                            {1 + (appt.khach_di_kems?.length || 0)} người
+                         </div>
                       </td>
                       <td>{getStatusBadge(appt.trang_thai)}</td>
-                      <td className="text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <button onClick={() => navigate(`/receptionist/lich-hen/${appt.ma_lich_hen}`)} className="admin-btn-icon text-indigo-500" title="Xem chi tiết">
+                      <td className="text-center">
+                        <div className="flex items-center justify-center gap-1">
+                          <button onClick={() => navigate(String(appt.ma_lich_hen))} className="admin-btn-icon text-indigo-500" title="Xem chi tiết">
                             <Eye size={15} />
                           </button>
                         </div>

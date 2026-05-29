@@ -43,8 +43,6 @@ def get_profile(current_user: NguoiDung = Depends(get_current_user)):
         "gioi_tinh": current_user.gioi_tinh,
         "dia_chi": current_user.dia_chi,
         "anh_dai_dien": current_user.anh_dai_dien,
-        "diem_tich_luy": current_user.diem_tich_luy,
-        "hang_thanh_vien": current_user.hang_thanh_vien,
         "vai_tros": roles,
     })
 

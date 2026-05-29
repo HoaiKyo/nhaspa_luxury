@@ -22,7 +22,6 @@ IF OBJECT_ID('chi_tiet_lich_hen', 'U') IS NOT NULL DROP TABLE chi_tiet_lich_hen;
 IF OBJECT_ID('khach_di_kem', 'U') IS NOT NULL DROP TABLE khach_di_kem;
 IF OBJECT_ID('chi_tiet_hoa_don', 'U') IS NOT NULL DROP TABLE chi_tiet_hoa_don;
 IF OBJECT_ID('thanh_toan', 'U') IS NOT NULL DROP TABLE thanh_toan;
-IF OBJECT_ID('lich_su_diem', 'U') IS NOT NULL DROP TABLE lich_su_diem;
 IF OBJECT_ID('hoa_don', 'U') IS NOT NULL DROP TABLE hoa_don;
 IF OBJECT_ID('lich_hen', 'U') IS NOT NULL DROP TABLE lich_hen;
 IF OBJECT_ID('combo_khach_hang', 'U') IS NOT NULL DROP TABLE combo_khach_hang;
@@ -67,8 +66,6 @@ CREATE TABLE nguoi_dung (
     ngay_sinh DATETIME NULL,
     dia_chi NVARCHAR(255) NULL,
     anh_dai_dien VARCHAR(500) NULL,
-    diem_tich_luy INT DEFAULT 0,
-    hang_thanh_vien NVARCHAR(50) DEFAULT N'Thành viên mới',
     trang_thai BIT DEFAULT 1,
     ngay_tao DATETIME DEFAULT GETDATE(),
     ngay_cap_nhat DATETIME DEFAULT GETDATE()
@@ -342,9 +339,8 @@ CREATE TABLE hoa_don (
     tong_tien DECIMAL(18,2) DEFAULT 0,
     giam_gia DECIMAL(18,2) DEFAULT 0,
     thue DECIMAL(18,2) DEFAULT 0,
-    diem_su_dung INT DEFAULT 0,
-    gia_tri_diem DECIMAL(18,2) DEFAULT 0,
-    diem_tich_luy INT DEFAULT 0,
+    so_tien_khach_tra DECIMAL(18,2) DEFAULT 0,
+    so_tien_tra_lai DECIMAL(18,2) DEFAULT 0,
     thanh_tien DECIMAL(18,2) DEFAULT 0,
     trang_thai VARCHAR(20) DEFAULT 'DRAFT',
     trang_thai_hd_dien_tu VARCHAR(20) DEFAULT 'NOT_ISSUED',
@@ -392,22 +388,6 @@ CREATE TABLE thanh_toan (
 );
 GO
 
--- ============================================================
--- 21. LICH_SU_DIEM (Point History)
--- ============================================================
-CREATE TABLE lich_su_diem (
-    ma_lich_su INT IDENTITY(1,1) PRIMARY KEY,
-    ma_khach_hang INT NOT NULL,
-    ma_hoa_don INT NULL,
-    loai_bien_dong VARCHAR(40) NOT NULL,
-    diem_thay_doi INT NOT NULL,
-    so_du_sau INT NOT NULL DEFAULT 0,
-    noi_dung NVARCHAR(255) NULL,
-    ngay_tao DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (ma_khach_hang) REFERENCES nguoi_dung(ma_nguoi_dung),
-    FOREIGN KEY (ma_hoa_don) REFERENCES hoa_don(ma_hoa_don)
-);
-GO
 
 -- ============================================================
 -- 22. NHA_CUNG_CAP (Suppliers)

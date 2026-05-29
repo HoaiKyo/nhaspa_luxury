@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Admin API service â€” CRUD wrappers for all admin management endpoints.
  */
 import { apiClient } from './client';
@@ -21,11 +21,12 @@ export const staffApi = {
   get: (id: number) => apiClient.get(`/staff/${id}`),
   create: (data: any) => apiClient.post('/staff', data),
   update: (id: number, data: any) => apiClient.put(`/staff/${id}`, data),
-  availableForService: (serviceId?: number, apptDate?: string, startTime?: string) => {
+  availableForService: (serviceId?: number, apptDate?: string, startTime?: string, excludeApptId?: number) => {
     const params = new URLSearchParams();
     if (serviceId) params.append('service_id', String(serviceId));
     if (apptDate) params.append('appt_date', apptDate);
     if (startTime) params.append('start_time', startTime);
+    if (excludeApptId) params.append('exclude_appointment_id', String(excludeApptId));
     return apiClient.get(`/staff/available-for-service?${params.toString()}`);
   },
 };
@@ -245,5 +246,10 @@ export const bomApi = {
   getByService: (serviceId: number) => apiClient.get(`/bom/service/${serviceId}`),
   create: (serviceId: number, data: any) => apiClient.post(`/bom/service/${serviceId}`, data),
   delete: (bomId: number) => apiClient.delete(`/bom/${bomId}`),
+};
+
+export const systemApi = {
+  list: () => apiClient.get('/system/settings'),
+  update: (data: { ma_cau_hinh: string; gia_tri: string }) => apiClient.put('/system/settings', data),
 };
 

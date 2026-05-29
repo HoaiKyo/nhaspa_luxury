@@ -16,27 +16,27 @@ INSERT INTO vai_tro (ten_vai_tro, mo_ta) VALUES
 GO
 
 -- 2. NGUOI_DUNG (20 users, mat_khau = bcrypt hash of 'password123')
-INSERT INTO nguoi_dung (ho_ten, email, mat_khau, so_dien_thoai, gioi_tinh, dia_chi, diem_tich_luy, hang_thanh_vien) VALUES
-(N'Admin Hệ Thống','admin@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000001','MALE',N'Hà Nội',0,N'Admin'),
-(N'Nguyễn Văn Minh','minh.nv@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000002','MALE',N'Hà Nội',50,N'Bạc'),
-(N'Trần Thị Lan','lan.tt@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000003','FEMALE',N'Hà Nội',120,N'Vàng'),
-(N'Lê Hoàng Nam','nam.lh@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000004','MALE',N'Hà Nội',200,N'Bạch kim'),
-(N'Phạm Thị Hương','huong.pt@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000005','FEMALE',N'Hà Nội',0,N'Thành viên mới'),
-(N'Vũ Đức Anh','anh.vd@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000006','MALE',N'Hải Phòng',30,N'Bạc'),
-(N'Hoàng Thị Mai','mai.ht@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000007','FEMALE',N'Đà Nẵng',80,N'Vàng'),
-(N'Đỗ Văn Tùng','tung.dv@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000008','MALE',N'HCM',10,N'Thành viên mới'),
-(N'Ngô Thị Thảo','thao.nt@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000009','FEMALE',N'HCM',150,N'Vàng'),
-(N'Bùi Quang Huy','huy.bq@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000010','MALE',N'Hà Nội',0,N'Thành viên mới'),
-(N'Lý Thị Ngọc','ngoc.lt@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000011','FEMALE',N'Hà Nội',40,N'Bạc'),
-(N'Trịnh Văn Đạt','dat.tv@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000012','MALE',N'Hà Nội',0,N'Thành viên mới'),
-(N'Phan Thị Yến','yen.pt@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000013','FEMALE',N'Hà Nội',90,N'Vàng'),
-(N'Dương Văn Phúc','phuc.dv@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000014','MALE',N'Bắc Ninh',0,N'Thành viên mới'),
-(N'Cao Thị Linh','linh.ct@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000015','FEMALE',N'Hà Nội',60,N'Bạc'),
-(N'Tạ Minh Quân','quan.tm@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000016','MALE',N'Hà Nội',0,N'Thành viên mới'),
-(N'Đinh Thị Trang','trang.dt@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000017','FEMALE',N'Hưng Yên',20,N'Thành viên mới'),
-(N'Hà Văn Long','long.hv@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000018','MALE',N'Hà Nội',110,N'Vàng'),
-(N'Mai Thị Hoa','hoa.mt@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000019','FEMALE',N'Hà Nội',0,N'Thành viên mới'),
-(N'Lương Đình Khoa','khoa.ld@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000020','MALE',N'Nam Định',5,N'Thành viên mới');
+INSERT INTO nguoi_dung (ho_ten, email, mat_khau, so_dien_thoai, gioi_tinh, dia_chi) VALUES
+(N'Admin Hệ Thống','admin@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000001','MALE',N'Hà Nội'),
+(N'Nguyễn Văn Minh','minh.nv@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000002','MALE',N'Hà Nội'),
+(N'Trần Thị Lan','lan.tt@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000003','FEMALE',N'Hà Nội'),
+(N'Lê Hoàng Nam','nam.lh@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000004','MALE',N'Hà Nội'),
+(N'Phạm Thị Hương','huong.pt@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000005','FEMALE',N'Hà Nội'),
+(N'Vũ Đức Anh','anh.vd@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000006','MALE',N'Hải Phòng'),
+(N'Hoàng Thị Mai','mai.ht@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000007','FEMALE',N'Đà Nẵng'),
+(N'Đỗ Văn Tùng','tung.dv@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000008','MALE',N'HCM'),
+(N'Ngô Thị Thảo','thao.nt@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000009','FEMALE',N'HCM'),
+(N'Bùi Quang Huy','huy.bq@nhaspa.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000010','MALE',N'Hà Nội'),
+(N'Lý Thị Ngọc','ngoc.lt@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000011','FEMALE',N'Hà Nội'),
+(N'Trịnh Văn Đạt','dat.tv@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000012','MALE',N'Hà Nội'),
+(N'Phan Thị Yến','yen.pt@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000013','FEMALE',N'Hà Nội'),
+(N'Dương Văn Phúc','phuc.dv@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000014','MALE',N'Bắc Ninh'),
+(N'Cao Thị Linh','linh.ct@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000015','FEMALE',N'Hà Nội'),
+(N'Tạ Minh Quân','quan.tm@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000016','MALE',N'Hà Nội'),
+(N'Đinh Thị Trang','trang.dt@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000017','FEMALE',N'Hưng Yên'),
+(N'Hà Văn Long','long.hv@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000018','MALE',N'Hà Nội'),
+(N'Mai Thị Hoa','hoa.mt@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000019','FEMALE',N'Hà Nội'),
+(N'Lương Đình Khoa','khoa.ld@gmail.com','$2b$12$LJ3m4ys3uz.dHm2r6MBbAOeDHQPHmjPHSuJ0w9J0qlMVFmHi7mUHq','0900000020','MALE',N'Nam Định');
 GO
 
 -- 3. NGUOI_DUNG_VAI_TRO

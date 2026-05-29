@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 
 import { bannersApi, newsApi, uploadApi } from '../../api/admin.api';
+import { useAuth } from '../../contexts/AuthContext';
 
 type ContentTab = 'BANNER' | 'NEWS';
 type BannerPosition = 'HOMEPAGE_HERO' | 'POPUP' | 'SIDE';
@@ -324,6 +325,8 @@ const defaultNewsForm = (): NewsFormState => ({
 });
 
 export default function ContentManager({ initialTab = 'BANNER' }: ContentManagerProps) {
+  const { user } = useAuth();
+  const isAdmin = user?.vai_tros?.includes('ADMIN') || false;
   const [activeTab, setActiveTab] = useState<ContentTab>(initialTab);
 
   const [bannerMeta, setBannerMeta] = useState<BannerMetaStore>(() => loadBannerMeta());
@@ -930,11 +933,12 @@ export default function ContentManager({ initialTab = 'BANNER' }: ContentManager
         </div>
 
         <div className="admin-contentmgr-header-actions">
-          {activeTab === 'BANNER' ? (
+          {isAdmin && activeTab === 'BANNER' && (
             <button className="admin-btn admin-contentmgr-btn-gold" onClick={openCreateBanner}>
               <Plus size={16} /> Thêm banner
             </button>
-          ) : (
+          )}
+          {isAdmin && activeTab === 'NEWS' && (
             <button className="admin-btn admin-contentmgr-btn-gold" onClick={openCreatePost}>
               <Plus size={16} /> Tạo bài viết
             </button>
@@ -1047,7 +1051,7 @@ export default function ContentManager({ initialTab = 'BANNER' }: ContentManager
                       <th>Ngày bắt đầu</th>
                       <th>Ngày kết thúc</th>
                       <th>Trạng thái</th>
-                      <th className="text-right">Hành động</th>
+                      {isAdmin && <th className="text-right">Hành động</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -1085,24 +1089,27 @@ export default function ContentManager({ initialTab = 'BANNER' }: ContentManager
                           <button
                             className={`admin-contentmgr-switch ${banner.trang_thai === 'ACTIVE' ? 'active' : ''}`}
                             onClick={() => toggleBannerStatus(banner)}
+                            disabled={!isAdmin}
                           >
                             <span className="dot" />
                             {banner.trang_thai === 'ACTIVE' ? 'Bật' : 'Tắt'}
                           </button>
                         </td>
-                        <td className="text-right">
-                          <div className="actions">
-                            <button className="admin-btn-icon" onClick={() => openEditBanner(banner)} title="Sửa">
-                              <Pencil size={14} />
-                            </button>
-                            <button className="admin-btn-icon" onClick={() => duplicateBanner(banner)} title="Duplicate">
-                              <Copy size={14} />
-                            </button>
-                            <button className="admin-btn-icon admin-danger-soft" onClick={() => deleteBanner(banner)} title="Xóa">
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        </td>
+                        {isAdmin && (
+                          <td className="text-right">
+                            <div className="actions">
+                              <button className="admin-btn-icon" onClick={() => openEditBanner(banner)} title="Sửa">
+                                <Pencil size={14} />
+                              </button>
+                              <button className="admin-btn-icon" onClick={() => duplicateBanner(banner)} title="Duplicate">
+                                <Copy size={14} />
+                              </button>
+                              <button className="admin-btn-icon admin-danger-soft" onClick={() => deleteBanner(banner)} title="Xóa">
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
@@ -1153,9 +1160,13 @@ export default function ContentManager({ initialTab = 'BANNER' }: ContentManager
 
                   <div className="footer-actions">
                     <button onClick={() => openPostPublicView(post)}><Eye size={14} /> Xem</button>
-                    <button onClick={() => openEditPost(post)}><Pencil size={14} /> Sửa</button>
-                    <button onClick={() => deletePost(post)}><Trash2 size={14} /> Xóa</button>
-                    <button onClick={() => duplicatePost(post)}><Copy size={14} /> Duplicate</button>
+                    {isAdmin && (
+                      <>
+                        <button onClick={() => openEditPost(post)}><Pencil size={14} /> Sửa</button>
+                        <button onClick={() => deletePost(post)}><Trash2 size={14} /> Xóa</button>
+                        <button onClick={() => duplicatePost(post)}><Copy size={14} /> Duplicate</button>
+                      </>
+                    )}
                   </div>
                 </article>
               ))}

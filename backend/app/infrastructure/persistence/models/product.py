@@ -65,7 +65,7 @@ class SanPham(Base):
     # Combos where this product IS the combo package
     combo_details = relationship("ChiTietCombo", back_populates="combo",
                                  foreign_keys="ChiTietCombo.ma_combo")
-    ton_kho = relationship("TonKho", back_populates="san_pham", uselist=False)
+
 
 
 class BangGia(Base):

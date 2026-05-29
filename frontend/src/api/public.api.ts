@@ -127,5 +127,13 @@ export const publicApi = {
     }[];
   }) => {
     return apiClient.request<any>('POST', '/appointments/public', data, true);
+  },
+
+  getSlotOccupancy: (date: string) => {
+    return apiClient.request<Record<string, number>>('GET', `/appointments/occupancy?appt_date=${date}`, undefined, false);
+  },
+
+  getMaxCapacity: () => {
+    return apiClient.request<number>('GET', '/appointments/max-capacity', undefined, false);
   }
 };

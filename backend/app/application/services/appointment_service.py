@@ -5,12 +5,13 @@ from decimal import Decimal
 from datetime import date, time, datetime, timedelta
 from typing import Dict, List, Optional, Set, Tuple
 
-from sqlalchemy import func
+from sqlalchemy import func, case
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.exceptions import NotFoundException, BusinessRuleException
 from app.core.logging_config import get_logger
 from app.infrastructure.persistence.models.appointment import LichHen, KhachDiKem, ChiTietLichHen
+from app.infrastructure.persistence.models.system import CauHinhHeThong
 from app.infrastructure.persistence.models.combo import ComboKhachHang
 from app.infrastructure.persistence.models.product import SanPham
 from app.infrastructure.persistence.models.staff import NhanVien
@@ -26,6 +27,47 @@ BOOKING_MAX_DAYS = 7
 class AppointmentService:
     def __init__(self, db: Session):
         self.db = db
+
+    def get_max_capacity(self) -> int:
+        """Fetch MAX_CAPACITY from system settings, default to 10."""
+        setting = self.db.query(CauHinhHeThong).filter(CauHinhHeThong.ma_cau_hinh == "MAX_CAPACITY").first()
+        if setting and setting.gia_tri:
+            try:
+                return int(setting.gia_tri)
+            except ValueError:
+                return 10
+        return 10
+
+    def get_occupancy(self, appt_date: date) -> Dict[str, int]:
+        """Count total unique guests occupying beds in each 30-minute slot."""
+        details = (
+            self.db.query(ChiTietLichHen)
+            .join(LichHen)
+            .filter(
+                LichHen.ngay_hen == appt_date,
+                LichHen.trang_thai.notin_(["CANCELLED", "NO_SHOW", "COMPLETED"])
+            )
+            .all()
+        )
+        
+        occupancy: Dict[str, int] = {}
+        current_min = BOOKING_OPEN_MINUTES
+        while current_min < BOOKING_CLOSE_MINUTES:
+            t = self._minutes_to_time(current_min)
+            t_str = t.strftime("%H:%M")
+            
+            active_people = set()
+            for d in details:
+                d_start = d.gio_bat_dau or d.lich_hen.gio_bat_dau
+                d_end = d.gio_ket_thuc or d.lich_hen.gio_ket_thuc
+                if d_start <= t < d_end:
+                    person_id = f"{d.ma_lich_hen}_{d.ma_khach_di_kem or 'MAIN'}"
+                    active_people.add(person_id)
+            
+            occupancy[t_str] = len(active_people)
+            current_min += BOOKING_SLOT_MINUTES
+            
+        return occupancy
 
     def get_appointments(
         self,
@@ -59,7 +101,13 @@ class AppointmentService:
 
         total = query.count()
         appointments = (
-            query.order_by(LichHen.ngay_hen.desc(), LichHen.gio_bat_dau)
+            query.order_by(
+                case(
+                    (LichHen.trang_thai == "PENDING", 0),
+                    else_=1
+                ),
+                LichHen.ma_lich_hen.desc()
+            )
             .offset((page - 1) * page_size)
             .limit(page_size)
             .all()
@@ -110,11 +158,28 @@ class AppointmentService:
             }
         )
         service_prices = {k: v["gia"] for k, v in service_prices_info.items()}
-        # Calculate end time based on longest duration service or sum? 
-        # Usually for one staff it's sequential. But current schema treats one 'LichHen' as a block.
-        # Let's take the MAX duration for now or SUM if we want to be safe.
-        # Most of our services are 60-90-120.
-        total_duration = sum(v["thoi_luong"] or 30 for v in service_prices_info.values())
+        person_durations: Dict[str, int] = {}
+        person_next_start: Dict[str, time] = {}
+        
+        for detail in chi_tiets_data:
+            p_key = self._person_key_from_payload(detail)
+            s_id = int(detail.get("ma_san_pham"))
+            s_info = service_prices_info.get(s_id, {})
+            duration = s_info.get("thoi_luong") or 30
+            
+            # Assign sequential times for each person
+            curr_start = detail.get("gio_bat_dau") or person_next_start.get(p_key, gio_bat_dau)
+            curr_end = detail.get("gio_ket_thuc") or self._calculate_end_time(curr_start, duration)
+            
+            detail["gio_bat_dau"] = curr_start
+            detail["gio_ket_thuc"] = curr_end
+            person_next_start[p_key] = curr_end
+            person_durations[p_key] = person_durations.get(p_key, 0) + duration
+        
+        max_duration = max(person_durations.values()) if person_durations else 30
+        # Round up to nearest 30 minutes to satisfy slot validation
+        total_duration = ((max_duration + BOOKING_SLOT_MINUTES - 1) // BOOKING_SLOT_MINUTES) * BOOKING_SLOT_MINUTES
+
         gio_ket_thuc = data.get("gio_ket_thuc") or self._calculate_end_time(gio_bat_dau, total_duration)
 
         self._validate_booking_window(ngay_hen)
@@ -122,14 +187,6 @@ class AppointmentService:
         self._validate_staff_unique_between_people(chi_tiets_data)
 
         data["gio_ket_thuc"] = gio_ket_thuc
-
-        service_prices = self._get_service_prices(
-            {
-                int(detail.get("ma_san_pham"))
-                for detail in chi_tiets_data
-                if detail.get("ma_san_pham") is not None
-            }
-        )
 
         for detail in chi_tiets_data:
             if detail.get("ma_nhan_vien"):
@@ -142,6 +199,57 @@ class AppointmentService:
                     start_time=detail_start,
                     end_time=detail_end,
                 )
+
+        # --- CAPACITY CHECK (SLOT-BASED & CONCURRENCY SAFE) ---
+        max_cap = self.get_max_capacity()
+        
+        # Determine all 30-min slots covered by this new appointment
+        start_min = self._time_to_minutes(gio_bat_dau)
+        end_min = self._time_to_minutes(gio_ket_thuc)
+        slots_to_check = []
+        curr = start_min
+        while curr < end_min:
+            slots_to_check.append(self._minutes_to_time(curr))
+            curr += BOOKING_SLOT_MINUTES
+
+        # Calculate current occupancy for each required slot
+        active_details = (
+            self.db.query(ChiTietLichHen)
+            .join(LichHen)
+            .filter(
+                LichHen.ngay_hen == ngay_hen,
+                LichHen.trang_thai.notin_(["CANCELLED", "NO_SHOW", "COMPLETED"])
+            )
+            .with_for_update() # Lock relevant rows
+            .all()
+        )
+        
+        # Determine how many unique people are active in each slot for the NEW appointment
+        new_active_per_slot: Dict[time, int] = {}
+        for slot_time in slots_to_check:
+            new_active_people = set()
+            for d in chi_tiets_data:
+                d_start = d.get("gio_bat_dau") or gio_bat_dau
+                d_end = d.get("gio_ket_thuc") or gio_ket_thuc
+                if d_start <= slot_time < d_end:
+                    p_key = self._person_key_from_payload(d)
+                    new_active_people.add(p_key)
+            new_active_per_slot[slot_time] = len(new_active_people)
+
+        for slot_time in slots_to_check:
+            # Count people already in the spa during this slot
+            occupied_count = len({
+                f"{d.ma_lich_hen}_{d.ma_khach_di_kem or 'MAIN'}"
+                for d in active_details
+                if (d.gio_bat_dau or d.lich_hen.gio_bat_dau) <= slot_time < (d.gio_ket_thuc or d.lich_hen.gio_ket_thuc)
+            })
+            
+            new_guests_in_slot = new_active_per_slot.get(slot_time, 0)
+            if occupied_count + new_guests_in_slot > max_cap:
+                raise BusinessRuleException(
+                    message=f"Khung giờ {slot_time.strftime('%H:%M')} đã đạt giới hạn sức chứa ({occupied_count}/{max_cap} giường). Vui lòng chọn lúc khác hoặc giảm dịch vụ."
+                )
+        # -----------------------------------------------------
 
         appointment = LichHen(ma_khach_hang=customer_id, **data)
         self.db.add(appointment)
@@ -164,9 +272,6 @@ class AppointmentService:
                     raise BusinessRuleException(message="Khách đi kèm không hợp lệ trong chi tiết dịch vụ")
                 detail_payload["ma_khach_di_kem"] = guest.ma_khach_di_kem
 
-            detail_payload["gio_bat_dau"] = detail_payload.get("gio_bat_dau") or gio_bat_dau
-            detail_payload["gio_ket_thuc"] = detail_payload.get("gio_ket_thuc") or gio_ket_thuc
-
             if detail_payload.get("gia") is None:
                 ma_san_pham = int(detail_payload["ma_san_pham"])
                 detail_payload["gia"] = service_prices.get(ma_san_pham, Decimal("0"))
@@ -187,8 +292,6 @@ class AppointmentService:
 
     def update_appointment(self, appointment_id: int, data: dict) -> LichHen:
         appointment = self.get_appointment(appointment_id)
-        if appointment.trang_thai in ("COMPLETED", "CANCELLED"):
-            raise BusinessRuleException(message="Không thể cập nhật lịch hẹn đã hoàn thành hoặc đã hủy")
 
         detail_payloads = data.pop("chi_tiets", None)
         guest_payloads = data.pop("khach_di_kems", None)
@@ -197,11 +300,14 @@ class AppointmentService:
         next_date = data.get("ngay_hen", appointment.ngay_hen)
         next_start = data.get("gio_bat_dau", appointment.gio_bat_dau)
         
-        # 2. Sync Companions if provided (Simple: replace all if list is provided)
-        # Note: In production we'd do a more surgical sync, but for this app replace is safer
-        # provided the frontend sends the COMPLETE list.
+        # 2. Sync Companions if provided
         if guest_payloads is not None:
-            # Delete old ones (cascades to details)
+            # Nullify references in details first to avoid IntegrityError
+            for detail in appointment.chi_tiets:
+                detail.ma_khach_di_kem = None
+            self.db.flush()
+
+            # Delete old ones
             for guest in appointment.khach_di_kems:
                 self.db.delete(guest)
             self.db.flush()
@@ -217,17 +323,43 @@ class AppointmentService:
 
         # 3. Sync Details if provided
         if detail_payloads is not None:
-            # Calculate total duration first for validation
-            service_ids = {p["ma_san_pham"] for p in detail_payloads if p.get("ma_san_pham")}
-            service_prices_info = self._get_service_info(service_ids)
-            total_duration = sum(v["thoi_luong"] or 30 for v in service_prices_info.values())
+            existing_details = {d.ma_chi_tiet: d for d in appointment.chi_tiets}
+            
+            for p in detail_payloads:
+                if not p.get("ma_san_pham") and p.get("ma_chi_tiet") in existing_details:
+                    p["ma_san_pham"] = existing_details[p["ma_chi_tiet"]].ma_san_pham
+
+            person_durations: Dict[str, int] = {}
+            person_next_start: Dict[str, time] = {}
+            service_prices_info = self._get_service_info(
+                {int(p["ma_san_pham"]) for p in detail_payloads if p.get("ma_san_pham")}
+            )
+
+            for detail in detail_payloads:
+                p_key = self._person_key_from_payload(detail)
+                s_id_raw = detail.get("ma_san_pham")
+                if not s_id_raw:
+                    raise BusinessRuleException(message="Chi tiết dịch vụ thiếu mã sản phẩm")
+                s_id = int(s_id_raw)
+                s_info = service_prices_info.get(s_id, {})
+                duration = s_info.get("thoi_luong") or 30
+                
+                curr_start = detail.get("gio_bat_dau") or person_next_start.get(p_key, next_start)
+                curr_end = detail.get("gio_ket_thuc") or self._calculate_end_time(curr_start, duration)
+                
+                detail["gio_bat_dau"] = curr_start
+                detail["gio_ket_thuc"] = curr_end
+                person_next_start[p_key] = curr_end
+                person_durations[p_key] = person_durations.get(p_key, 0) + duration
+            
+            max_duration = max(person_durations.values()) if person_durations else 30
+            total_duration = ((max_duration + BOOKING_SLOT_MINUTES - 1) // BOOKING_SLOT_MINUTES) * BOOKING_SLOT_MINUTES
             
             next_end = data.get("gio_ket_thuc") or self._calculate_end_time(next_start, total_duration)
             self._validate_time_slot(next_date, next_start, next_end, is_update=True)
             data["gio_ket_thuc"] = next_end
 
             # Sync details
-            existing_details = {d.ma_chi_tiet: d for d in appointment.chi_tiets}
             payload_ids = {p["ma_chi_tiet"] for p in detail_payloads if p.get("ma_chi_tiet")}
             
             # Remove details not in payload
@@ -261,7 +393,7 @@ class AppointmentService:
                 setattr(appointment, key, value)
 
         # 5. PRE-COMMIT VALIDATION for conflicts
-        self.db.flush() # Ensure changes are in current transaction for conflict detection
+        self.db.flush()
         for detail in appointment.chi_tiets:
             if not detail.ma_nhan_vien: continue
             d_start = detail.gio_bat_dau or appointment.gio_bat_dau
@@ -275,14 +407,51 @@ class AppointmentService:
                 exclude_detail_id=detail.ma_chi_tiet
             )
 
+        # 6. CAPACITY CHECK
+        if appointment.trang_thai not in ("CANCELLED", "NO_SHOW", "COMPLETED"):
+            max_cap = self.get_max_capacity()
+            appt_start_min = self._time_to_minutes(appointment.gio_bat_dau)
+            appt_end_min = self._time_to_minutes(appointment.gio_ket_thuc)
+            curr = appt_start_min
+            slots_to_check = []
+            while curr < appt_end_min:
+                slots_to_check.append(self._minutes_to_time(curr))
+                curr += BOOKING_SLOT_MINUTES
+                
+            active_details = (
+                self.db.query(ChiTietLichHen)
+                .join(LichHen)
+                .filter(
+                    LichHen.ngay_hen == appointment.ngay_hen,
+                    LichHen.trang_thai.notin_(["CANCELLED", "NO_SHOW", "COMPLETED"])
+                )
+                .with_for_update()
+                .all()
+            )
+            
+            for slot_time in slots_to_check:
+                occupied_count = len({
+                    f"{d.ma_lich_hen}_{d.ma_khach_di_kem or 'MAIN'}"
+                    for d in active_details
+                    if (d.gio_bat_dau or d.lich_hen.gio_bat_dau) <= slot_time < (d.gio_ket_thuc or d.lich_hen.gio_ket_thuc)
+                })
+                
+                if occupied_count > max_cap:
+                    raise BusinessRuleException(
+                        message=f"Khung giờ {slot_time.strftime('%H:%M')} đã vượt giới hạn sức chứa ({occupied_count}/{max_cap} giường) sau khi cập nhật."
+                    )
+
         self.db.commit()
         self.db.refresh(appointment)
         return appointment
 
-    def cancel_appointment(self, appointment_id: int) -> LichHen:
+    def cancel_appointment(self, appointment_id: int, is_staff: bool = False) -> LichHen:
         appointment = self.get_appointment(appointment_id)
         if appointment.trang_thai in ("COMPLETED", "CANCELLED"):
-            raise BusinessRuleException(message="Không thể hủy lịch hẹn đã hoàn thành hoặc đã hủy")
+            raise BusinessRuleException(message="Không thể hủy lịch hẹn đã hoàn thành hoặc đã bị hủy trước đó")
+            
+        if not is_staff and appointment.trang_thai != "PENDING":
+            raise BusinessRuleException(message="Chỉ được phép hủy lịch hẹn ở trạng thái Chờ xác nhận")
 
         for detail in appointment.chi_tiets:
             if detail.ma_combo_kh:
@@ -301,7 +470,7 @@ class AppointmentService:
     def _calculate_end_time(self, start_time: Optional[time], duration_minutes: int) -> Optional[time]:
         if start_time is None:
             return None
-        end_minutes = min(self._time_to_minutes(start_time) + duration_minutes, 1439) # Don't exceed end of day
+        end_minutes = min(self._time_to_minutes(start_time) + duration_minutes, 1439)
         return self._minutes_to_time(end_minutes)
 
     def _default_end_time(self, start_time: Optional[time]) -> Optional[time]:
@@ -322,8 +491,6 @@ class AppointmentService:
         start_minutes = self._time_to_minutes(start_time)
         if start_minutes < BOOKING_OPEN_MINUTES or start_minutes >= BOOKING_CLOSE_MINUTES:
             raise BusinessRuleException(message="Giờ hẹn chỉ trong khoảng 08:00 đến 22:00")
-        if start_minutes % BOOKING_SLOT_MINUTES != 0:
-            raise BusinessRuleException(message="Giờ hẹn phải theo từng slot 30 phút")
 
         if appt_date == datetime.now().date() and not is_update:
             now = datetime.now()
@@ -336,8 +503,6 @@ class AppointmentService:
             end_minutes = self._time_to_minutes(end_time)
             if end_minutes < BOOKING_OPEN_MINUTES or end_minutes > BOOKING_CLOSE_MINUTES:
                 raise BusinessRuleException(message="Giờ kết thúc chỉ trong khoảng 08:00 đến 22:00")
-            if end_minutes % BOOKING_SLOT_MINUTES != 0:
-                raise BusinessRuleException(message="Giờ kết thúc phải theo từng slot 30 phút")
             if end_minutes <= start_minutes:
                 raise BusinessRuleException(message="Giờ kết thúc phải sau giờ bắt đầu")
 
@@ -370,19 +535,6 @@ class AppointmentService:
                 )
             assigned[int(staff_id)] = person_key
 
-    def _validate_staff_unique_between_people_entities(self, details: List[ChiTietLichHen]) -> None:
-        assigned: Dict[int, str] = {}
-        for detail in details:
-            if not detail.ma_nhan_vien:
-                continue
-            person_key = f"GUEST_ID:{detail.ma_khach_di_kem}" if detail.ma_khach_di_kem else "MAIN"
-            existing_person = assigned.get(int(detail.ma_nhan_vien))
-            if existing_person is not None and existing_person != person_key:
-                raise BusinessRuleException(
-                    message=f"Nhân viên ID {detail.ma_nhan_vien} đã được chọn cho khách khác trong cùng lịch hẹn"
-                )
-            assigned[int(detail.ma_nhan_vien)] = person_key
-
     def _get_service_info(self, service_ids: Set[int]) -> Dict[int, dict]:
         if not service_ids:
             return {}
@@ -410,10 +562,6 @@ class AppointmentService:
             }
         return info_map
 
-    def _get_service_prices(self, service_ids: Set[int]) -> Dict[int, Decimal]:
-        info = self._get_service_info(service_ids)
-        return {k: v["gia"] for k, v in info.items()}
-
     def _check_staff_conflict(
         self,
         staff_id: int,
@@ -423,12 +571,10 @@ class AppointmentService:
         exclude_appointment_id: Optional[int] = None,
         exclude_detail_id: Optional[int] = None,
     ) -> None:
-        """Check if staff member has conflicting appointments."""
         if not start_time:
             return
 
         effective_end = end_time or self._default_end_time(start_time) or start_time
-
         start_expr = func.coalesce(ChiTietLichHen.gio_bat_dau, LichHen.gio_bat_dau)
         end_expr = func.coalesce(ChiTietLichHen.gio_ket_thuc, LichHen.gio_ket_thuc, LichHen.gio_bat_dau)
 
@@ -438,7 +584,7 @@ class AppointmentService:
             .filter(
                 ChiTietLichHen.ma_nhan_vien == staff_id,
                 LichHen.ngay_hen == appt_date,
-                LichHen.trang_thai.notin_(["CANCELLED", "NO_SHOW"]),
+                LichHen.trang_thai.notin_(["CANCELLED", "NO_SHOW", "COMPLETED"]),
             )
         )
 
@@ -458,7 +604,6 @@ class AppointmentService:
             )
 
     def _use_combo(self, combo_kh_id: int) -> None:
-        """Deduct one use from customer combo."""
         combo = self.db.query(ComboKhachHang).filter(
             ComboKhachHang.ma_combo_kh == combo_kh_id
         ).first()

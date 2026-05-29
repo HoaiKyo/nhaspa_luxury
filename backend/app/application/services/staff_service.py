@@ -118,14 +118,34 @@ class StaffService:
         existing = self.db.query(NhanVien).filter(NhanVien.ma_nguoi_dung == data["ma_nguoi_dung"]).first()
         if existing:
             raise ConflictException(message="Người dùng này đã là nhân viên")
+        
+        service_ids = data.pop("danh_sach_ma_dich_vu", None)
         staff = NhanVien(**data)
         self.db.add(staff)
         self.db.commit()
         self.db.refresh(staff)
+
+        if service_ids is not None:
+            self._sync_staff_services(staff.ma_nhan_vien, service_ids)
+
         return staff
+
+    def _sync_staff_services(self, staff_id: int, service_ids: List[int]) -> None:
+        from app.infrastructure.persistence.models.product import NhanVienDichVu
+        # Delete existing
+        self.db.query(NhanVienDichVu).filter(NhanVienDichVu.ma_nhan_vien == staff_id).delete()
+        # Add new
+        for sid in service_ids:
+            self.db.add(NhanVienDichVu(ma_nhan_vien=staff_id, ma_san_pham=sid))
+        self.db.commit()
 
     def update_staff(self, staff_id: int, data: dict) -> NhanVien:
         staff = self.get_staff(staff_id)
+        
+        service_ids = data.pop("danh_sach_ma_dich_vu", None)
+        if service_ids is not None:
+            self._sync_staff_services(staff_id, service_ids)
+
         for key, value in data.items():
             if value is not None:
                 setattr(staff, key, value)
@@ -143,7 +163,8 @@ class StaffService:
         service_id: Optional[int] = None,
         appt_date: Optional[date] = None,
         start_time: Optional[time] = None,
-        end_time: Optional[time] = None
+        end_time: Optional[time] = None,
+        exclude_appointment_id: Optional[int] = None
     ) -> List[NhanVien]:
         with open("staff_avail.log", "a", encoding="utf-8") as f:
             f.write(f"\n--- Checking available staff ---\n")
@@ -151,6 +172,18 @@ class StaffService:
         
         # 1. Start with all active staff
         query = self.db.query(NhanVien).options(joinedload(NhanVien.nguoi_dung)).filter(NhanVien.trang_thai == True)
+        
+        # Bỏ qua admin và lễ tân
+        query = query.filter(
+            or_(
+                NhanVien.chuc_vu.is_(None),
+                and_(
+                    ~NhanVien.chuc_vu.ilike("%admin%"),
+                    ~NhanVien.chuc_vu.ilike("%lễ tân%"),
+                    ~NhanVien.chuc_vu.ilike("%receptionist%")
+                )
+            )
+        )
         
         # 2. Filter by service if provided
         if service_id:
@@ -201,11 +234,15 @@ class StaffService:
                 continue
 
             # 5. Check for appointment conflicts in Python to be safe with SQL dialect types
-            staff_appts = self.db.query(ChiTietLichHen).join(LichHen).filter(
+            staff_appts_query = self.db.query(ChiTietLichHen).join(LichHen).filter(
                 ChiTietLichHen.ma_nhan_vien == s.ma_nhan_vien,
                 LichHen.ngay_hen == appt_date,
-                LichHen.trang_thai.notin_(["CANCELLED", "NO_SHOW"])
-            ).all()
+                LichHen.trang_thai.notin_(["CANCELLED", "NO_SHOW", "COMPLETED"])
+            )
+            if exclude_appointment_id:
+                staff_appts_query = staff_appts_query.filter(LichHen.ma_lich_hen != exclude_appointment_id)
+            
+            staff_appts = staff_appts_query.all()
             
             conflict_appt_id = None
             for d in staff_appts:

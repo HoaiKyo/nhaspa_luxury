@@ -18,8 +18,14 @@ export const receptionistApi = {
     apiClient.post(`/appointments/${id}/cancel`),
 
   // Staff lookup
-  getAvailableStaff: (serviceId?: number) =>
-    apiClient.get(`/staff/available-for-service${serviceId ? `?service_id=${serviceId}` : ''}`),
+  getAvailableStaff: (serviceId?: number, apptDate?: string, startTime?: string, excludeAppointmentId?: number) => {
+    const params = new URLSearchParams();
+    if (serviceId) params.append('service_id', String(serviceId));
+    if (apptDate) params.append('appt_date', apptDate);
+    if (startTime) params.append('start_time', startTime);
+    if (excludeAppointmentId) params.append('exclude_appointment_id', String(excludeAppointmentId));
+    return apiClient.get(`/staff/available-for-service?${params.toString()}`);
+  },
 
   // Leave Requests
   getLeaves: (page = 1, pageSize = 10) => 

@@ -21,7 +21,6 @@ import {
 
 import { appointmentsApi, invoicesApi, productsApi, staffApi, usersApi } from '../../api/admin.api';
 
-type MembershipTier = 'THUONG' | 'SILVER' | 'GOLD' | 'VIP_PLATINUM';
 type ActivityFilter = 'ALL' | 'ACTIVE' | 'INACTIVE' | 'NEW30';
 type SortOption = 'NEWEST' | 'SPEND_DESC' | 'LAST_VISIT';
 type DetailTab = 'PROFILE' | 'HISTORY' | 'UPCOMING' | 'POINTS';
@@ -44,20 +43,7 @@ interface UpcomingAppointmentItem {
   services: string[];
 }
 
-interface PointsHistoryItem {
-  id: string;
-  date: string;
-  change: number;
-  reason: string;
-}
 
-interface VoucherItem {
-  id: string;
-  title: string;
-  code: string;
-  expireAt: string;
-  status: 'ACTIVE' | 'USED' | 'EXPIRED';
-}
 
 interface CustomerRecord {
   id: number;
@@ -68,8 +54,6 @@ interface CustomerRecord {
   address?: string;
   note?: string;
   active: boolean;
-  points: number;
-  tier: MembershipTier;
   createdAt?: string;
   visits: number;
   totalSpend: number;
@@ -77,8 +61,6 @@ interface CustomerRecord {
   favoriteService: string;
   history: ServiceHistoryItem[];
   upcomingAppointments: UpcomingAppointmentItem[];
-  pointsHistory: PointsHistoryItem[];
-  vouchers: VoucherItem[];
 }
 
 interface CustomerFormState {
@@ -93,13 +75,6 @@ interface CustomerFormState {
 }
 
 const CUSTOMER_NOTE_STORAGE_KEY = 'crm_customer_notes_v1';
-
-const TIER_META: Record<MembershipTier, { label: string; icon: string; className: string; minPoints: number; nextPoints: number }> = {
-  THUONG: { label: 'Thường', icon: '•', className: 'thuong', minPoints: 0, nextPoints: 250 },
-  SILVER: { label: 'Silver', icon: '🥈', className: 'silver', minPoints: 250, nextPoints: 600 },
-  GOLD: { label: 'Gold', icon: '🥇', className: 'gold', minPoints: 600, nextPoints: 1200 },
-  VIP_PLATINUM: { label: 'VIP Platinum', icon: '👑', className: 'vip', minPoints: 1200, nextPoints: 1200 },
-};
 
 const AVATAR_GRADIENTS = [
   ['#34d399', '#0f766e'],
@@ -165,48 +140,6 @@ const normalizeRoles = (roles: any): string[] => {
 
 const isInternalUser = (roles: string[]) => roles.some((role) => ['ADMIN', 'STAFF', 'RECEPTIONIST'].includes(role));
 
-const normalizeTier = (rawTier: string, points: number, totalSpend: number, visits: number): MembershipTier => {
-  const value = (rawTier || '').toLowerCase();
-
-  if (value.includes('platinum') || (value.includes('vip') && value.includes('plat'))) return 'VIP_PLATINUM';
-  if (value.includes('vip')) return 'VIP_PLATINUM';
-  if (value.includes('gold')) return 'GOLD';
-  if (value.includes('silver')) return 'SILVER';
-  if (value.includes('thường') || value.includes('thuong') || value.includes('mới')) return 'THUONG';
-
-  if (points >= 1200 || totalSpend >= 30000000 || visits >= 24) return 'VIP_PLATINUM';
-  if (points >= 600 || totalSpend >= 15000000 || visits >= 14) return 'GOLD';
-  if (points >= 250 || totalSpend >= 7000000 || visits >= 8) return 'SILVER';
-  return 'THUONG';
-};
-
-const getPointsProgress = (customer: CustomerRecord) => {
-  const tierMeta = TIER_META[customer.tier];
-  if (customer.tier === 'VIP_PLATINUM') {
-    return {
-      currentLabel: 'VIP Platinum',
-      nextLabel: 'Hạng tối đa',
-      percent: 100,
-      remaining: 0,
-    };
-  }
-
-  const denominator = Math.max(1, tierMeta.nextPoints - tierMeta.minPoints);
-  const percent = Math.max(0, Math.min(100, ((customer.points - tierMeta.minPoints) / denominator) * 100));
-  const remaining = Math.max(0, tierMeta.nextPoints - customer.points);
-  const nextLabel =
-    customer.tier === 'THUONG' ? 'Silver' :
-    customer.tier === 'SILVER' ? 'Gold' :
-    'VIP Platinum';
-
-  return {
-    currentLabel: tierMeta.label,
-    nextLabel,
-    percent,
-    remaining,
-  };
-};
-
 const loadCustomerNotes = (): Record<number, string> => {
   try {
     const raw = localStorage.getItem(CUSTOMER_NOTE_STORAGE_KEY);
@@ -229,46 +162,6 @@ const saveCustomerNotes = (notes: Record<number, string>) => {
   localStorage.setItem(CUSTOMER_NOTE_STORAGE_KEY, JSON.stringify(notes));
 };
 
-const buildVouchers = (tier: MembershipTier, customerId: number): VoucherItem[] => {
-  const now = new Date();
-  const vouchers: VoucherItem[] = [];
-
-  const addDays = (days: number) => {
-    const d = new Date(now);
-    d.setDate(d.getDate() + days);
-    return d.toISOString();
-  };
-
-  vouchers.push({
-    id: `welcome-${customerId}`,
-    title: 'Ưu đãi sinh nhật',
-    code: `BDAY${String(customerId).slice(-4)}`,
-    expireAt: addDays(30),
-    status: 'ACTIVE',
-  });
-
-  if (tier === 'SILVER' || tier === 'GOLD' || tier === 'VIP_PLATINUM') {
-    vouchers.push({
-      id: `tier-offer-${customerId}`,
-      title: tier === 'SILVER' ? 'Giảm 5% dịch vụ' : tier === 'GOLD' ? 'Giảm 10% dịch vụ' : 'Giảm 15% dịch vụ cao cấp',
-      code: `TIER${String(customerId).slice(-3)}`,
-      expireAt: addDays(45),
-      status: 'ACTIVE',
-    });
-  }
-
-  if (tier === 'VIP_PLATINUM') {
-    vouchers.push({
-      id: `vip-spa-${customerId}`,
-      title: 'Miễn phí nâng cấp liệu trình',
-      code: `VIPUP${String(customerId).slice(-2)}`,
-      expireAt: addDays(60),
-      status: 'ACTIVE',
-    });
-  }
-
-  return vouchers;
-};
 
 const parseCsvLine = (line: string): string[] => {
   const result: string[] = [];
@@ -357,16 +250,8 @@ const buildSampleCustomers = (): CustomerRecord[] => {
     });
 
     const totalSpend = history.reduce((sum, row) => sum + row.amount, 0);
-    const points = Math.floor(totalSpend / 12000);
-    const tier = normalizeTier('', points, totalSpend, visits);
-
-    const pointsHistory: PointsHistoryItem[] = history.slice(0, 10).map((row, pointIdx) => ({
-      id: `sample-point-${id}-${pointIdx}`,
-      date: row.date,
-      change: Math.max(8, Math.round(row.amount / 20000)),
-      reason: `Tích điểm từ dịch vụ ${row.serviceName}`,
-    }));
-
+        
+    
     return {
       id,
       name,
@@ -382,8 +267,7 @@ const buildSampleCustomers = (): CustomerRecord[] => {
       address: `${20 + idx} Nguyễn Trãi, Quận ${(idx % 10) + 1}, TP.HCM`,
       note: idx % 2 === 0 ? 'Ưa thích massage đá nóng và lịch cuối tuần.' : 'Khách thường đặt trước 2-3 ngày.',
       active: idx % 9 !== 0,
-      points,
-      tier,
+            
       createdAt: created.toISOString(),
       visits,
       totalSpend,
@@ -391,9 +275,7 @@ const buildSampleCustomers = (): CustomerRecord[] => {
       favoriteService: history[0]?.serviceName || '—',
       history,
       upcomingAppointments,
-      pointsHistory,
-      vouchers: buildVouchers(tier, id),
-    };
+                };
   });
 };
 
@@ -420,7 +302,7 @@ export default function UsersManager() {
   const [customerRoleId, setCustomerRoleId] = useState<number | null>(null);
 
   const [search, setSearch] = useState('');
-  const [tierFilter, setTierFilter] = useState<'ALL' | MembershipTier>('ALL');
+  const [tierFilter, setTierFilter] = useState<'ALL' | string>('ALL');
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('ALL');
   const [sortBy, setSortBy] = useState<SortOption>('NEWEST');
 
@@ -599,8 +481,7 @@ export default function UsersManager() {
           totalSpend = Math.max(0, totalSpend);
 
           const points = Math.max(0, toNumber(user.diem_tich_luy));
-          const tier = normalizeTier(user.hang_thanh_vien || '', points, totalSpend, visits);
-
+          
           const favoriteService = (() => {
             const counts = new Map<string, number>();
             history.forEach((row) => {
@@ -610,7 +491,7 @@ export default function UsersManager() {
             return sorted[0]?.[0] || '—';
           })();
 
-          const pointsHistory: PointsHistoryItem[] = [];
+          const pointsHistory: any[] = [];
           invoices
             .slice()
             .sort((a: any, b: any) => dateToMs(b.ngay_tao) - dateToMs(a.ngay_tao))
@@ -669,8 +550,7 @@ export default function UsersManager() {
             address: user.dia_chi || '',
             note: customerNotes[customerId] || '',
             active: Boolean(user.trang_thai),
-            points,
-            tier,
+                        
             createdAt: user.ngay_tao,
             visits,
             totalSpend,
@@ -678,9 +558,7 @@ export default function UsersManager() {
             favoriteService,
             history,
             upcomingAppointments,
-            pointsHistory,
-            vouchers: buildVouchers(tier, customerId),
-          } as CustomerRecord;
+                                  } as CustomerRecord;
         })
         .filter(Boolean) as CustomerRecord[];
 
@@ -714,7 +592,7 @@ export default function UsersManager() {
       return created && created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
     }).length;
 
-    const vipCustomers = customers.filter((customer) => customer.tier === 'VIP_PLATINUM').length;
+    const vipCustomers = customers.filter((customer) => false).length;
 
     const visitedCustomers = customers.filter((customer) => customer.visits > 0).length;
     const returnedCustomers = customers.filter((customer) => customer.visits >= 2).length;
@@ -746,7 +624,7 @@ export default function UsersManager() {
     }
 
     if (tierFilter !== 'ALL') {
-      rows = rows.filter((customer) => customer.tier === tierFilter);
+      
     }
 
     if (activityFilter === 'ACTIVE') {
@@ -910,8 +788,7 @@ export default function UsersManager() {
 
       if (usingSample) {
         const localId = Math.max(1000, ...customers.map((c) => c.id)) + 1;
-        const tier = normalizeTier('', 0, 0, 0);
-
+        
         const created: CustomerRecord = {
           id: localId,
           name,
@@ -921,8 +798,7 @@ export default function UsersManager() {
           address: customerForm.address.trim(),
           note: customerForm.note.trim(),
           active: customerForm.active,
-          points: 0,
-          tier,
+                    
           createdAt: new Date().toISOString(),
           visits: 0,
           totalSpend: 0,
@@ -930,16 +806,7 @@ export default function UsersManager() {
           favoriteService: '—',
           history: [],
           upcomingAppointments: [],
-          pointsHistory: [
-            {
-              id: `welcome-${localId}`,
-              date: new Date().toISOString(),
-              change: 20,
-              reason: 'Điểm chào mừng khách hàng mới',
-            },
-          ],
-          vouchers: buildVouchers(tier, localId),
-        };
+                            };
 
         setCustomers((prev) => [created, ...prev]);
         persistNote(localId, customerForm.note.trim());
@@ -985,17 +852,15 @@ export default function UsersManager() {
 
   const exportCsv = () => {
     const rows = [
-      ['ID', 'Tên khách hàng', 'Số điện thoại', 'Email', 'Hạng', 'Số lần đến', 'Tổng chi tiêu', 'Lần đến cuối', 'Điểm tích lũy', 'Trạng thái'],
+      ['ID', 'Tên khách hàng', 'Số điện thoại', 'Email', 'Số lần đến', 'Tổng chi tiêu', 'Lần đến cuối', 'Trạng thái'],
       ...filteredCustomers.map((customer) => [
         customer.id,
         customer.name,
         customer.phone,
         customer.email,
-        TIER_META[customer.tier].label,
         customer.visits,
         Math.round(customer.totalSpend),
         formatDate(customer.lastVisit),
-        customer.points,
         customer.active ? 'Hoạt động' : 'Không hoạt động',
       ]),
     ];
@@ -1063,7 +928,7 @@ export default function UsersManager() {
           }
 
           const localId = Math.max(1000, ...customers.map((c) => c.id), ...appended.map((c) => c.id)) + idx + 1;
-          const tier = 'THUONG' as MembershipTier;
+          const tier = 'THUONG' as string;
 
           appended.push({
             id: localId,
@@ -1074,17 +939,14 @@ export default function UsersManager() {
             address: (addressIndex >= 0 ? cells[addressIndex] : '')?.trim() || '',
             note: '',
             active: true,
-            points: 0,
-            tier,
+                        
             createdAt: new Date().toISOString(),
             visits: 0,
             totalSpend: 0,
             favoriteService: '—',
             history: [],
             upcomingAppointments: [],
-            pointsHistory: [],
-            vouchers: buildVouchers(tier, localId),
-          });
+                                  });
           successCount += 1;
         });
 
@@ -1171,12 +1033,7 @@ export default function UsersManager() {
           <p className="admin-crm-kpi-note">+ {new Intl.NumberFormat('vi-VN').format(kpis.newThisMonth)} mới tháng này</p>
         </div>
 
-        <div className="admin-crm-kpi-card vip">
-          <div className="admin-crm-kpi-icon"><Crown size={16} /></div>
-          <p className="admin-crm-kpi-label">Khách VIP</p>
-          <p className="admin-crm-kpi-value">{new Intl.NumberFormat('vi-VN').format(kpis.vipCustomers)}</p>
-          <p className="admin-crm-kpi-note">VIP Platinum</p>
-        </div>
+ 
 
         <div className="admin-crm-kpi-card positive">
           <div className="admin-crm-kpi-icon"><CheckCircle2 size={16} /></div>
@@ -1205,13 +1062,7 @@ export default function UsersManager() {
             />
           </div>
 
-          <select className="admin-select" value={tierFilter} onChange={(event) => setTierFilter(event.target.value as 'ALL' | MembershipTier)}>
-            <option value="ALL">Tất cả hạng</option>
-            <option value="THUONG">Thường</option>
-            <option value="SILVER">Silver</option>
-            <option value="GOLD">Gold</option>
-            <option value="VIP_PLATINUM">VIP Platinum</option>
-          </select>
+ 
 
           <select className="admin-select" value={activityFilter} onChange={(event) => setActivityFilter(event.target.value as ActivityFilter)}>
             <option value="ALL">Tất cả trạng thái</option>
@@ -1264,11 +1115,9 @@ export default function UsersManager() {
                     <th>Khách hàng</th>
                     <th>Phone</th>
                     <th>Email</th>
-                    <th>Hạng thành viên</th>
                     <th>Số lần đến</th>
                     <th>Tổng chi tiêu</th>
                     <th>Lần đến cuối</th>
-                    <th>Điểm tích lũy</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
@@ -1288,15 +1137,9 @@ export default function UsersManager() {
                       </td>
                       <td>{customer.phone}</td>
                       <td>{customer.email}</td>
-                      <td>
-                        <span className={`admin-crm-tier-badge ${TIER_META[customer.tier].className}`}>
-                          {TIER_META[customer.tier].icon} {TIER_META[customer.tier].label}
-                        </span>
-                      </td>
                       <td>{new Intl.NumberFormat('vi-VN').format(customer.visits)}</td>
                       <td className="money">{formatVnd(customer.totalSpend)}</td>
                       <td>{formatDate(customer.lastVisit)}</td>
-                      <td>{new Intl.NumberFormat('vi-VN').format(customer.points)}</td>
                       <td>
                         <div className="admin-crm-row-actions">
                           <button className="admin-btn-icon" title="Xem chi tiết" onClick={() => { setSelectedCustomerId(customer.id); setDetailTab('PROFILE'); }}>
@@ -1356,12 +1199,12 @@ export default function UsersManager() {
               <button className={detailTab === 'PROFILE' ? 'active' : ''} onClick={() => setDetailTab('PROFILE')}>Hồ sơ</button>
               <button className={detailTab === 'HISTORY' ? 'active' : ''} onClick={() => setDetailTab('HISTORY')}>Lịch sử dịch vụ</button>
               <button className={detailTab === 'UPCOMING' ? 'active' : ''} onClick={() => setDetailTab('UPCOMING')}>Lịch hẹn sắp tới</button>
-              <button className={detailTab === 'POINTS' ? 'active' : ''} onClick={() => setDetailTab('POINTS')}>Điểm & Ưu đãi</button>
+ 
             </div>
 
             <div className="admin-crm-slide-body">
               {detailTab === 'PROFILE' && (() => {
-                const progress = getPointsProgress(selectedCustomer);
+                
                 return (
                   <div className="space-y-4">
                     <div className="admin-crm-profile-top">
@@ -1370,24 +1213,7 @@ export default function UsersManager() {
                       </span>
                       <div>
                         <h4>{selectedCustomer.name}</h4>
-                        <p className={`admin-crm-tier-badge ${TIER_META[selectedCustomer.tier].className}`}>
-                          {TIER_META[selectedCustomer.tier].icon} {TIER_META[selectedCustomer.tier].label}
-                        </p>
-                        <p className="points">{new Intl.NumberFormat('vi-VN').format(selectedCustomer.points)} điểm</p>
                       </div>
-                    </div>
-
-                    <div>
-                      <div className="admin-crm-progress-row">
-                        <span>{progress.currentLabel}</span>
-                        <span>{progress.nextLabel}</span>
-                      </div>
-                      <div className="admin-crm-progress-track">
-                        <span style={{ width: `${progress.percent}%` }} />
-                      </div>
-                      {selectedCustomer.tier !== 'VIP_PLATINUM' && (
-                        <p className="admin-crm-progress-note">Cần thêm {new Intl.NumberFormat('vi-VN').format(progress.remaining)} điểm để lên hạng {progress.nextLabel}</p>
-                      )}
                     </div>
 
                     <div className="admin-crm-info-grid">
@@ -1464,46 +1290,7 @@ export default function UsersManager() {
                 </div>
               )}
 
-              {detailTab === 'POINTS' && (
-                <div className="space-y-4">
-                  <section>
-                    <h4 className="admin-crm-section-heading">Lịch sử tích điểm</h4>
-                    <div className="admin-crm-points-list">
-                      {selectedCustomer.pointsHistory.map((entry) => (
-                        <div key={entry.id} className="admin-crm-point-item">
-                          <div>
-                            <strong>{entry.change > 0 ? `+${entry.change}` : entry.change} điểm</strong>
-                            <p>{entry.reason}</p>
-                          </div>
-                          <span>{formatDate(entry.date)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-
-                  <section>
-                    <h4 className="admin-crm-section-heading">Voucher / ưu đãi</h4>
-                    {selectedCustomer.vouchers.length === 0 ? (
-                      <div className="admin-empty"><p>Không có ưu đãi hiện tại.</p></div>
-                    ) : (
-                      <div className="admin-crm-voucher-list">
-                        {selectedCustomer.vouchers.map((voucher) => (
-                          <div key={voucher.id} className="admin-crm-voucher-item">
-                            <div>
-                              <p className="title"><Gift size={14} /> {voucher.title}</p>
-                              <p className="code">Mã: {voucher.code}</p>
-                            </div>
-                            <div className="right">
-                              <span className={`status ${voucher.status.toLowerCase()}`}>{voucher.status}</span>
-                              <small>HSD: {formatDate(voucher.expireAt)}</small>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </section>
-                </div>
-              )}
+ 
             </div>
 
             <div className="admin-crm-slide-footer">

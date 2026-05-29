@@ -74,7 +74,6 @@ type DashboardSummary = {
   bookingRate: number;
   totalCustomers: number;
   newCustomersThisMonth: number;
-  vipCustomers: number;
   averageRating: number;
   reviewCount: number;
   revenueSeries: RevenuePoint[];
@@ -92,7 +91,6 @@ const EMPTY_SUMMARY: DashboardSummary = {
   bookingRate: 0,
   totalCustomers: 0,
   newCustomersThisMonth: 0,
-  vipCustomers: 0,
   averageRating: 0,
   reviewCount: 0,
   revenueSeries: DAY_LABELS.map((label) => ({ label, thisWeek: 0, lastWeek: 0 })),
@@ -377,7 +375,6 @@ const buildSummary = ({
 
   let totalCustomers = customerUsers.length;
   let newCustomersThisMonth = customerUsers.filter((u) => isBetween(toDateSafe(u.ngay_tao), monthStart, monthEnd)).length;
-  let vipCustomers = customerUsers.filter((u) => isVipTier(u.hang_thanh_vien)).length;
 
   if (totalCustomers === 0) {
     const uniqueCustomers = new Set<number>();
@@ -394,7 +391,6 @@ const buildSummary = ({
 
     totalCustomers = uniqueCustomers.size;
     newCustomersThisMonth = newCustomers.size;
-    vipCustomers = 0;
   }
 
   const ratingValues = monthlyAppointments.flatMap((appt) => {
@@ -521,7 +517,6 @@ const buildSummary = ({
     bookingRate,
     totalCustomers,
     newCustomersThisMonth,
-    vipCustomers,
     averageRating,
     reviewCount,
     revenueSeries: DAY_LABELS.map((label, idx) => ({
@@ -714,8 +709,7 @@ export default function Dashboard() {
             {formatNumber(summary.totalCustomers)}
           </p>
           <p className="text-sm mt-2" style={{ color: MUTED_TEXT }}>
-            Mới tháng này: <span style={{ color: ACCENT }}>{formatNumber(summary.newCustomersThisMonth)}</span> • VIP:{' '}
-            <span style={{ color: HEADING_TEXT }}>{formatNumber(summary.vipCustomers)}</span>
+            Mới tháng này: <span style={{ color: ACCENT }}>{formatNumber(summary.newCustomersThisMonth)}</span>
           </p>
         </div>
 

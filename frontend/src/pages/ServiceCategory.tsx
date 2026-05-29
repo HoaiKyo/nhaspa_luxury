@@ -6,7 +6,7 @@ import { publicApi } from '../api/public.api';
 const getMinPrice = (service: any) => {
   if (service.bang_gias && service.bang_gias.length > 0) {
     const validPrices = service.bang_gias
-      .filter((p: any) => !p.thoi_luong?.includes('90 phút'))
+      .filter((p: any) => !p.thoi_luong || !p.thoi_luong.includes('90 phút'))
       .map((p: any) => p.gia);
     if (validPrices.length > 0) return Math.min(...validPrices);
   }
@@ -228,14 +228,16 @@ export default function ServiceCategory() {
                         <div>
                           {service.bang_gias && service.bang_gias.length > 0 ? (
                             <div className="text-secondary font-medium text-lg">
-                              {(() => {
-                                const validGias = service.bang_gias.filter((p: any) => !p.thoi_luong?.includes('90 phút'));
-                                if (validGias.length === 0) return 'Liên hệ';
-                                if (validGias.length > 1) {
-                                  return `${validGias[0].gia.toLocaleString()}₫ - ${validGias[validGias.length - 1].gia.toLocaleString()}₫`;
-                                }
-                                return `${validGias[0].gia.toLocaleString()}₫`;
-                              })()}
+                               {(() => {
+                                 const validGias = service.bang_gias.filter((p: any) => 
+                                   !p.thoi_luong || !p.thoi_luong.includes('90 phút')
+                                 );
+                                 if (validGias.length === 0) return 'Liên hệ';
+                                 if (validGias.length > 1) {
+                                   return `${validGias[0].gia.toLocaleString()}₫ - ${validGias[validGias.length - 1].gia.toLocaleString()}₫`;
+                                 }
+                                 return `${validGias[0].gia.toLocaleString()}₫`;
+                               })()}
                             </div>
                           ) : (
                             <div className="text-secondary font-medium text-lg">Liên hệ</div>

@@ -31,11 +31,12 @@ import PromotionsManager from './pages/admin/PromotionsManager';
 import BannersManager from './pages/admin/BannersManager';
 import NewsManager from './pages/admin/NewsManager';
 import UsersManager from './pages/admin/UsersManager';
-import InventoryManager from './pages/admin/InventoryManager';
+ 
 import ScheduleView from './pages/admin/ScheduleView';
 import LeaveManager from './pages/admin/LeaveManager';
-import MembershipVipManager from './pages/admin/MembershipVipManager';
+ 
 import StaffPerformance from './pages/admin/StaffPerformance';
+import SystemSettings from './pages/admin/SystemSettings';
 
 // Receptionist CMS
 import ReceptionistLayout from './modules/receptionist/components/ReceptionistLayout';
@@ -81,17 +82,19 @@ export default function App() {
               <Route path="san-pham" element={<ProductsManager />} />
               <Route path="nhan-vien" element={<StaffManager />} />
               <Route path="lich-hen" element={<AppointmentsManager />} />
+              <Route path="lich-hen/:id" element={<AppointmentDetailPage />} />
               <Route path="hoa-don" element={<InvoicesManager />} />
               <Route path="bao-cao-doanh-thu" element={<RevenueAnalyticsReport />} />
               <Route path="khuyen-mai" element={<PromotionsManager />} />
               <Route path="banner" element={<BannersManager />} />
               <Route path="tin-tuc" element={<NewsManager />} />
               <Route path="nguoi-dung" element={<UsersManager />} />
-              <Route path="thanh-vien-vip" element={<MembershipVipManager />} />
-              <Route path="kho" element={<InventoryManager />} />
+ 
+ 
               <Route path="lich-lam-viec" element={<ScheduleView />} />
               <Route path="nghi-phep" element={<LeaveManager />} />
               <Route path="hieu-suat-nhan-vien" element={<StaffPerformance />} />
+              <Route path="cau-hinh" element={<SystemSettings />} />
             </Route>
 
             {/* Receptionist routes */}

@@ -184,7 +184,6 @@ export default function Layout() {
                       <div className="flex items-center gap-2 text-primary font-medium">
                         <User size={20} /> {user.ho_ten}
                       </div>
-                      <div className="text-accent font-medium text-sm">{user.diem_tich_luy} điểm</div>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <Link to="/ca-nhan" onClick={() => setMobileMenuOpen(false)} className="flex-1 bg-primary/10 text-primary py-2 rounded-md text-center text-sm font-medium min-w-[70px]">Hồ sơ</Link>

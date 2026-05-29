@@ -16,6 +16,7 @@ interface Service {
   ma_san_pham: number;
   ten_san_pham: string;
   ma_danh_muc: number;
+  thoi_luong?: number;
   bang_gias: { gia: number }[];
 }
 
@@ -53,12 +54,15 @@ export default function BookingModal() {
   // Master Data
   const [categories, setCategories] = useState<any[]>([]);
   const [services, setServices] = useState<Service[]>([]);
-  const [staffByService, setStaffByService] = useState<Record<number, Staff[]>>({});
-  const [loadingStaffServices, setLoadingStaffServices] = useState<number[]>([]);
+  const [staffByAssignment, setStaffByAssignment] = useState<Record<string, Staff[]>>({});
+  const loadingStaffServicesRef = React.useRef<string[]>([]);
+  const [loadingStaffServices, setLoadingStaffServices] = useState<string[]>([]);
 
   // Step 1: Date/Time + Guests
   const [bookingDate, setBookingDate] = useState(getBookingDateBounds().minDate);
   const [bookingTime, setBookingTime] = useState('');
+  const [occupancy, setOccupancy] = useState<Record<string, number>>({});
+  const [maxCapacity, setMaxCapacity] = useState(10);
   const [companions, setCompanions] = useState<Companion[]>([]);
 
   // Step 2: Assignments
@@ -88,19 +92,24 @@ export default function BookingModal() {
         if (res.success && res.data) {
           const filtered = res.data
             .filter((s: any) => s.loai !== 'PRODUCT')
-            .map((s: any) => ({
-              ...s,
-              bang_gias: s.bang_gias?.filter((p: any) => !p.thoi_luong?.includes('90 phút')) || []
-            }));
+            .map((s: any) => {
+              const basePrices = s.bang_gias?.filter((p: any) => !p.thoi_luong || !p.thoi_luong.includes('90 phút')) || [];
+              return {
+                ...s,
+                bang_gias: basePrices.length > 0 ? basePrices : (s.bang_gias || [])
+              };
+            });
           setServices(filtered);
         }
       });
+      publicApi.getMaxCapacity().then(res => res.success && setMaxCapacity(res.data || 10));
+
 
       // reset
       setCurrentStep(1);
       setIsSuccess(false);
       setCompanions([]);
-      setStaffByService({});
+      setStaffByAssignment({});
       setAssignments([
         { id: `as-${Date.now()}`, personKey: 'MAIN', serviceId: initialServiceId || null, staffId: null },
       ]);
@@ -110,6 +119,17 @@ export default function BookingModal() {
     }
   }, [isOpen, initialServiceId]);
 
+  // Fetch occupancy when date changes
+  useEffect(() => {
+    if (isOpen && bookingDate) {
+      publicApi.getSlotOccupancy(bookingDate).then(res => {
+        if (res.success) {
+          setOccupancy(res.data || {});
+        }
+      });
+    }
+  }, [isOpen, bookingDate]);
+
   // Clear time if no longer valid after date change
   useEffect(() => {
     if (bookingTime && !timeSlots.includes(bookingTime)) {
@@ -117,32 +137,144 @@ export default function BookingModal() {
     }
   }, [timeSlots, bookingTime]);
 
-  // When entering Step 2, clear all cached staff so they're re-fetched with correct date/time
-  useEffect(() => {
-    if (currentStep === 2) {
-      setStaffByService({});
-      setLoadingStaffServices([]);
-    }
-  }, [currentStep]);
+  const addMinutesToTime = (timeStr: string, minutes: number): string => {
+    if (!timeStr) return '';
+    const parts = timeStr.split(':');
+    const hours = parseInt(parts[0], 10) || 0;
+    const mins = parseInt(parts[1], 10) || 0;
+    const totalMins = hours * 60 + mins + minutes;
+    const newHours = Math.floor(totalMins / 60) % 24;
+    const newMins = totalMins % 60;
+    return `${String(newHours).padStart(2, '0')}:${String(newMins).padStart(2, '0')}`;
+  };
 
-  // --- Logic Helpers ---
-  const fetchStaffOptions = useCallback(async (serviceId: number) => {
+  const getCalculatedStartTimes = (
+    baseTime: string,
+    assignmentsList: Assignment[],
+    servicesList: Service[]
+  ): Record<string, string> => {
+    const servicesMap = new Map<number, number>();
+    servicesList.forEach(s => {
+      servicesMap.set(s.ma_san_pham, s.thoi_luong || 30);
+    });
+
+    const personNextStart: Record<string, string> = {};
+    const calculated: Record<string, string> = {};
+
+    assignmentsList.forEach(a => {
+      if (!a.serviceId) return;
+      const duration = servicesMap.get(a.serviceId) || 30;
+      const currStart = personNextStart[a.personKey] || baseTime;
+      calculated[a.id] = currStart;
+
+      // Calculate next start time (add duration)
+      personNextStart[a.personKey] = addMinutesToTime(currStart, duration);
+    });
+
+    return calculated;
+  };
+
+  const getCalculatedEndTimes = (
+    baseTime: string,
+    assignmentsList: Assignment[],
+    servicesList: Service[]
+  ): Record<string, string> => {
+    const servicesMap = new Map<number, number>();
+    servicesList.forEach(s => {
+      servicesMap.set(s.ma_san_pham, s.thoi_luong || 30);
+    });
+
+    const personNextStart: Record<string, string> = {};
+    const calculated: Record<string, string> = {};
+
+    assignmentsList.forEach(a => {
+      if (!a.serviceId) return;
+      const duration = servicesMap.get(a.serviceId) || 30;
+      const currStart = personNextStart[a.personKey] || baseTime;
+      const currEnd = addMinutesToTime(currStart, duration);
+      calculated[a.id] = currEnd;
+
+      personNextStart[a.personKey] = currEnd;
+    });
+
+    return calculated;
+  };
+
+  const fetchStaffOptionsForAssignment = useCallback(async (
+    assignmentId: string,
+    serviceId: number,
+    date?: string,
+    time?: string
+  ) => {
     if (!bookingDate || !bookingTime) return;
+    const targetDate = date || bookingDate;
+    const targetTime = time || bookingTime;
+    const loadingKey = `${assignmentId}-${serviceId}`;
+    // Use ref to avoid stale closure
+    if (loadingStaffServicesRef.current.includes(loadingKey)) return;
 
-    setLoadingStaffServices(prev => [...prev, serviceId]);
+    loadingStaffServicesRef.current = [...loadingStaffServicesRef.current, loadingKey];
+    setLoadingStaffServices([...loadingStaffServicesRef.current]);
     try {
       const res = await publicApi.getAvailableStaffPublic({
         service_id: serviceId,
-        date: bookingDate,
-        time: `${bookingTime}:00`,
+        date: targetDate,
+        time: targetTime.length === 5 ? `${targetTime}:00` : targetTime,
       });
-      if (res.success) {
-        setStaffByService(prev => ({ ...prev, [serviceId]: res.data || [] }));
+      if (res.success && Array.isArray(res.data)) {
+        const rows = res.data as Staff[];
+        
+        // Sync assignments: if a selected staff is no longer available, clear them
+        setAssignments(prev => {
+          let changed = false;
+          const nextAssignments = prev.map(a => {
+            if (a.id === assignmentId && a.staffId) {
+              const isStillAvailable = rows.some(s => s.ma_nhan_vien === a.staffId);
+              if (!isStillAvailable) {
+                changed = true;
+                return { ...a, staffId: null };
+              }
+            }
+            return a;
+          });
+          if (!changed) return prev;
+          return nextAssignments;
+        });
+
+        setStaffByAssignment(prev => ({
+          ...prev,
+          [assignmentId]: rows,
+        }));
       }
     } finally {
-      setLoadingStaffServices(prev => prev.filter(id => id !== serviceId));
+      loadingStaffServicesRef.current = loadingStaffServicesRef.current.filter(key => key !== loadingKey);
+      setLoadingStaffServices([...loadingStaffServicesRef.current]);
     }
   }, [bookingDate, bookingTime]);
+
+  // Reactive Effect to synchronize available staff for all user assignments
+  useEffect(() => {
+    if (currentStep !== 2 || !bookingDate || !bookingTime || services.length === 0) return;
+
+    const calculatedStartTimes = getCalculatedStartTimes(bookingTime, assignments, services);
+
+    assignments.forEach(a => {
+      if (!a.serviceId) return;
+      const calcStart = calculatedStartTimes[a.id] || bookingTime;
+      void fetchStaffOptionsForAssignment(
+        a.id,
+        a.serviceId,
+        bookingDate,
+        calcStart
+      );
+    });
+  }, [
+    currentStep,
+    bookingDate,
+    bookingTime,
+    services,
+    assignments.map(a => `${a.id}-${a.serviceId}`).join(','),
+  ]);
 
   // --- Handlers ---
   const addCompanion = () => {
@@ -158,6 +290,23 @@ export default function BookingModal() {
     setCompanions(prev => prev.map(c => c.id === id ? { ...c, name } : c));
   };
 
+  const handleGroupSizeChange = (count: number) => {
+    const safeCount = Math.max(0, Math.min(count, maxCapacity - 1));
+    setCompanions(prev => {
+      if (safeCount > prev.length) {
+        const toAdd = safeCount - prev.length;
+        const newOnes = Array.from({ length: toAdd }, (_, i) => ({
+          id: `c-${Date.now()}-${i}`,
+          name: ''
+        }));
+        return [...prev, ...newOnes];
+      } else if (safeCount < prev.length) {
+        return prev.slice(0, safeCount);
+      }
+      return prev;
+    });
+  };
+
   const addAssignment = () => {
     setAssignments(prev => [...prev, { id: `as-${Date.now()}`, personKey: 'MAIN', serviceId: null, staffId: null }]);
   };
@@ -170,12 +319,8 @@ export default function BookingModal() {
     setAssignments(prev => prev.map(a => {
       if (a.id !== id) return a;
       const updated = { ...a, ...fields };
-      if ('serviceId' in fields && fields.serviceId) {
+      if ('serviceId' in fields) {
         updated.staffId = null;
-        // Fetch staff for this service now
-        if (!staffByService[fields.serviceId!]) {
-          fetchStaffOptions(fields.serviceId!);
-        }
       }
       return updated;
     }));
@@ -221,7 +366,31 @@ export default function BookingModal() {
   };
 
   const nextStep = () => {
-    if (validateStep(currentStep)) setCurrentStep(prev => prev + 1);
+    if (validateStep(currentStep)) {
+      if (currentStep === 1) {
+        // Auto-generate assignments for each member if they don't have one
+        setAssignments(prev => {
+          const personKeys = ['MAIN', ...companions.map(c => `COMPANION:${c.id}`)];
+          const updated = [...prev];
+
+          personKeys.forEach(key => {
+            const exists = updated.some(a => a.personKey === key);
+            if (!exists) {
+              updated.push({
+                id: `as-${Date.now()}-${key}`,
+                personKey: key,
+                serviceId: initialServiceId || null,
+                staffId: null
+              });
+            }
+          });
+
+          // Clean up assignments for removed companions
+          return updated.filter(a => personKeys.includes(a.personKey));
+        });
+      }
+      setCurrentStep(prev => prev + 1);
+    }
   };
   const prevStep = () => setCurrentStep(prev => prev - 1);
 
@@ -246,14 +415,27 @@ export default function BookingModal() {
         gio_bat_dau: `${bookingTime}:00`,
         ghi_chu: contactInfo.ghiChu,
         khach_di_kems: companions.map(c => ({ ho_ten: c.name })),
-        chi_tiets: assignments.filter(a => a.serviceId).map(a => {
-          const detail: any = { ma_san_pham: a.serviceId, ma_nhan_vien: a.staffId };
-          if (a.personKey.startsWith('COMPANION:')) {
-            const cId = a.personKey.replace('COMPANION:', '');
-            detail.chi_so_khach_di_kem = companionIndexMap.get(cId);
-          }
-          return detail;
-        }),
+        chi_tiets: (() => {
+          const activeAssignments = assignments.filter(a => a.serviceId);
+          const calculatedStartTimes = getCalculatedStartTimes(bookingTime, activeAssignments, services);
+          const calculatedEndTimes = getCalculatedEndTimes(bookingTime, activeAssignments, services);
+          
+          return activeAssignments.map(a => {
+            const startVal = calculatedStartTimes[a.id] || bookingTime;
+            const endVal = calculatedEndTimes[a.id] || bookingTime;
+            const detail: any = {
+              ma_san_pham: a.serviceId,
+              ma_nhan_vien: a.staffId,
+              gio_bat_dau: startVal.length === 5 ? `${startVal}:00` : startVal,
+              gio_ket_thuc: endVal.length === 5 ? `${endVal}:00` : endVal,
+            };
+            if (a.personKey.startsWith('COMPANION:')) {
+              const cId = a.personKey.replace('COMPANION:', '');
+              detail.chi_so_khach_di_kem = companionIndexMap.get(cId);
+            }
+            return detail;
+          });
+        })(),
       };
 
       const res = await publicApi.createAppointment(payload);
@@ -296,9 +478,15 @@ export default function BookingModal() {
               className={`w-full p-4 rounded-2xl border focus:ring-2 focus:ring-primary/20 outline-none font-bold appearance-none ${bookingTime ? 'border-primary/30 bg-primary/5 text-primary' : 'border-gray-100 bg-white text-gray-400'}`}
             >
               <option value="">-- Chọn khung giờ --</option>
-              {timeSlots.map(slot => (
-                <option key={slot} value={slot}>{slot}</option>
-              ))}
+              {timeSlots.map(slot => {
+                const currentGuests = occupancy[slot] || 0;
+                const isFull = currentGuests >= maxCapacity;
+                return (
+                  <option key={slot} value={slot} disabled={isFull} className={isFull ? 'text-gray-300' : ''}>
+                    {slot} {isFull ? '(Hết chỗ)' : `(${currentGuests}/${maxCapacity} khách)`}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -314,17 +502,31 @@ export default function BookingModal() {
 
       {/* Companions */}
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <h3 className="text-xl font-bold text-gray-900">Thành viên trong nhóm</h3>
             <p className="text-sm text-gray-400 mt-0.5">Bạn đi một mình hay cùng bạn bè?</p>
           </div>
-          <button
-            onClick={addCompanion}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
-          >
-            <Plus size={16} /> Thêm người
-          </button>
+          
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-2">Số người đi cùng:</span>
+              <input
+                type="number"
+                min="0"
+                max={maxCapacity - 1}
+                value={companions.length}
+                onChange={e => handleGroupSizeChange(parseInt(e.target.value) || 0)}
+                className="w-14 p-2 rounded-xl border-0 bg-white text-center font-bold text-primary shadow-sm focus:ring-2 focus:ring-primary/20 outline-none"
+              />
+            </div>
+            <button
+              onClick={addCompanion}
+              className="flex items-center gap-2 px-4 py-3 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+            >
+              <Plus size={16} /> Thêm người
+            </button>
+          </div>
         </div>
 
         <div className="space-y-3">
@@ -394,8 +596,10 @@ export default function BookingModal() {
 
         <div className="space-y-4">
           {assignments.map(a => {
-            const eligibleStaff = a.serviceId ? (staffByService[a.serviceId] || []) : [];
-            const isLoading = a.serviceId != null && loadingStaffServices.includes(a.serviceId);
+            const calculatedStartTimes = getCalculatedStartTimes(bookingTime, assignments, services);
+            const calculatedStart = calculatedStartTimes[a.id] || bookingTime;
+            const eligibleStaff = a.serviceId ? (staffByAssignment[a.id] || []) : [];
+            const isLoading = a.serviceId != null && loadingStaffServices.includes(`${a.id}-${a.serviceId}`);
             const takenStaff = staffTakenByOthers(a.id);
 
             return (
@@ -406,6 +610,12 @@ export default function BookingModal() {
                 >
                   <X size={18} />
                 </button>
+
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="font-semibold text-xs py-0.5 px-2.5 rounded-full" style={{ background: 'rgba(99, 102, 241, 0.12)', color: '#6366f1' }}>
+                    Giờ dự kiến làm việc: {calculatedStart}
+                  </span>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {/* Person */}
@@ -433,11 +643,14 @@ export default function BookingModal() {
                       <option value="">-- Chọn dịch vụ --</option>
                       {categories.map(cat => (
                         <optgroup key={cat.ma_danh_muc} label={cat.ten_danh_muc.toUpperCase()}>
-                          {services.filter(s => s.ma_danh_muc === cat.ma_danh_muc).map(s => (
-                            <option key={s.ma_san_pham} value={s.ma_san_pham}>
-                              {s.ten_san_pham} ({s.bang_gias[0]?.gia?.toLocaleString()}₫)
-                            </option>
-                          ))}
+                          {services.filter(s => s.ma_danh_muc === cat.ma_danh_muc).map(s => {
+                            const firstPrice = s.bang_gias?.[0]?.gia;
+                            return (
+                              <option key={s.ma_san_pham} value={s.ma_san_pham}>
+                                {s.ten_san_pham} {firstPrice ? `(${firstPrice.toLocaleString()}₫)` : '(Liên hệ)'}
+                              </option>
+                            );
+                          })}
                         </optgroup>
                       ))}
                     </select>
@@ -469,7 +682,7 @@ export default function BookingModal() {
                     {/* Info badge */}
                     {a.serviceId && !isLoading && eligibleStaff.length === 0 && (
                       <p className="text-[10px] text-amber-500 font-bold pl-1">
-                        Không có nhân viên rảnh lúc {bookingTime} — thử chọn giờ khác
+                        Không có nhân viên rảnh lúc {calculatedStart} — thử chọn giờ khác
                       </p>
                     )}
                     {a.serviceId && !isLoading && eligibleStaff.length > 0 && !a.staffId && (
@@ -545,7 +758,7 @@ export default function BookingModal() {
               {assignments.filter(a => a.serviceId).map(a => {
                 const person = personOptions.find(p => p.key === a.personKey);
                 const svc = services.find(s => s.ma_san_pham === a.serviceId);
-                const staff = a.serviceId && a.staffId ? staffByService[a.serviceId]?.find(s => s.ma_nhan_vien === a.staffId) : null;
+                const staff = a.serviceId && a.staffId ? staffByAssignment[a.id]?.find(s => s.ma_nhan_vien === a.staffId) : null;
                 return (
                   <div key={a.id} className="flex justify-between items-start gap-3">
                     <div className="min-w-0">

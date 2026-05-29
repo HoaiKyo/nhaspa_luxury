@@ -8,9 +8,10 @@ from app.api.v1.endpoints.staff import router as staff_router, shift_router, sch
 from app.api.v1.endpoints.appointments import router as appt_router
 from app.api.v1.endpoints.invoices import invoice_router, payment_router
 from app.api.v1.endpoints.combos import router as combo_router
-from app.api.v1.endpoints.inventory import inv_router, supplier_router, import_router, bom_router
+ 
 from app.api.v1.endpoints.marketing import promo_router, banner_router, news_router
 from app.api.v1.endpoints.upload import router as upload_router
+from app.api.v1.endpoints.system import router as system_router
 
 api_router = APIRouter(prefix="/api/v1")
 
@@ -39,16 +40,15 @@ api_router.include_router(appt_router)
 api_router.include_router(invoice_router)
 api_router.include_router(payment_router)
 
-# Inventory
-api_router.include_router(inv_router)
-api_router.include_router(supplier_router)
-api_router.include_router(import_router)
-api_router.include_router(bom_router)
+ 
 
 # Marketing
 api_router.include_router(promo_router)
 api_router.include_router(banner_router)
 api_router.include_router(news_router)
+
+# System
+api_router.include_router(system_router)
 
 # File Upload
 api_router.include_router(upload_router)

@@ -57,8 +57,6 @@ class UserResponse(BaseModel):
     ngay_sinh: Optional[datetime] = None
     dia_chi: Optional[str] = None
     anh_dai_dien: Optional[str] = None
-    diem_tich_luy: int = 0
-    hang_thanh_vien: str = "Thành viên mới"
     trang_thai: bool = True
     vai_tros: List[RoleResponse] = []
     ngay_tao: Optional[datetime] = None

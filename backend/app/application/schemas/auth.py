@@ -38,8 +38,6 @@ class UserProfileResponse(BaseModel):
     ngay_sinh: Optional[datetime] = None
     dia_chi: Optional[str] = None
     anh_dai_dien: Optional[str] = None
-    diem_tich_luy: int = 0
-    hang_thanh_vien: str = "Thành viên mới"
     vai_tros: List[str] = []
 
     model_config = {"from_attributes": True}

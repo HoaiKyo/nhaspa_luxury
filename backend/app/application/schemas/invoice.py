@@ -18,14 +18,16 @@ class InvoiceCreate(BaseModel):
     ma_lich_hen: Optional[int] = None
     ma_khach_hang: int
     ma_khuyen_mai: Optional[int] = None
-    diem_su_dung: int = 0
+    so_tien_khach_tra: Decimal = Decimal('0')
+    so_tien_tra_lai: Decimal = Decimal('0')
     ghi_chu: Optional[str] = None
     chi_tiets: List[InvoiceDetailCreate] = Field(..., min_length=1)
 
 
 class InvoiceEdit(BaseModel):
     ma_khuyen_mai: Optional[int] = None
-    diem_su_dung: int = 0
+    so_tien_khach_tra: Decimal = Decimal('0')
+    so_tien_tra_lai: Decimal = Decimal('0')
     ghi_chu: Optional[str] = None
     chi_tiets: List[InvoiceDetailCreate] = Field(..., min_length=1)
 
@@ -106,9 +108,8 @@ class InvoiceResponse(BaseModel):
     tong_tien: Decimal = Decimal("0")
     giam_gia: Decimal = Decimal("0")
     thue: Decimal = Decimal("0")
-    diem_su_dung: int = 0
-    gia_tri_diem: Decimal = Decimal("0")
-    diem_tich_luy: int = 0
+    so_tien_khach_tra: Decimal = Decimal("0")
+    so_tien_tra_lai: Decimal = Decimal("0")
     thanh_tien: Decimal = Decimal("0")
     trang_thai: str = "DRAFT"
     payment_method: str = "CASH"

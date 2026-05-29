@@ -7,10 +7,10 @@ from app.core.security import get_password_hash
 from app.infrastructure.persistence.models.user import VaiTro, NguoiDung, NguoiDungVaiTro
 from app.infrastructure.persistence.models.product import DanhMuc, SanPham, BangGia
 from app.infrastructure.persistence.models.marketing import TinTuc
+from app.infrastructure.persistence.models.system import CauHinhHeThong
 from app.infrastructure.persistence.models.staff import CaLam, NhanVien
-from app.infrastructure.persistence.models.inventory import NhaCungCap, TonKho
 # Import all models so SQLAlchemy can resolve relationships
-from app.infrastructure.persistence.models import appointment, invoice, combo, inventory
+from app.infrastructure.persistence.models import appointment, invoice, combo
 from app.infrastructure.persistence.models.invoice import HoaDon
 from app.application.services.invoice_service import InvoiceService
 from datetime import time, date as date_type
@@ -79,6 +79,16 @@ def seed():
         for c in cats:
             if not db.query(DanhMuc).filter(DanhMuc.slug == c["slug"]).first():
                 db.add(DanhMuc(**c))
+        db.flush()
+
+        # 3.5 System Settings
+        if not db.query(CauHinhHeThong).filter(CauHinhHeThong.ma_cau_hinh == "MAX_CAPACITY").first():
+            db.add(CauHinhHeThong(
+                ma_cau_hinh="MAX_CAPACITY",
+                gia_tri="10",
+                mo_ta="Số lượng khách nhận tối đa cho mỗi khung giờ 30 phút",
+                loai_du_lieu="INT"
+            ))
         db.flush()
 
         # 4. Sample products
@@ -167,7 +177,7 @@ def seed():
                     mat_khau=get_password_hash("password123"),
                     so_dien_thoai=cd.get("so_dien_thoai"),
                     gioi_tinh=cd.get("gioi_tinh"), dia_chi=cd.get("dia_chi"),
-                    diem_tich_luy=0, hang_thanh_vien="Thành viên mới", trang_thai=True,
+                    trang_thai=True,
                 )
                 db.add(u)
                 db.flush()
@@ -268,33 +278,6 @@ def seed():
 
         db.flush()
 
-        # 8. Suppliers
-        suppliers_data = [
-            {"ten_nha_cung_cap": "Mỹ Phẩm Hàn Quốc ABC", "dia_chi": "12 Nguyễn Trãi, Q.5, TP.HCM", "so_dien_thoai": "0283333001", "email": "abc.cosmetics@email.com", "nguoi_lien_he": "Park Ji Eun"},
-            {"ten_nha_cung_cap": "Thiết Bị Spa ProTech", "dia_chi": "45 Lý Thường Kiệt, Q.Tân Bình", "so_dien_thoai": "0283333002", "email": "protech@email.com", "nguoi_lien_he": "Nguyễn Văn Sơn"},
-            {"ten_nha_cung_cap": "Tinh Dầu Thiên Nhiên VN", "dia_chi": "78 Trần Quốc Toản, Q.3, TP.HCM", "so_dien_thoai": "0283333003", "email": "tinhdat.vn@email.com", "nguoi_lien_he": "Trần Thị Hồng"},
-            {"ten_nha_cung_cap": "Dược Phẩm Làm Đẹp SkinCare", "dia_chi": "22 Phan Xích Long, Q. Phú Nhuận", "so_dien_thoai": "0283333004", "email": "skincare@email.com", "nguoi_lien_he": "Lê Minh Tuấn"},
-            {"ten_nha_cung_cap": "Vật Tư Y Tế Sài Gòn", "dia_chi": "101 Cộng Hòa, Q.Tân Bình", "so_dien_thoai": "0283333005", "email": "vattu.sg@email.com", "nguoi_lien_he": "Phạm Thị Lan"},
-        ]
-        for sup in suppliers_data:
-            if not db.query(NhaCungCap).filter(NhaCungCap.ten_nha_cung_cap == sup["ten_nha_cung_cap"]).first():
-                db.add(NhaCungCap(**sup, trang_thai="ACTIVE"))
-        db.flush()
-
-        # 9. Inventory records for existing products
-        all_products = db.query(SanPham).all()
-        inv_units = ["chai", "hộp", "tuýp", "lọ", "bộ"]
-        inv_locations = ["Kệ A1", "Kệ A2", "Kệ B1", "Kệ B2", "Tủ lạnh"]
-        for idx, prod in enumerate(all_products):
-            if not db.query(TonKho).filter(TonKho.ma_san_pham == prod.ma_san_pham).first():
-                db.add(TonKho(
-                    ma_san_pham=prod.ma_san_pham,
-                    so_luong=(idx + 1) * 8,
-                    so_luong_toi_thieu=5,
-                    don_vi=inv_units[idx % len(inv_units)],
-                    vi_tri=inv_locations[idx % len(inv_locations)],
-                ))
-        db.flush()
 
         # 10. Sample invoices (seed if empty)
         invoice_count = db.query(HoaDon).count()
@@ -313,7 +296,6 @@ def seed():
             f"Legacy MANAGER mappings removed: {removed_manager_mappings} | "
             f"Legacy MANAGER converted to STAFF: {migrated_manager_users} | "
             f"MANAGER role removed: {'yes' if deleted_manager_role else 'no'} | "
-            f"Suppliers: {len(suppliers_data)} | "
             f"Invoices seeded mới: {seeded_invoice_count}"
         )
 

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   TrendingUp,
   AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import {
@@ -112,6 +114,21 @@ export default function StaffPerformance() {
     MONTH: [],
   });
   const [staffPeriodFilter, setStaffPeriodFilter] = useState<StaffPerformanceFilter>('MONTH');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [staffPeriodFilter]);
+
+  const staffPerformanceRows = staffPerformanceByPeriod[staffPeriodFilter] || [];
+
+  const totalPages = Math.max(1, Math.ceil(staffPerformanceRows.length / pageSize));
+
+  const pagedRows = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return staffPerformanceRows.slice(start, start + pageSize);
+  }, [staffPerformanceRows, currentPage]);
 
   useEffect(() => {
     let mounted = true;
@@ -188,6 +205,30 @@ export default function StaffPerformance() {
             { id: number; name: string; role: string; sessions: number; completed: number; ratings: number[] }
           >();
 
+          // Pre-populate stats map with ALL non-admin staff members
+          (staffMembers || []).forEach((staff: any) => {
+            const staffId = staff?.ma_nhan_vien;
+            if (staffId !== undefined && staffId !== null) {
+              const role = staff.chuc_vu || 'Kỹ thuật viên';
+              const isMainAdmin =
+                staff?.vai_tro === 'ADMIN' ||
+                staff?.nguoi_dung?.vai_tro === 'ADMIN' ||
+                ['ADMIN', 'ADMINISTRATOR', 'QUẢN TRỊ VIÊN', 'QUAN TRI VIEN'].includes(String(role).toUpperCase().trim());
+
+              if (isMainAdmin) return;
+
+              stats.set(Number(staffId), {
+                id: Number(staffId),
+                name: resolveStaffName(Number(staffId), staff.ho_ten || staff.ten_nhan_vien),
+                role: role,
+                sessions: 0,
+                completed: 0,
+                ratings: [],
+              });
+            }
+          });
+
+          // Accumulate appointments data
           appointments
             .filter((appt) => isBetween(toDateSafe(appt.ngay_hen), from, to))
             .filter((appt) => normalizeAppointmentStatus(appt.trang_thai) !== 'CANCELLED')
@@ -197,15 +238,10 @@ export default function StaffPerformance() {
 
               appt.chi_tiets.forEach((detail: any) => {
                 if (!detail.ma_nhan_vien) return;
+                const staffId = Number(detail.ma_nhan_vien);
 
-                const current = stats.get(detail.ma_nhan_vien) || {
-                  id: detail.ma_nhan_vien,
-                  name: resolveStaffName(detail.ma_nhan_vien, detail.ho_ten_nhan_vien),
-                  role: staffMap.get(String(detail.ma_nhan_vien))?.chuc_vu || 'Kỹ thuật viên',
-                  sessions: 0,
-                  completed: 0,
-                  ratings: [],
-                };
+                const current = stats.get(staffId);
+                if (!current) return;
 
                 current.sessions += 1;
                 if (normalizedStatus === 'COMPLETED') current.completed += 1;
@@ -213,11 +249,11 @@ export default function StaffPerformance() {
                 const detailRating = toNumber(detail.diem_danh_gia);
                 if (detailRating > 0) current.ratings.push(detailRating);
 
-                stats.set(detail.ma_nhan_vien, current);
+                stats.set(staffId, current);
               });
             });
 
-          let rows: StaffPerformance[] = [...stats.values()]
+          const rows: StaffPerformance[] = [...stats.values()]
             .map((staff) => {
               const ratingFromReview = staff.ratings.length > 0 ? average(staff.ratings) : 0;
               const ratingFromCompletion = staff.sessions > 0 ? (staff.completed / staff.sessions) * 5 : 0;
@@ -232,16 +268,6 @@ export default function StaffPerformance() {
               };
             })
             .sort((a, b) => b.sessions - a.sessions);
-
-          if (rows.length === 0) {
-            rows = (staffMembers || []).map((staff: any) => ({
-              id: staff.ma_nhan_vien,
-              name: resolveStaffName(staff.ma_nhan_vien, staff.ho_ten),
-              role: staff.chuc_vu || 'Kỹ thuật viên',
-              sessions: 0,
-              rating: 0,
-            }));
-          }
 
           return rows;
         };
@@ -289,7 +315,6 @@ export default function StaffPerformance() {
     );
   }
 
-  const staffPerformanceRows = staffPerformanceByPeriod[staffPeriodFilter] || [];
 
   return (
     <div className="admin-animate-in w-full" style={{ color: MAIN_TEXT, fontFamily: 'inherit', height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -343,12 +368,12 @@ export default function StaffPerformance() {
         )}
 
         <div className="flex-1 overflow-y-auto admin-scrollbar pr-2 flex flex-col gap-3 min-h-0 pb-2">
-          {staffPerformanceRows.length === 0 ? (
+          {pagedRows.length === 0 ? (
             <div className="py-20 text-center text-sm" style={{ color: MUTED_TEXT }}>
               Không có dữ liệu hiệu suất trong khoảng thời gian này.
             </div>
           ) : (
-            staffPerformanceRows.map((staff, idx) => (
+            pagedRows.map((staff, idx) => (
               <div
                 key={staff.id}
                 className="flex items-center justify-between p-4 rounded-xl transition-colors hover:brightness-110 flex-shrink-0"
@@ -375,6 +400,24 @@ export default function StaffPerformance() {
             ))
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="admin-pagination mt-4 flex-shrink-0">
+            <span>Trang {currentPage} / {totalPages} ({staffPerformanceRows.length} nhân viên)</span>
+            <div className="admin-pagination-btns">
+              <button onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1}><ChevronLeft size={14} /></button>
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let startPage = Math.max(1, currentPage - 2);
+                if (startPage + 4 > totalPages) startPage = Math.max(1, totalPages - 4);
+                const p = startPage + i;
+                return (
+                  <button key={`perf-page-${p}`} onClick={() => setCurrentPage(p)} className={currentPage === p ? 'active' : ''}>{p}</button>
+                );
+              })}
+              <button onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}><ChevronRight size={14} /></button>
+            </div>
+          </div>
+        )}
       </div>
 
       <style>{`

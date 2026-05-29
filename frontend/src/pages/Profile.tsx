@@ -3,6 +3,7 @@ import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { User, Star, Gift, Clock, Calendar, ChevronRight, MapPin, CheckCircle2, XCircle, Lock } from 'lucide-react';
 import { authApi } from '../api/auth.api';
+import { appointmentsApi } from '../api/appointments.api';
 
 export default function Profile() {
   const { user } = useAuth();
@@ -59,6 +60,21 @@ export default function Profile() {
     }
   };
 
+  const handleCancelAppointment = async (id: number) => {
+    if (!window.confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?')) return;
+    try {
+      const res = await appointmentsApi.cancel(id);
+      if (res.success) {
+        alert('Đã hủy lịch hẹn thành công');
+        setAppointments(prev => prev.map(a => a.ma_lich_hen === id ? { ...a, trang_thai: 'CANCELLED' } : a));
+      } else {
+        alert(res.message || 'Hủy lịch hẹn thất bại');
+      }
+    } catch (err: any) {
+      alert(err?.message || 'Có lỗi xảy ra khi hủy lịch');
+    }
+  };
+
   return (
     <div className="w-full pt-28 pb-20 bg-background min-h-screen">
       <div className="container mx-auto px-4 max-w-5xl">
@@ -78,25 +94,6 @@ export default function Profile() {
               {user.so_dien_thoai && (
                 <p className="text-text-muted text-sm mb-3 font-medium">{user.so_dien_thoai}</p>
               )}
-              <div className="inline-flex items-center gap-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-medium">
-                <Star size={14} fill="currentColor" /> Thành viên {user.hang_thanh_vien}
-              </div>
-            </div>
-
-            {/* Points Card */}
-            <div className="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 shadow-md text-white">
-              <div className="flex items-center gap-2 mb-4 opacity-90">
-                <Gift size={20} />
-                <h3 className="font-medium">Điểm tích lũy</h3>
-              </div>
-              <div className="text-4xl font-serif mb-2">{user.diem_tich_luy} <span className="text-lg font-sans opacity-80">điểm</span></div>
-              <p className="text-sm opacity-80 mb-4">Bạn cần thêm 250 điểm để thăng hạng Bạch Kim</p>
-              <div className="w-full bg-white/20 rounded-full h-2 mb-4 overflow-hidden">
-                <div className="bg-accent h-full rounded-full" style={{ width: '80%' }}></div>
-              </div>
-              <button className="w-full py-2.5 bg-white text-primary rounded-lg font-medium text-sm hover:bg-gray-50 transition-colors">
-                Đổi điểm nhận ưu đãi
-              </button>
             </div>
 
             {/* Security Card */}
@@ -216,6 +213,14 @@ export default function Profile() {
                            appt.trang_thai === 'CONFIRMED' ? 'Đã xác nhận' :
                            appt.trang_thai === 'CANCELLED' ? 'Đã Hủy' : 'Hoàn thành'}
                         </div>
+                        {appt.trang_thai === 'PENDING' && (
+                          <button
+                            onClick={() => handleCancelAppointment(appt.ma_lich_hen)}
+                            className="text-xs text-red-500 hover:text-red-700 underline font-medium block w-full text-right sm:text-right mt-1"
+                          >
+                            Hủy lịch
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))

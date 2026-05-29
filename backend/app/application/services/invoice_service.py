@@ -16,7 +16,6 @@ from app.core.config import settings
 from app.core.exceptions import NotFoundException, BusinessRuleException
 from app.core.logging_config import get_logger
 from app.infrastructure.persistence.models.invoice import HoaDon, ChiTietHoaDon, ThanhToan
-from app.infrastructure.persistence.models.loyalty import LichSuDiem
 from app.infrastructure.persistence.models.user import NguoiDung, VaiTro
 from app.infrastructure.persistence.models.staff import NhanVien
 from app.infrastructure.persistence.models.product import SanPham
@@ -76,7 +75,6 @@ class InvoiceService:
             joinedload(HoaDon.chi_tiets).joinedload(ChiTietHoaDon.san_pham),
             joinedload(HoaDon.thanh_toans),
             joinedload(HoaDon.khuyen_mai),
-            joinedload(HoaDon.lich_su_diems),
         )
         if customer_id:
             query = query.filter(HoaDon.ma_khach_hang == customer_id)
@@ -96,7 +94,6 @@ class InvoiceService:
                 joinedload(HoaDon.chi_tiets).joinedload(ChiTietHoaDon.san_pham),
                 joinedload(HoaDon.thanh_toans),
                 joinedload(HoaDon.khuyen_mai),
-                joinedload(HoaDon.lich_su_diems),
             )
             .filter(HoaDon.ma_hoa_don == invoice_id)
             .first()
@@ -123,37 +120,12 @@ class InvoiceService:
             rows.append(promo)
         return rows
 
-    def get_point_history(
-        self,
-        page: int = 1,
-        page_size: int = 20,
-        customer_id: Optional[int] = None,
-        invoice_id: Optional[int] = None,
-    ) -> Tuple[List[LichSuDiem], int]:
-        query = self.db.query(LichSuDiem).options(
-            joinedload(LichSuDiem.nguoi_dung),
-            joinedload(LichSuDiem.hoa_don),
-        )
-        if customer_id:
-            query = query.filter(LichSuDiem.ma_khach_hang == customer_id)
-        if invoice_id:
-            query = query.filter(LichSuDiem.ma_hoa_don == invoice_id)
-
-        total = query.count()
-        rows = (
-            query.order_by(LichSuDiem.ngay_tao.desc(), LichSuDiem.ma_lich_su.desc())
-            .offset((page - 1) * page_size)
-            .limit(page_size)
-            .all()
-        )
-        return rows, total
 
     def create_invoice(self, data: dict, staff_id: Optional[int] = None) -> HoaDon:
         """Create invoice with details, promotion and loyalty points."""
         payload = dict(data)
         chi_tiets_data = payload.pop("chi_tiets", [])
         promotion_id = payload.pop("ma_khuyen_mai", None)
-        requested_points = int(payload.pop("diem_su_dung", 0) or 0)
         customer_id = int(payload["ma_khach_hang"])
 
         customer = self._get_customer(customer_id)
@@ -161,13 +133,11 @@ class InvoiceService:
         promo, giam_gia = self._resolve_promotion(promotion_id, tong_tien)
 
         point_base = max(Decimal("0"), tong_tien - giam_gia)
-        points_used, gia_tri_diem = self._resolve_points_usage(customer, requested_points, point_base)
 
-        subtotal = max(Decimal("0"), tong_tien - giam_gia - gia_tri_diem)
+        subtotal = max(Decimal("0"), tong_tien - giam_gia)
         thue = _round_money(subtotal * TAX_RATE)
         thanh_tien = _round_money(subtotal + thue)
-        diem_tich_luy = int(thanh_tien / POINT_EARN_RATE)
-
+        
         invoice = HoaDon(
             ma_khach_hang=customer_id,
             ma_lich_hen=payload.get("ma_lich_hen"),
@@ -176,9 +146,6 @@ class InvoiceService:
             tong_tien=tong_tien,
             giam_gia=giam_gia,
             thue=thue,
-            diem_su_dung=points_used,
-            gia_tri_diem=gia_tri_diem,
-            diem_tich_luy=diem_tich_luy,
             thanh_tien=thanh_tien,
             trang_thai="PENDING",
             ghi_chu=payload.get("ghi_chu"),
@@ -192,14 +159,7 @@ class InvoiceService:
         if promo:
             promo.da_su_dung = int(promo.da_su_dung or 0) + 1
 
-        if points_used > 0:
-            self._append_point_history(
-                customer=customer,
-                invoice_id=invoice.ma_hoa_don,
-                event_type=POINT_EVENT_INVOICE_SPEND,
-                change=-points_used,
-                note=f"Trá»« Ä‘iá»ƒm dĂ¹ng cho hĂ³a Ä‘Æ¡n #{invoice.ma_hoa_don}",
-            )
+
 
         self.db.commit()
         logger.info("invoice_created", invoice_id=invoice.ma_hoa_don, total=str(thanh_tien))
@@ -213,11 +173,11 @@ class InvoiceService:
         payload = dict(data)
         chi_tiets_data = payload.pop("chi_tiets", [])
         promotion_id = payload.pop("ma_khuyen_mai", None)
-        requested_points = int(payload.pop("diem_su_dung", 0) or 0)
+
 
         customer = self._get_customer(invoice.ma_khach_hang)
 
-        self._refund_spent_points_if_any(invoice, customer, reason="HoĂ n Ä‘iá»ƒm do chá»‰nh sá»­a hĂ³a Ä‘Æ¡n chÆ°a thanh toĂ¡n")
+        pass
 
         if invoice.ma_khuyen_mai:
             old_promo = self.db.query(KhuyenMai).filter(KhuyenMai.ma_khuyen_mai == invoice.ma_khuyen_mai).first()
@@ -232,21 +192,16 @@ class InvoiceService:
         promo, giam_gia = self._resolve_promotion(promotion_id, tong_tien)
 
         point_base = max(Decimal("0"), tong_tien - giam_gia)
-        points_used, gia_tri_diem = self._resolve_points_usage(customer, requested_points, point_base)
 
-        subtotal = max(Decimal("0"), tong_tien - giam_gia - gia_tri_diem)
+        subtotal = max(Decimal("0"), tong_tien - giam_gia)
         thue = _round_money(subtotal * TAX_RATE)
         thanh_tien = _round_money(subtotal + thue)
-        diem_tich_luy = int(thanh_tien / POINT_EARN_RATE)
-
+        
         invoice.ma_nhan_vien = staff_id if staff_id is not None else invoice.ma_nhan_vien
         invoice.ma_khuyen_mai = promo.ma_khuyen_mai if promo else None
         invoice.tong_tien = tong_tien
         invoice.giam_gia = giam_gia
         invoice.thue = thue
-        invoice.diem_su_dung = points_used
-        invoice.gia_tri_diem = gia_tri_diem
-        invoice.diem_tich_luy = diem_tich_luy
         invoice.thanh_tien = thanh_tien
         invoice.ghi_chu = payload.get("ghi_chu", invoice.ghi_chu)
 
@@ -256,14 +211,7 @@ class InvoiceService:
         if promo:
             promo.da_su_dung = int(promo.da_su_dung or 0) + 1
 
-        if points_used > 0:
-            self._append_point_history(
-                customer=customer,
-                invoice_id=invoice.ma_hoa_don,
-                event_type=POINT_EVENT_INVOICE_SPEND,
-                change=-points_used,
-                note=f"Trá»« Ä‘iá»ƒm dĂ¹ng cho hĂ³a Ä‘Æ¡n #{invoice.ma_hoa_don}",
-            )
+
 
         self.db.commit()
         return self.get_invoice(invoice.ma_hoa_don)
@@ -282,11 +230,11 @@ class InvoiceService:
         invoice.trang_thai = next_status
 
         if next_status == "PAID":
-            self._grant_earned_points(invoice, customer)
+            pass
 
         if next_status in ("REFUNDED", "CANCELLED"):
-            self._revoke_earned_points_if_any(invoice, customer)
-            self._refund_spent_points_if_any(invoice, customer, reason=f"HoĂ n Ä‘iá»ƒm do hĂ³a Ä‘Æ¡n #{invoice.ma_hoa_don} {next_status}")
+            pass
+            pass
 
         self.db.commit()
         return self.get_invoice(invoice.ma_hoa_don)
@@ -418,9 +366,7 @@ class InvoiceService:
                 tong_tien=subtotal,
                 giam_gia=discount,
                 thue=tax,
-                diem_su_dung=0,
-                gia_tri_diem=Decimal("0"),
-                diem_tich_luy=int(total / POINT_EARN_RATE),
+
                 thanh_tien=total,
                 trang_thai=status,
                 trang_thai_hd_dien_tu="ISSUED" if status in ("PAID", "REFUNDED") else "NOT_ISSUED",
@@ -488,7 +434,6 @@ class InvoiceService:
         force_mark_completed: bool = False,
     ) -> HoaDon:
         from app.infrastructure.persistence.models.appointment import LichHen
-        from app.infrastructure.persistence.models.inventory import DinhMucVatTu, TonKho
 
         appt = (
             self.db.query(LichHen)
@@ -543,12 +488,7 @@ class InvoiceService:
             )
             created_new_invoice = True
 
-            for d in appt.chi_tiets:
-                dinh_mucs = self.db.query(DinhMucVatTu).filter(DinhMucVatTu.ma_san_pham == d.ma_san_pham).all()
-                for dm in dinh_mucs:
-                    ton_kho = self.db.query(TonKho).filter(TonKho.ma_ton_kho == dm.ma_ton_kho).first()
-                    if ton_kho:
-                        ton_kho.so_luong -= int(dm.so_luong_tieu_hao)
+ 
 
         if invoice and staff_id and not invoice.ma_nhan_vien:
             invoice.ma_nhan_vien = staff_id
@@ -664,120 +604,7 @@ class InvoiceService:
         discount = min(_round_money(discount), tong_tien)
         return promo, discount
 
-    def _resolve_points_usage(
-        self,
-        customer: NguoiDung,
-        requested_points: int,
-        max_base_amount: Decimal,
-    ) -> Tuple[int, Decimal]:
-        if requested_points < 0:
-            raise BusinessRuleException(message="Äiá»ƒm sá»­ dá»¥ng khĂ´ng há»£p lá»‡")
-        if requested_points == 0:
-            return 0, Decimal("0")
-        if requested_points < MIN_POINT_REDEEM:
-            raise BusinessRuleException(message=f"Tá»‘i thiá»ƒu {MIN_POINT_REDEEM} Ä‘iá»ƒm má»›i Ä‘Æ°á»£c sá»­ dá»¥ng")
-
-        available_points = int(customer.diem_tich_luy or 0)
-        if requested_points > available_points:
-            raise BusinessRuleException(message="KhĂ´ng Ä‘á»§ Ä‘iá»ƒm tĂ­ch lÅ©y")
-
-        max_point_value = _round_money(max_base_amount * MAX_POINT_DISCOUNT_RATE)
-        max_points_allowed = int(max_point_value / POINT_VALUE)
-        if requested_points > max_points_allowed:
-            raise BusinessRuleException(message="Sá»‘ Ä‘iá»ƒm sá»­ dá»¥ng vÆ°á»£t quĂ¡ 50% giĂ¡ trá»‹ hĂ³a Ä‘Æ¡n")
-
-        point_value = _round_money(Decimal(requested_points) * POINT_VALUE)
-        return requested_points, point_value
-
-    def _append_point_history(
-        self,
-        customer: NguoiDung,
-        invoice_id: int,
-        event_type: str,
-        change: int,
-        note: str,
-    ) -> None:
-        if change == 0:
-            return
-
-        current = int(customer.diem_tich_luy or 0)
-        customer.diem_tich_luy = current + int(change)
-        self.db.add(
-            LichSuDiem(
-                ma_khach_hang=customer.ma_nguoi_dung,
-                ma_hoa_don=invoice_id,
-                loai_bien_dong=event_type,
-                diem_thay_doi=int(change),
-                so_du_sau=int(customer.diem_tich_luy or 0),
-                noi_dung=note,
-            )
-        )
-
-    def _sum_point_events(self, invoice_id: int, event_types: List[str]) -> int:
-        total = (
-            self.db.query(func.coalesce(func.sum(LichSuDiem.diem_thay_doi), 0))
-            .filter(
-                LichSuDiem.ma_hoa_don == invoice_id,
-                LichSuDiem.loai_bien_dong.in_(event_types),
-            )
-            .scalar()
-        )
-        return int(total or 0)
-
-    def _grant_earned_points(self, invoice: HoaDon, customer: NguoiDung) -> None:
-        target = int(invoice.diem_tich_luy or 0)
-        if target <= 0:
-            return
-
-        current = self._sum_point_events(
-            invoice.ma_hoa_don,
-            [POINT_EVENT_INVOICE_EARN, POINT_EVENT_INVOICE_EARN_REVOKE],
-        )
-        missing = target - current
-        if missing <= 0:
-            return
-
-        self._append_point_history(
-            customer=customer,
-            invoice_id=invoice.ma_hoa_don,
-            event_type=POINT_EVENT_INVOICE_EARN,
-            change=missing,
-            note=f"Cá»™ng Ä‘iá»ƒm tá»« hĂ³a Ä‘Æ¡n #{invoice.ma_hoa_don}",
-        )
-
-    def _revoke_earned_points_if_any(self, invoice: HoaDon, customer: NguoiDung) -> None:
-        earned_balance = self._sum_point_events(
-            invoice.ma_hoa_don,
-            [POINT_EVENT_INVOICE_EARN, POINT_EVENT_INVOICE_EARN_REVOKE],
-        )
-        if earned_balance <= 0:
-            return
-
-        self._append_point_history(
-            customer=customer,
-            invoice_id=invoice.ma_hoa_don,
-            event_type=POINT_EVENT_INVOICE_EARN_REVOKE,
-            change=-earned_balance,
-            note=f"Thu há»“i Ä‘iá»ƒm do hĂ³a Ä‘Æ¡n #{invoice.ma_hoa_don} bá»‹ hoĂ n/há»§y",
-        )
-
-    def _refund_spent_points_if_any(self, invoice: HoaDon, customer: NguoiDung, reason: str) -> None:
-        spend_balance = self._sum_point_events(
-            invoice.ma_hoa_don,
-            [POINT_EVENT_INVOICE_SPEND, POINT_EVENT_INVOICE_SPEND_REFUND],
-        )
-        if spend_balance >= 0:
-            return
-
-        refund_points = abs(spend_balance)
-        self._append_point_history(
-            customer=customer,
-            invoice_id=invoice.ma_hoa_don,
-            event_type=POINT_EVENT_INVOICE_SPEND_REFUND,
-            change=refund_points,
-            note=reason,
-        )
-
+    
     def _get_current_service_prices(self, service_ids: set[int]) -> Dict[int, Decimal]:
         if not service_ids:
             return {}
@@ -847,20 +674,16 @@ class PaymentService:
         subtotal = _round_money(subtotal)
         discount = max(Decimal('0'), _round_money(_to_decimal(invoice.giam_gia)))
         discount = min(discount, subtotal)
-        point_value = max(Decimal('0'), _round_money(_to_decimal(invoice.gia_tri_diem)))
-        point_value = min(point_value, max(Decimal('0'), subtotal - discount))
 
-        taxable = max(Decimal('0'), subtotal - discount - point_value)
+        taxable = max(Decimal('0'), subtotal - discount)
         vat = _round_money(taxable * TAX_RATE)
         total = _round_money(taxable + vat)
 
         invoice.tong_tien = subtotal
         invoice.giam_gia = discount
-        invoice.gia_tri_diem = point_value
         invoice.thue = vat
         invoice.thanh_tien = total
-        invoice.diem_tich_luy = int(total / POINT_EARN_RATE)
-
+        
     def _paid_amount(self, invoice: HoaDon) -> Decimal:
         return sum(
             _to_decimal(payment.so_tien)

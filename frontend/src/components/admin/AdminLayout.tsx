@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
   LayoutDashboard, Package, FolderTree, Users, CalendarDays, FileText,
   Percent, Image, Newspaper, Warehouse, UserCog, Clock, CalendarOff,
-  Menu, LogOut, ChevronLeft, Bell, Sun, Moon, TrendingUp
+  Menu, LogOut, ChevronLeft, Bell, Sun, Moon, TrendingUp, Settings
 } from 'lucide-react';
 import '../../admin.css';
 
@@ -56,8 +56,9 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
   {
     title: 'Hệ thống',
     items: [
-      { to: '/admin/kho', icon: <Warehouse size={18} />, label: 'Kho & NCC', roles: ['ADMIN'] },
+ 
       { to: '/admin/nguoi-dung', icon: <Users size={18} />, label: 'Người dùng', roles: ['ADMIN'] },
+      { to: '/admin/cau-hinh', icon: <Settings size={18} />, label: 'Cấu hình', roles: ['ADMIN'] },
     ],
   },
 ];
