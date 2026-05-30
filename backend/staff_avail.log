@@ -2701,3 +2701,733 @@ Parameters: service=2, date=2026-06-01, start=09:00:00, end=None
   [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
 Result: 14 staff available
 Result: 15 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-30, start=08:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-05-30, start=08:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-30, start=08:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-30, start=08:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-30, start=08:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-30, start=08:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-30, start=08:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-30, start=08:00:00, end=None
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 2 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 11 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 12 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 2 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 11 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 12 staff available
+Result: 12 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 2 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 11 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 12 staff available
+
+--- Checking available staff ---
+Parameters: service=15, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 2 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 2 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 11 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 11 busy in Appt 6070 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 12 staff available
+Result: 12 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 14 staff available
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 15 staff available
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+Result: 14 staff available
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 15 staff available
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 14 staff available
+Result: 15 staff available
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+Result: 15 staff available
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 14 staff available
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=11, date=2026-05-31, start=08:30:00, end=None
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=14, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=14, date=2026-05-31, start=08:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=13, date=2026-05-31, start=08:45:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+Result: 11 staff available
+Result: 13 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-05-31, start=09:30:00, end=None
+Result: 15 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-05-31, start=09:30:00, end=None
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-05-31, start=09:30:00, end=None
+Result: 14 staff available
+Result: 15 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 9 staff available
+
+--- Checking available staff ---
+Parameters: service=1, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 9 staff available
+Result: 9 staff available
+
+--- Checking available staff ---
+Parameters: service=11, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+  [Conflict] Staff 10 busy in Appt 6078 (08:00:00-09:00:00)
+  [Conflict] Staff 12 busy in Appt 6078 (08:00:00-09:00:00)
+Result: 7 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=2026-05-31, start=10:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6075 (09:30:00-11:00:00)
+  [Conflict] Staff 1004 busy in Appt 6075 (09:30:00-10:30:00)
+Result: 13 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+  [Conflict] Staff 10 busy in Appt 6078 (08:00:00-09:00:00)
+  [Conflict] Staff 12 busy in Appt 6078 (08:00:00-09:00:00)
+Result: 7 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 3 busy in Appt 6073 (08:30:00-09:30:00)
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+  [Conflict] Staff 10 busy in Appt 6078 (08:00:00-09:00:00)
+  [Conflict] Staff 12 busy in Appt 6078 (08:00:00-09:00:00)
+Result: 7 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 6 busy in Appt 6072 (09:00:00-09:45:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 8 busy in Appt 6072 (09:00:00-10:30:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 18 busy in Appt 6072 (09:00:00-10:30:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=11, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 6 busy in Appt 6072 (09:00:00-09:45:00)
+  [Conflict] Staff 6 busy in Appt 6072 (09:00:00-09:45:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 8 busy in Appt 6072 (09:00:00-10:30:00)
+  [Conflict] Staff 8 busy in Appt 6072 (09:00:00-10:30:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 18 busy in Appt 6072 (09:00:00-10:30:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 7 busy in Appt 6077 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 10 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 6 busy in Appt 6076 (08:00:00-09:00:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 11 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 12 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 12 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 12 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+  [Conflict] Staff 5 busy in Appt 6074 (08:00:00-08:45:00)
+  [Conflict] Staff 8 busy in Appt 6074 (08:45:00-09:15:00)
+Result: 12 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-06-01, start=09:00:00, end=None
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+Result: 14 staff available
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=6, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-06-01, start=09:00:00, end=None
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 7 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 10 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+  [Conflict] Staff 12 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 14 staff available
+  [Conflict] Staff 15 busy in Appt 5064 (09:00:00-10:00:00)
+  [Conflict] Staff 19 busy in Appt 5064 (09:00:00-09:45:00)
+  [Conflict] Staff 1003 busy in Appt 5064 (09:00:00-10:30:00)
+Result: 17 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-31, start=08:00:00, end=None
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-05-30, start=19:00:00, end=None
+Result: 7 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-05-30, start=21:30:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=2, date=2026-05-30, start=21:30:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=5, date=2026-05-30, start=21:30:00, end=None
+Result: 0 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-05-31, start=08:00:00, end=None
+Result: 15 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-05-30, start=17:00:00, end=None
+Result: 7 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=2026-05-31, start=08:30:00, end=None
+  [Conflict] Staff 10 busy in Appt 6080 (08:00:00-09:30:00)
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=9, date=2026-05-31, start=08:30:00, end=None
+  [Conflict] Staff 10 busy in Appt 6080 (08:00:00-09:30:00)
+  [Conflict] Staff 14 busy in Appt 6082 (08:30:00-10:30:00)
+Result: 13 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=2026-05-31, start=08:30:00, end=None
+  [Conflict] Staff 10 busy in Appt 6080 (08:00:00-09:30:00)
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=10, date=2026-05-31, start=08:30:00, end=None
+  [Conflict] Staff 10 busy in Appt 6080 (08:00:00-09:30:00)
+Result: 14 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-05-30, start=17:00:00, end=None
+Result: 7 staff available
+
+--- Checking available staff ---
+Parameters: service=3, date=2026-05-30, start=17:00:00, end=None
+Result: 7 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-05-31, start=08:00:00, end=None
+Result: 15 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-05-31, start=08:00:00, end=None
+Result: 15 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-05-31, start=08:00:00, end=None
+Result: 15 staff available
+
+--- Checking available staff ---
+Parameters: service=4, date=2026-05-31, start=08:00:00, end=None
+Result: 15 staff available

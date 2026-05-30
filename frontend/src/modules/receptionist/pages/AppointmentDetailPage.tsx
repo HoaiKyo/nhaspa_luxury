@@ -84,6 +84,7 @@ export default function AppointmentDetailPage() {
       const res = await receptionistApi.cancelAppointment(Number(id), cancelReason);
       if (!res.success) throw new Error(res.message || 'Hủy thất bại');
       setShowCancelModal(false);
+      alert('Hủy lịch hẹn thành công');
       loadAppointment(Number(id));
     } catch (e: any) {
       alert(e?.message || 'Hủy thất bại');
