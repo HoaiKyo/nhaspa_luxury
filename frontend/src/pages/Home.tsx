@@ -173,18 +173,18 @@ export default function Home() {
           </div>
 
           {/* Categories */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-16">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-16">
             {cats.map((cat, idx) => (
               <Link 
                 key={cat.ma_danh_muc} 
                 to={`/dich-vu/${cat.ma_danh_muc}`}
-                className="group relative overflow-hidden rounded-xl aspect-square flex flex-col items-center justify-center bg-background hover:bg-primary transition-colors duration-500"
+                className="group relative overflow-hidden rounded-full px-6 py-3 flex flex-row items-center justify-center bg-background hover:bg-primary transition-all duration-300 hover:shadow-md border border-gray-100"
               >
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay" />
-                <div className="text-primary group-hover:text-accent transition-colors duration-500 mb-4 z-10">
-                  <Sparkles size={48} strokeWidth={1} />
+                <div className="text-primary group-hover:text-accent transition-colors duration-300 mr-2 z-10">
+                  <Sparkles size={20} strokeWidth={1.5} />
                 </div>
-                <h3 className="text-lg md:text-xl font-serif text-text-dark group-hover:text-white transition-colors duration-500 z-10">
+                <h3 className="text-sm md:text-base font-serif text-text-dark group-hover:text-white transition-colors duration-300 z-10 whitespace-nowrap">
                   {cat.ten_danh_muc}
                 </h3>
               </Link>
