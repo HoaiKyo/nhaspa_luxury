@@ -72,14 +72,7 @@ export default function Locations() {
                 </div>
                 
                 <div className="mt-auto pt-6 border-t border-gray-100 flex flex-col sm:flex-row gap-4">
-                  <a 
-                    href={`https://maps.google.com/?q=${encodeURIComponent(location.address)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 bg-primary text-white py-3 rounded-md hover:bg-secondary transition-colors text-sm font-medium uppercase tracking-wider flex items-center justify-center gap-2"
-                  >
-                    <Navigation size={16} /> Chỉ đường
-                  </a>
+
                   <button 
                     onClick={() => openBooking()}
                     className="flex-1 bg-white border border-primary text-primary py-3 rounded-md hover:bg-primary/5 transition-colors text-sm font-medium uppercase tracking-wider flex items-center justify-center gap-2"
@@ -92,47 +85,7 @@ export default function Locations() {
           ))}
         </div>
 
-        {/* Decorative Map Section */}
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
-          <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
-            <div className="md:w-1/2">
-              <h3 className="text-3xl font-serif text-primary mb-4">Không gian thư giãn lý tưởng</h3>
-              <p className="text-text-muted mb-6 leading-relaxed">
-                Mỗi cơ sở của Nhà Spa đều được thiết kế với phong cách kiến trúc độc đáo, 
-                tối ưu hóa ánh sáng tự nhiên và cây xanh, tạo nên một ốc đảo bình yên giữa 
-                lòng đô thị ồn ào.
-              </p>
-              <ul className="space-y-3 text-text-dark font-medium">
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-accent" /> Phòng trị liệu riêng biệt, yên tĩnh
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-accent" /> Khu vực chờ sang trọng, tiện nghi
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-accent" /> Bãi đỗ xe rộng rãi, an toàn
-                </li>
-              </ul>
-            </div>
-            <div className="md:w-1/2 w-full h-64 md:h-96 rounded-2xl overflow-hidden relative">
-              <img 
-                src="http://localhost:8000/uploads/2024/08/khong-gian-nha-spa-3.jpg" 
-                alt="Spa Map Decor"
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-primary/20 mix-blend-multiply" />
-              {/* Fake map pins */}
-              <div className="absolute top-1/3 left-1/4 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-primary animate-bounce">
-                <MapPin size={24} fill="currentColor" />
-              </div>
-              <div className="absolute bottom-1/3 right-1/3 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-primary animate-bounce" style={{ animationDelay: '0.5s' }}>
-                <MapPin size={24} fill="currentColor" />
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   );

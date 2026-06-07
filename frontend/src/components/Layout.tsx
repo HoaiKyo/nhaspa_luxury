@@ -87,7 +87,6 @@ export default function Layout() {
                   ))}
                 </div>
               </div>
-              <Link to="/dich-vu" className="hover:text-accent transition-colors uppercase text-sm tracking-wider">Sản phẩm</Link>
               <Link to="/khuyen-mai" className="hover:text-accent transition-colors uppercase text-sm tracking-wider">Khuyến mãi</Link>
             </nav>
 
@@ -213,7 +212,6 @@ export default function Layout() {
                     ))}
                   </div>
                 </div>
-                <Link to="/dich-vu" className="text-lg font-medium text-text-dark py-2 border-b border-gray-50">Sản phẩm</Link>
                 <Link to="/co-so" className="text-lg font-medium text-text-dark py-2 border-b border-gray-50">Cơ sở</Link>
                 <Link to="/khuyen-mai" className="text-lg font-medium text-text-dark py-2 border-b border-gray-50">Khuyến mãi</Link>
                 <Link to="/gioi-thieu" className="text-lg font-medium text-text-dark py-2 border-b border-gray-50">Về Nhà Spa</Link>

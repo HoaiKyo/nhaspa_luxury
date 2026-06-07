@@ -278,35 +278,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. VIDEO SECTION */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/90 z-10" />
-        <img 
-          src="http://localhost:8000/uploads/2024/08/khong-gian-nha-spa-10.jpg" 
-          alt="Video background"
-          className="absolute inset-0 w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-        />
-        <div className="container mx-auto px-4 relative z-20 text-center">
-          <h2 className="text-3xl md:text-5xl font-serif text-white mb-12">TRẢI NGHIỆM TẠI NHÀ SPA</h2>
-          
-          <div className="relative max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl group cursor-pointer aspect-video bg-black">
-            <img 
-              src="http://localhost:8000/uploads/2024/08/khong-gian-nha-spa-11.jpg" 
-              alt="Video thumbnail"
-              className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 md:w-24 md:h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center text-primary pl-2">
-                  <Play size={32} fill="currentColor" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 7. BRAND PARTNERS */}
       <section className="py-16 bg-white border-b border-gray-100 overflow-hidden">

@@ -569,10 +569,27 @@ export default function BookingModal() {
   );
 
   const renderStep2 = () => {
+    const calculatedStartTimes = getCalculatedStartTimes(bookingTime, assignments, services);
+    const calculatedEndTimes = getCalculatedEndTimes(bookingTime, assignments, services);
+
+    const checkTimeOverlap = (start1: string, end1: string, start2: string, end2: string) => {
+      return (start1 < end2 && start2 < end1);
+    };
+
     const staffTakenByOthers = (currentId: string) => {
       const taken = new Set<number>();
+      const currStart = calculatedStartTimes[currentId];
+      const currEnd = calculatedEndTimes[currentId];
+      if (!currStart || !currEnd) return taken;
+
       assignments.forEach(a => {
-        if (a.id !== currentId && a.staffId) taken.add(a.staffId);
+        if (a.id !== currentId && a.staffId) {
+          const aStart = calculatedStartTimes[a.id];
+          const aEnd = calculatedEndTimes[a.id];
+          if (aStart && aEnd && checkTimeOverlap(currStart, currEnd, aStart, aEnd)) {
+            taken.add(a.staffId);
+          }
+        }
       });
       return taken;
     };
@@ -596,7 +613,6 @@ export default function BookingModal() {
 
         <div className="space-y-4">
           {assignments.map(a => {
-            const calculatedStartTimes = getCalculatedStartTimes(bookingTime, assignments, services);
             const calculatedStart = calculatedStartTimes[a.id] || bookingTime;
             const eligibleStaff = a.serviceId ? (staffByAssignment[a.id] || []) : [];
             const isLoading = a.serviceId != null && loadingStaffServices.includes(`${a.id}-${a.serviceId}`);

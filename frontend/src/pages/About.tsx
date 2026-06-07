@@ -117,45 +117,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-24 bg-background">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif text-primary mb-4">Đội ngũ chuyên gia</h2>
-            <div className="w-24 h-1 bg-accent mx-auto mb-6" />
-            <p className="text-text-muted max-w-2xl mx-auto">
-              Tự hào sở hữu đội ngũ kỹ thuật viên, bác sĩ da liễu và chuyên gia trị liệu 
-              được đào tạo bài bản, giàu kinh nghiệm và luôn tận tâm với nghề.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { name: "Bs. Nguyễn Thu Hà", role: "Chuyên gia Da liễu", exp: "12 năm kinh nghiệm" },
-              { name: "KTV. Trần Minh", role: "Trưởng nhóm Massage", exp: "8 năm kinh nghiệm" },
-              { name: "KTV. Lê Ngọc", role: "Chuyên viên Gội dưỡng sinh", exp: "5 năm kinh nghiệm" },
-              { name: "KTV. Phạm Hương", role: "Chuyên viên Chăm sóc da", exp: "6 năm kinh nghiệm" }
-            ].map((member, idx) => (
-              <div key={idx} className="bg-white rounded-xl overflow-hidden shadow-sm group">
-                <div className="relative h-80 overflow-hidden">
-                  <img 
-                    src={`http://localhost:8000/uploads/elementor/thumbs/${['1-rc8e61o4wzbhrejphscclykf9p0ahavn5b0x9twnhg.jpg', '2-rc8e62lz3tcs30iccaqz6gbvv2vnozzdhfoer3v9b8.jpg', '3-rc8e63jtane2emgz6t5lqy3cggr0wp33tkbw8dtv50.jpg', '4-rc8e64hnhhfcq8fm1bk8bfut1ume4e6u5ozdpnsgys.jpg'][idx]}`} 
-                    alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale group-hover:grayscale-0"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                <div className="p-6 text-center border-t border-gray-50 relative bg-white z-10 -mt-2">
-                  <h4 className="font-serif text-xl text-primary mb-1">{member.name}</h4>
-                  <div className="text-sm font-medium text-text-dark mb-2">{member.role}</div>
-                  <div className="text-xs text-accent uppercase tracking-wider">{member.exp}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
